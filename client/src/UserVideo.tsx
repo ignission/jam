@@ -7,7 +7,7 @@ interface Props {
   streamManager: StreamManager;
 }
 
-const UserVideoComponent: React.FC<Props> = (props) => {
+const UserVideo: React.FC<Props> = (props) => {
   const getNicknameTag = () => {
     // Gets the nickName of the user
     return JSON.parse(this.props.streamManager.stream.connection.data)
@@ -28,7 +28,7 @@ const UserVideoComponent: React.FC<Props> = (props) => {
   );
 };
 
-export default UserVideoComponent;
+export default UserVideo;
 
 /**
 export default class UserVideoComponent extends Component {
