@@ -110,7 +110,20 @@ const App: React.FC = () => {
     setSession(ovRef.current.initSession());
   };
 
-  const leaveSession = () => {};
+  const leaveSession = () => {
+    // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+    if (session) {
+      session.disconnect();
+    }
+    // Empty all properties...
+    ovRef.current = null;
+    setSession(null);
+    setSubscribers([]);
+    setSessionId('SessionA');
+    setUserName('Participant' + Math.floor(Math.random() * 100));
+    setMainStreamManager(null);
+    setPublisher(null);
+  };
 
   /**
    * --------------------------
@@ -297,24 +310,7 @@ export default App;
 // class App extends Component {
 
 //   leaveSession() {
-//     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
-//     const mySession = this.state.session;
-
-//     if (mySession) {
-//       mySession.disconnect();
-//     }
-
-//     // Empty all properties...
-//     this.OV = null;
-//     this.setState({
-//       session: undefined,
-//       subscribers: [],
-//       mySessionId: 'SessionA',
-//       myUserName: 'Participant' + Math.floor(Math.random() * 100),
-//       mainStreamManager: undefined,
-//       publisher: undefined,
-//     });
 //   }
 
 // }
