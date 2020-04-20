@@ -1,21 +1,19 @@
 {
-    "eslint.enable": true,
-    "eslint.validate": [
-      "javascript",
-      "javascriptreact",
-      {
-        "language": "typescript",
-        "autoFix": true
-      },
-      {
-        "language": "typescriptreact",
-        "autoFix": true
-      }
-    ],
-    "eslint.autoFixOnSave": true,
-    "workbench.colorCustomizations": {},
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+  "eslint.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
     }
+  ],
+  "workbench.colorCustomizations": {},
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   }
-  
+}
