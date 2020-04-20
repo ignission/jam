@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "hot": "webpack-dev-server --host 0.0.0.0",
+    "build": "node_modules/webpack/bin/webpack.js --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -30,8 +31,8 @@
     "ts-loader": "^7.0.0",
     "typescript": "^3.6.3",
     "url-loader": "^4.1.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.8.2"
   },
   "author": "Ignission",

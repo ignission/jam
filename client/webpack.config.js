@@ -30,9 +30,8 @@ module.exports = {
         loader: 'html-loader',
       },
       {
-        // 追記
         test: /\.(jpg|png)$/,
-        loaders: 'url-loader'
+        loaders: 'url-loader',
       },
     ],
   },
@@ -52,6 +51,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: `${__dirname}/public/index.html`,
+      minify: false,
     }),
   ],
 };
