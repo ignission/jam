@@ -10,20 +10,15 @@ interface Props {
 const UserVideo: React.FC<Props> = (props) => {
   const getNicknameTag = () => {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data)
-      .clientData;
+    return JSON.parse(props.streamManager.stream.connection.data).clientData;
   };
 
   return (
-    <div>
-      {this.props.streamManager !== undefined ? (
-        <div className="streamcomponent">
-          <Video streamManager={props.streamManager} />
-          <div>
-            <p>{getNicknameTag()}</p>
-          </div>
-        </div>
-      ) : null}
+    <div className="streamcomponent">
+      <Video streamManager={props.streamManager} />
+      <div>
+        <p>{getNicknameTag()}</p>
+      </div>
     </div>
   );
 };

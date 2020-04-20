@@ -1,13 +1,13 @@
 {
-    "compilerOptions": {
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "target": "es5",
-      "module": "esnext",
-      "jsx": "react",
-      "lib": ["es2017", "dom"],
-      "rootDirs": ["src"],
-      "baseUrl": "src",
-      "allowSyntheticDefaultImports": true
-    }
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "es5",
+    "module": "esnext",
+    "jsx": "react",
+    "lib": ["es2017", "dom"],
+    "rootDirs": ["src"],
+    "baseUrl": "src",
+    "allowSyntheticDefaultImports": true
   }
+}
