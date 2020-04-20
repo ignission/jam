@@ -6,13 +6,13 @@ interface Props {
 }
 
 const OpenViduVideoComponent: React.FC<Props> = (props) => {
-  let ref = useRef(null);
+  const ref = useRef<HTMLVideoElement>(null);
+  const isInitialized = useRef<boolean>(false);
 
   useEffect(() => {
-    if (ref.current === null) {
-      ref = React.createRef<HTMLVideoElement>();
-      props.streamManager.addVideoElement(ref.current);
-    }
+    if (isInitialized.current || ref.current === null) return;
+    props.streamManager.addVideoElement(ref.current);
+    isInitialized.current = true;
   }, []);
 
   return <video autoPlay={true} ref={ref} />;
