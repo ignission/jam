@@ -1,5 +1,5 @@
 import React from 'react';
-import OpenViduVideoComponent from 'OvVideo';
+import Video from 'Video';
 import { StreamManager } from 'openvidu-browser';
 import './UserVideo.css';
 
@@ -18,7 +18,7 @@ const UserVideoComponent: React.FC<Props> = (props) => {
     <div>
       {this.props.streamManager !== undefined ? (
         <div className="streamcomponent">
-          <OpenViduVideoComponent streamManager={props.streamManager} />
+          <Video streamManager={props.streamManager} />
           <div>
             <p>{getNicknameTag()}</p>
           </div>

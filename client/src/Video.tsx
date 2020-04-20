@@ -5,7 +5,7 @@ interface Props {
   streamManager: StreamManager;
 }
 
-const OpenViduVideoComponent: React.FC<Props> = (props) => {
+const VideoComponent: React.FC<Props> = (props) => {
   const ref = useRef<HTMLVideoElement>(null);
   const isInitialized = useRef<boolean>(false);
 
@@ -18,7 +18,7 @@ const OpenViduVideoComponent: React.FC<Props> = (props) => {
   return <video autoPlay={true} ref={ref} />;
 };
 
-export default OpenViduVideoComponent;
+export default VideoComponent;
 
 /**
 export default class OpenViduVideoComponent extends Component {
