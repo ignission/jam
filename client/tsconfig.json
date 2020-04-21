@@ -8,6 +8,7 @@
     "lib": ["es2017", "dom"],
     "rootDirs": ["src"],
     "baseUrl": "src",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   }
 }
