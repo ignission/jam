@@ -4,10 +4,7 @@ import {
   StreamManager,
   Publisher,
   Session,
-  Subscriber,
-  Stream,
   OpenVidu,
-  ConnectionEvent,
   StreamEvent,
 } from 'openvidu-browser';
 import UserVideo from 'UserVideo';
@@ -67,6 +64,10 @@ const App: React.FC = () => {
     getToken().then((token) => {
       // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+      if (session === null) {
+        console.log('getToken failed. session is null');
+        return;
+      }
       session
         .connect(token as string, { clientData: myUserName })
         .then(() => {
@@ -76,7 +77,11 @@ const App: React.FC = () => {
           // --- 5) Get your own camera stream ---
           // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
           // element: we will manage it on our own) and with the desired properties
-          let publisher = ovRef.current.initPublisher(undefined, {
+          if (ovRef.current === null) {
+            console.log('initPublisher failed. ovRef is null');
+            return;
+          }
+          let publisher = ovRef.current.initPublisher('', {
             audioSource: undefined, // The source of audio. If undefined default microphone
             videoSource: undefined, // The source of video. If undefined default webcam
             publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
