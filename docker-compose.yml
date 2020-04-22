@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  kms:
+    container_name: emoi-kms
+    image: openvidu/openvidu-server-kms:2.12.0
+    environment:
+      openvidu.secret: MY_SECRET
+    ports:
+      - 4443:4443
