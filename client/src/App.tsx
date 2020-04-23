@@ -9,6 +9,7 @@ import {
 } from 'openvidu-browser';
 import UserVideo from 'components/molecules/UserVideo';
 import Container from 'components/atoms/Container';
+import { Login } from 'pages/Login';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -221,49 +222,13 @@ const App: React.FC = () => {
   if (session === null) {
     return (
       <Container>
-        <div id="join">
-          <div id="img-div">
-            <img
-              src="images/openvidu_grey_bg_transp_cropped.png"
-              alt="OpenVidu logo"
-            />
-          </div>
-          <div id="join-dialog" className="jumbotron vertical-center">
-            <h1> Join a video session </h1>
-            <form className="form-group" onSubmit={joinSession}>
-              <p>
-                <label>Participant: </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="userName"
-                  value={myUserName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  required
-                />
-              </p>
-              <p>
-                <label> Session: </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="sessionId"
-                  value={mySessionId}
-                  onChange={(e) => setSessionId(e.target.value)}
-                  required
-                />
-              </p>
-              <p className="text-center">
-                <input
-                  className="btn btn-lg btn-success"
-                  name="commit"
-                  type="submit"
-                  value="JOIN"
-                />
-              </p>
-            </form>
-          </div>
-        </div>
+        <Login
+          userName={myUserName}
+          sessionId={mySessionId}
+          joinSession={joinSession}
+          setUserName={(e) => setUserName(e.target.value)}
+          setSessionId={(e) => setSessionId(e.target.value)}
+        />
       </Container>
     );
   }
