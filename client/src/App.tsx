@@ -10,6 +10,7 @@ import {
 import UserVideo from 'components/molecules/UserVideo';
 import Container from 'components/atoms/Container';
 import { Login } from 'pages/Login';
+import { Session as SessionView } from 'pages/Session';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -235,43 +236,14 @@ const App: React.FC = () => {
 
   return (
     <Container>
-      <div id="session">
-        <div id="session-header">
-          <h1 id="session-title">{mySessionId}</h1>
-          <input
-            className="btn btn-large btn-danger"
-            type="button"
-            id="buttonLeaveSession"
-            onClick={leaveSession}
-            value="Leave session"
-          />
-        </div>
-
-        {mainStreamManager !== null ? (
-          <div id="main-video" className="col-md-6">
-            <UserVideo streamManager={mainStreamManager} />
-          </div>
-        ) : null}
-        <div id="video-container" className="col-md-6">
-          {publisher !== null ? (
-            <div
-              className="stream-container col-md-6 col-xs-6"
-              onClick={() => handleMainVideoStream(publisher)}
-            >
-              <UserVideo streamManager={publisher} />
-            </div>
-          ) : null}
-          {subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="stream-container col-md-6 col-xs-6"
-              onClick={() => handleMainVideoStream(sub)}
-            >
-              <UserVideo streamManager={sub} />
-            </div>
-          ))}
-        </div>
-      </div>
+      <SessionView
+        sessionId={mySessionId}
+        mainStreamManager={mainStreamManager}
+        publisher={publisher}
+        subscribers={subscribers}
+        handleMainVideoStream={handleMainVideoStream}
+        leaveSession={leaveSession}
+      />
     </Container>
   );
 };
