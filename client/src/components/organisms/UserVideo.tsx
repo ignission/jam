@@ -1,5 +1,5 @@
 import React from 'react';
-import Video from 'Video';
+import Video from 'components/atoms/Video';
 import { StreamManager } from 'openvidu-browser';
 import './UserVideo.css';
 

@@ -7,7 +7,7 @@ import {
   OpenVidu,
   StreamEvent,
 } from 'openvidu-browser';
-import UserVideo from 'UserVideo';
+import UserVideo from 'components/organisms/UserVideo';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -223,7 +223,7 @@ const App: React.FC = () => {
         <div id="join">
           <div id="img-div">
             <img
-              src="resources/images/openvidu_grey_bg_transp_cropped.png"
+              src="images/openvidu_grey_bg_transp_cropped.png"
               alt="OpenVidu logo"
             />
           </div>
