@@ -5,13 +5,13 @@ interface Props {
   streamManager: StreamManager;
 }
 
-const VideoComponent: React.FC<Props> = (props) => {
+const VideoComponent: React.FC<Props> = ({ streamManager }) => {
   const ref = useRef<HTMLVideoElement>(null);
   const isInitialized = useRef<boolean>(false);
 
   useEffect(() => {
     if (isInitialized.current || ref.current === null) return;
-    props.streamManager.addVideoElement(ref.current);
+    streamManager.addVideoElement(ref.current);
     isInitialized.current = true;
   }, []);
 
