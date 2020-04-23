@@ -7,7 +7,8 @@ import {
   OpenVidu,
   StreamEvent,
 } from 'openvidu-browser';
-import UserVideo from 'components/organisms/UserVideo';
+import UserVideo from 'components/molecules/UserVideo';
+import Container from 'components/atoms/Container';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -219,7 +220,7 @@ const App: React.FC = () => {
 
   if (session === null) {
     return (
-      <div className="container">
+      <Container>
         <div id="join">
           <div id="img-div">
             <img
@@ -263,12 +264,12 @@ const App: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div className="container">
+    <Container>
       <div id="session">
         <div id="session-header">
           <h1 id="session-title">{mySessionId}</h1>
@@ -306,7 +307,7 @@ const App: React.FC = () => {
           ))}
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
