@@ -1,4 +1,4 @@
-interface WindowService {
+export interface WindowService {
   confirm: (url: string) => boolean;
   assign: (url: string) => void;
 }

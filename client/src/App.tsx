@@ -11,6 +11,7 @@ import Container from 'components/atoms/Container';
 import { Login } from 'pages/Login';
 import { Session as SessionView } from 'pages/Session';
 import { WindowServiceImpl } from 'services/WindowService';
+import { OpenViduServiceImpl } from 'services/OpenViduService';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -31,6 +32,11 @@ const App: React.FC = () => {
 
   // services
   const windowService = WindowServiceImpl(window);
+  const openViduService = OpenViduServiceImpl(
+    OPENVIDU_SERVER_URL,
+    OPENVIDU_SERVER_SECRET,
+    windowService
+  );
 
   const handleMainVideoStream = (streamManager: StreamManager) => {
     if (mainStreamManager === streamManager) return;
@@ -67,7 +73,7 @@ const App: React.FC = () => {
     // --- 4) Connect to the session with a valid user token ---
     // 'getToken' method is simulating what your server-side should do.
     // 'token' parameter should be retrieved and returned by your own backend
-    getToken().then((token) => {
+    openViduService.getToken(mySessionId).then((token) => {
       // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
       if (session === null) {
@@ -147,64 +153,6 @@ const App: React.FC = () => {
    *   2) Generate a token in OpenVidu Server		(POST /api/tokens)
    *   3) The token must be consumed in Session.connect() method
    */
-
-  const getToken = () => {
-    return createSession(mySessionId).then((sessionId) =>
-      createToken(sessionId)
-    );
-  };
-
-  const createSession = (sessionId: any) => {
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ customSessionId: sessionId });
-      axios
-        .post(OPENVIDU_SERVER_URL + '/api/sessions', data, {
-          headers: {
-            Authorization:
-              'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log('CREATE SESION', response);
-          resolve(response.data.id);
-        })
-        .catch((response) => {
-          var error = Object.assign({}, response);
-          if (error.response.status === 409) {
-            resolve(sessionId);
-          } else {
-            console.log(error);
-            console.warn(
-              'No connection to OpenVidu Server. This may be a certificate error at ' +
-                OPENVIDU_SERVER_URL
-            );
-            if (windowService.confirm(OPENVIDU_SERVER_URL)) {
-              windowService.assign(OPENVIDU_SERVER_URL + '/accept-certificate');
-            }
-          }
-        });
-    });
-  };
-
-  const createToken = (sessionId: any) => {
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ session: sessionId });
-      axios
-        .post(OPENVIDU_SERVER_URL + '/api/tokens', data, {
-          headers: {
-            Authorization:
-              'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log('TOKEN', response);
-          resolve(response.data.token);
-        })
-        .catch((error) => reject(error));
-    });
-  };
 
   useEffect(() => {
     window.addEventListener('beforeunload', onBeforeUnload);
