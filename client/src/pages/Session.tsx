@@ -1,6 +1,7 @@
 import React from 'react';
 import { StreamManager } from 'openvidu-browser';
-import UserVideo from 'components/molecules/UserVideo';
+import { MainVideo } from 'components/organisms/MainVideo';
+import { ParticipantVideo } from 'components/organisms/ParticipantVideo';
 
 interface Props {
   sessionId: string;
@@ -28,27 +29,21 @@ export const Session: React.FC<Props> = (props) => {
       </div>
 
       {props.mainStreamManager !== null ? (
-        <div id="main-video" className="col-md-6">
-          <UserVideo streamManager={props.mainStreamManager} />
-        </div>
+        <MainVideo streamManager={props.mainStreamManager} />
       ) : null}
       <div id="video-container" className="col-md-6">
         {publisher !== null ? (
-          <div
-            className="stream-container col-md-6 col-xs-6"
-            onClick={() => props.handleMainVideoStream(publisher)}
-          >
-            <UserVideo streamManager={publisher} />
-          </div>
+          <ParticipantVideo
+            streamManager={publisher}
+            handleMainVideoStream={props.handleMainVideoStream}
+          />
         ) : null}
         {props.subscribers.map((sub, i) => (
-          <div
+          <ParticipantVideo
             key={i}
-            className="stream-container col-md-6 col-xs-6"
-            onClick={() => props.handleMainVideoStream(sub)}
-          >
-            <UserVideo streamManager={sub} />
-          </div>
+            streamManager={sub}
+            handleMainVideoStream={props.handleMainVideoStream}
+          />
         ))}
       </div>
     </div>

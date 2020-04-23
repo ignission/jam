@@ -7,7 +7,6 @@ import {
   OpenVidu,
   StreamEvent,
 } from 'openvidu-browser';
-import UserVideo from 'components/molecules/UserVideo';
 import Container from 'components/atoms/Container';
 import { Login } from 'pages/Login';
 import { Session as SessionView } from 'pages/Session';
