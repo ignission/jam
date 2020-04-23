@@ -142,18 +142,6 @@ const App: React.FC = () => {
     setPublisher(null);
   };
 
-  /**
-   * --------------------------
-   * SERVER-SIDE RESPONSIBILITY
-   * --------------------------
-   * These methods retrieve the mandatory user token from OpenVidu Server.
-   * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-   * the API REST, openvidu-java-client or openvidu-node-client):
-   *   1) Initialize a session in OpenVidu Server	(POST /api/sessions)
-   *   2) Generate a token in OpenVidu Server		(POST /api/tokens)
-   *   3) The token must be consumed in Session.connect() method
-   */
-
   useEffect(() => {
     window.addEventListener('beforeunload', onBeforeUnload);
 
