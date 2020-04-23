@@ -10,8 +10,8 @@ import {
 import Container from 'components/atoms/Container';
 import { Login } from 'pages/Login';
 import { Session as SessionView } from 'pages/Session';
-import { WindowServiceImpl } from 'services/WindowService';
-import { OpenViduServiceImpl } from 'services/OpenViduService';
+import { WindowServiceImpl } from 'WindowService';
+import { OpenViduClientImpl } from 'OpenViduClient';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -32,7 +32,7 @@ const App: React.FC = () => {
 
   // services
   const windowService = WindowServiceImpl(window);
-  const openViduService = OpenViduServiceImpl(
+  const openViduClient = OpenViduClientImpl(
     OPENVIDU_SERVER_URL,
     OPENVIDU_SERVER_SECRET,
     windowService
@@ -73,7 +73,7 @@ const App: React.FC = () => {
     // --- 4) Connect to the session with a valid user token ---
     // 'getToken' method is simulating what your server-side should do.
     // 'token' parameter should be retrieved and returned by your own backend
-    openViduService.getToken(mySessionId).then((token) => {
+    openViduClient.getToken(mySessionId).then((token) => {
       // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
       if (session === null) {

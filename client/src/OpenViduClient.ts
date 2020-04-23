@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { WindowService } from './WindowService';
 
-interface OpenViduService {
+interface OpenViduClient {
   getToken: (sessionId: string) => Promise<String>;
 }
 
-export const OpenViduServiceImpl = (
+export const OpenViduClientImpl = (
   baseUrl: string,
   serverSecret: string,
   windowService: WindowService
-): OpenViduService => ({
+): OpenViduClient => ({
   getToken: (sessionId: string): Promise<string> =>
     createSession(baseUrl, serverSecret, windowService, sessionId).then((sid) =>
       createToken(baseUrl, serverSecret, sid)
