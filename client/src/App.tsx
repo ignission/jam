@@ -311,13 +311,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-// class App extends Component {
-
-//   leaveSession() {
-
-//   }
-
-// }
-
-// export default App;
