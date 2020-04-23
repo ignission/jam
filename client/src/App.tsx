@@ -10,6 +10,7 @@ import {
 import Container from 'components/atoms/Container';
 import { Login } from 'pages/Login';
 import { Session as SessionView } from 'pages/Session';
+import { WindowServiceImpl } from 'services/WindowService';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -27,6 +28,9 @@ const App: React.FC = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<StreamManager[]>([]);
   const ovRef = useRef<OpenVidu | null>(null);
+
+  // services
+  const windowService = WindowServiceImpl(window);
 
   const handleMainVideoStream = (streamManager: StreamManager) => {
     if (mainStreamManager === streamManager) return;
@@ -175,19 +179,8 @@ const App: React.FC = () => {
               'No connection to OpenVidu Server. This may be a certificate error at ' +
                 OPENVIDU_SERVER_URL
             );
-            if (
-              window.confirm(
-                'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"'
-              )
-            ) {
-              window.location.assign(
-                OPENVIDU_SERVER_URL + '/accept-certificate'
-              );
+            if (windowService.confirm(OPENVIDU_SERVER_URL)) {
+              windowService.assign(OPENVIDU_SERVER_URL + '/accept-certificate');
             }
           }
         });
