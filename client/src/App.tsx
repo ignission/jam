@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import {
   StreamManager,
   Publisher,
@@ -43,8 +42,6 @@ const App: React.FC = () => {
     setMainStreamManager(streamManager);
   };
 
-  const onBeforeUnload = () => leaveSession();
-
   const deleteSubscriber = (streamManager: StreamManager) => {
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
@@ -63,6 +60,7 @@ const App: React.FC = () => {
       //   var subscribers = subscribers;
       subscribers.push(subscriber);
       // Update the state with the new subscribers
+      console.log('stream created')
       setSubscribers(subscribers);
     });
     // On every Stream destroyed...
@@ -143,9 +141,9 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('beforeunload', onBeforeUnload);
+    window.addEventListener('beforeunload', leaveSession);
 
-    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', leaveSession);
   }, []);
 
   if (session === null) {
