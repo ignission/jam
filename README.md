@@ -6,6 +6,7 @@ A simple video chat party app with OpenVidu that brings you a freedom space
 ### Requirements
 - Docker         > 19.03.0
 - Docker Compose > 1.25.5
+- Node.js        > 12.16.2
 - Yarn           > 1.22.4
 
 ```shell
