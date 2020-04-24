@@ -43,11 +43,7 @@ const App: React.FC = () => {
   };
 
   const deleteSubscriber = (streamManager: StreamManager) => {
-    let index = subscribers.indexOf(streamManager, 0);
-    if (index > -1) {
-      subscribers.splice(index, 1);
-      setSubscribers(subscribers);
-    }
+    setSubscribers(subscribers.filter((s) => s.id !== streamManager.id));
   };
 
   useEffect(() => {
@@ -58,10 +54,10 @@ const App: React.FC = () => {
       // so OpenVidu doesn't create an HTML video by its own
       var subscriber = session.subscribe((event as StreamEvent).stream, '');
       //   var subscribers = subscribers;
-      subscribers.push(subscriber);
+      // subscribers.push(subscriber);
       // Update the state with the new subscribers
-      console.log('stream created')
-      setSubscribers(subscribers);
+      console.log('stream created');
+      setSubscribers([...subscribers, subscriber]);
     });
     // On every Stream destroyed...
     session?.on('streamDestroyed', (event) => {
