@@ -13,7 +13,7 @@ A simple video chat party app with OpenVidu that brings you a freedom space
 
 ```shell
     docker-compose up -d # optional: if you want to watch logs, `docker-compose up`
-    cd client
+    cd emoi-client
     yarn
     yarn hot
 ```
