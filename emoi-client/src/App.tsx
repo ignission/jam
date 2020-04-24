@@ -53,11 +53,8 @@ const App: React.FC = () => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
       var subscriber = session.subscribe((event as StreamEvent).stream, '');
-      //   var subscribers = subscribers;
-      // subscribers.push(subscriber);
       // Update the state with the new subscribers
-      console.log('stream created');
-      setSubscribers([...subscribers, subscriber]);
+      setSubscribers((oldArray) => [...oldArray, subscriber]);
     });
     // On every Stream destroyed...
     session?.on('streamDestroyed', (event) => {
