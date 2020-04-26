@@ -4,13 +4,13 @@ import { Option, some, none } from 'fp-ts/es6/Option';
 type UserType = 'remote' | 'local';
 
 export interface User {
-  name: string;
-  connectionId: string;
-  audioActive: boolean;
-  videoActive: boolean;
-  screenShareActive: boolean;
-  streamManager: Option<StreamManager>;
-  type: UserType;
+  readonly name: string;
+  readonly connectionId: string;
+  readonly audioActive: boolean;
+  readonly videoActive: boolean;
+  readonly screenShareActive: boolean;
+  readonly streamManager: Option<StreamManager>;
+  readonly type: UserType;
   isAudioActive(): boolean;
   isVideoActive(): boolean;
   isScreenShareActive(): boolean;
