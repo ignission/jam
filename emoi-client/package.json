@@ -12,7 +12,8 @@
     "fp-ts": "^2.5.3",
     "openvidu-browser": "2.13.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "sanitize.css": "^11.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
