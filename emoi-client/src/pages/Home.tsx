@@ -5,14 +5,18 @@ import { Container } from 'components/atoms/Container';
 const Home: React.FC = () => {
   return (
     <div className="section1">
-      {/* <mat-toolbar id="header">
-		<a href="https://openvidu.io/" target="_blank">
-			<img id="header_img" alt="OpenVidu Logo" src="assets/images/openvidu_logo.png" />
-		</a>
-		<div className="ovVersion">
-			<span>{{ version }}</span>
-		</div>
-	</mat-toolbar> */}
+      <header id="header">
+        <a href="https://openvidu.io/" target="_blank">
+          <img
+            id="header_img"
+            alt="OpenVidu Logo"
+            src="images/openvidu_logo.png"
+          />
+        </a>
+        <div className="ovVersion">
+          <span>0.1.0</span>
+        </div>
+      </header>
       <Container>
         <div className="ovInfo">
           <img
@@ -45,7 +49,7 @@ const Home: React.FC = () => {
         </div>
       </Container>
 
-      {/* <mat-toolbar className="footer">
+      <footer className="footer">
         <span>
           Photo by
           <a
@@ -63,7 +67,7 @@ const Home: React.FC = () => {
             Unsplash
           </a>
         </span>
-      </mat-toolbar> */}
+      </footer>
     </div>
   );
 };
