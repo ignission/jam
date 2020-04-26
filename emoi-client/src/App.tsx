@@ -6,6 +6,7 @@ import {
   OpenVidu,
   StreamEvent,
 } from 'openvidu-browser';
+import Home from 'pages/Home';
 import { WindowServiceImpl } from 'WindowService';
 import { OpenViduClientImpl } from 'OpenViduClient';
 
@@ -20,7 +21,7 @@ const App: React.FC = () => {
     OPENVIDU_SERVER_SECRET,
     windowService
   );
-  return <></>;
+  return <Home></Home>;
 };
 
 export default App;
