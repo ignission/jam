@@ -25,3 +25,8 @@ Then, you can access `http://localhost:3000`
 If an error occurs with `ERR_CERT_AUTHORITY_INVALID` in your browser's console,
 you need to access `https://localhost:4443` only once.
 Then, click `Proceed to localhost (unsafe)`.
+
+
+### Contributers
+- [iwa](@mananyuki)
+- [Yudai Ogawa](@yudaiogawa)
