@@ -1,70 +1,89 @@
-import { StreamManager } from 'openvidu-browser';
-import { Option, some, none } from 'fp-ts/es6/Option';
-
-type UserType = 'remote' | 'local';
+import { StreamManager, Publisher, Stream, Connection } from 'openvidu-browser';
+import {
+  Option,
+  some,
+  none,
+  map,
+  getOrElse,
+  fromNullable,
+  mapNullable,
+} from 'fp-ts/es6/Option';
+import { pipe } from 'fp-ts/es6/pipeable';
 
 export interface User {
+  /**
+   * The user name
+   */
   readonly name: string;
-  readonly connectionId: string;
+
+  /**
+   * The Connection ID that is publishing the stream
+   */
+  readonly connectionId: Option<string>;
+
+  /**
+   * Return `true` if audio track is active and `false` if audio track is muted
+   */
   readonly audioActive: boolean;
+
+  /**
+   * Return `true` if video track is active and `false` if video track is muted
+   */
   readonly videoActive: boolean;
-  readonly screenShareActive: boolean;
-  readonly streamManager: Option<StreamManager>;
-  readonly type: UserType;
-  isAudioActive(): boolean;
-  isVideoActive(): boolean;
-  isScreenShareActive(): boolean;
+
+  /**
+   * StreamManager object ([[Publisher]] or [[Subscriber]])
+   */
+  readonly streamManager?: StreamManager;
+
   getConnectionId(): string;
-  getName(): string;
-  getStreamManager(): Option<StreamManager>;
   isLocal(): boolean;
   isRemote(): boolean;
   setAudioActive(isAudioActive: boolean): User;
   setVideoActive(isVideoActive: boolean): User;
-  setScreenShareActive(isScreenShareActive: boolean): User;
   setStreamManager(streamManager: StreamManager): User;
   setConnectionId(connectionId: string): User;
   setName(name: string): User;
-  setType(type: UserType): User;
 }
 
 export const User = (): User => {
   const self: User = {
-    name: '',
-    connectionId: '',
+    name: 'OpenVidu',
+    connectionId: none,
     audioActive: true,
     videoActive: true,
-    screenShareActive: false,
-    streamManager: none,
-    type: 'local',
-    isAudioActive: (): boolean => self.audioActive,
-    isVideoActive: (): boolean => self.videoActive,
-    isScreenShareActive: (): boolean => self.screenShareActive,
-    getConnectionId: (): string => self.connectionId,
-    getName: (): string => self.name,
-    getStreamManager: (): Option<StreamManager> => self.streamManager,
-    isLocal: (): boolean => self.type == 'local',
-    isRemote: (): boolean => self.type == 'remote',
+    streamManager: undefined,
+    getConnectionId: (): string => {
+      return pipe(
+        fromNullable(self.streamManager),
+        mapNullable((streamManager) => streamManager.stream),
+        mapNullable((stream) => stream.connection),
+        mapNullable((connection) => connection.connectionId),
+        getOrElse(() => '')
+      );
+    },
+    isLocal: (): boolean => !self.isRemote(),
+    isRemote: (): boolean => {
+      return pipe(
+        fromNullable(self.streamManager),
+        mapNullable((streamManager) => (streamManager as Publisher).remote),
+        getOrElse(() => false as boolean)
+      );
+    },
     setAudioActive: (flag: boolean): User => {
       return { ...self, audioActive: flag };
     },
     setVideoActive: (flag: boolean): User => {
       return { ...self, videoActive: flag };
     },
-    setScreenShareActive: (flag: boolean): User => {
-      return { ...self, screenShareActive: flag };
-    },
     setStreamManager: (value: StreamManager): User => {
-      return { ...self, streamManager: some(value) };
+      return { ...self, streamManager: value };
     },
     setConnectionId: (value: string): User => {
-      return { ...self, connectionId: value };
+      return { ...self, connectionId: some(value) };
     },
     setName: (value: string): User => {
       return { ...self, name: value };
-    },
-    setType: (value: UserType): User => {
-      return { ...self, type: value };
     },
   };
   return self;
