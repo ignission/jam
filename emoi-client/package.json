@@ -32,6 +32,7 @@
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
+    "formik": "^2.1.4",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.2.0",
     "prettier": "^2.0.4",
@@ -41,7 +42,8 @@
     "url-loader": "^4.1.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.8.2"
+    "webpack-dev-server": "^3.8.2",
+    "yup": "^0.28.4"
   },
   "author": "Ignission",
   "license": "MIT"
