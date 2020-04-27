@@ -6,7 +6,11 @@ import './Home.css';
 
 const version = require('../../package.json').version;
 
-const Home: React.FC = () => {
+interface Props {
+  onSubmit: (name: string) => void;
+}
+
+const Home: React.FC<Props> = ({ onSubmit }) => {
   return (
     <div className="section1">
       <header id="header">
@@ -31,7 +35,7 @@ const Home: React.FC = () => {
           <h4>Videoconference rooms in one click</h4>
         </div>
         <div className="formContainer">
-          <EnterRoomForm />
+          <EnterRoomForm onSubmit={onSubmit} />
         </div>
       </Container>
 
