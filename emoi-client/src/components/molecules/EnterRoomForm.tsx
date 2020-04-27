@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { withFormik, FormikProps, FormikErrors, Form, Field } from 'formik';
+import { withFormik, FormikProps, Form, Field } from 'formik';
 
 interface FormValues {
   name: string;
@@ -15,7 +15,12 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         <div className="roomError">{errors.name}</div>
       )}
       <div className="joinForm">
-        <Field type="text" name="name" className="inputForm" />
+        <Field
+          type="text"
+          name="name"
+          className="inputForm"
+          placeholder="Enter a room name"
+        />
         <button type="submit" className="joinButton" disabled={isSubmitting}>
           JOIN
         </button>
@@ -26,6 +31,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 
 interface FormProps {
   initialName?: string;
+  onSubmit: (name: string) => void;
 }
 
 export const EnterRoomForm = withFormik<FormProps, FormValues>({
@@ -35,19 +41,14 @@ export const EnterRoomForm = withFormik<FormProps, FormValues>({
     };
   },
 
-  validate: (values: FormValues) => {
-    let errors: FormikErrors<FormValues> = {};
-    if (!values.name) {
-      errors.name = 'Room Name is Required';
-    } else if (values.name.length < 5) {
-      errors.name = 'Room name is too short';
-    }
-    return errors;
-  },
+  validationSchema: Yup.object().shape({
+    name: Yup.string()
+      .min(4, 'Room name is too short')
+      .required('Room Name is Required'),
+  }),
 
-  handleSubmit: (values) => {
+  handleSubmit: (values, { props }) => {
     const name = values.name.replace(/ /g, '-');
-
-    // do submitting things
+    props.onSubmit(name);
   },
 })(InnerForm);
