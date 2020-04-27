@@ -4,6 +4,8 @@ import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
 
 import './Home.css';
 
+const version = require('../../package.json').version;
+
 const Home: React.FC = () => {
   return (
     <div className="section1">
@@ -16,7 +18,7 @@ const Home: React.FC = () => {
           />
         </a>
         <div className="ovVersion">
-          <span>0.1.0</span>
+          <span>{version}</span>
         </div>
       </header>
       <Container>
