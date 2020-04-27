@@ -1,6 +1,8 @@
 import React from 'react';
-import './Home.css';
 import { Container } from 'components/atoms/Container';
+import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
+
+import './Home.css';
 
 const Home: React.FC = () => {
   return (
@@ -27,25 +29,7 @@ const Home: React.FC = () => {
           <h4>Videoconference rooms in one click</h4>
         </div>
         <div className="formContainer">
-          <div className="roomError">
-            Room name is <strong>required</strong>
-          </div>
-          <div className="roomError">
-            Room name is <strong>too short!</strong>
-          </div>
-          <form>
-            <div className="joinForm">
-              <input
-                // matInput
-                className="inputForm"
-                type="text"
-                // autocomplete="off"
-              />
-              <button type="submit" className="joinButton">
-                JOIN
-              </button>
-            </div>
-          </form>
+          <EnterRoomForm />
         </div>
       </Container>
 
