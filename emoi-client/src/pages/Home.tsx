@@ -1,8 +1,7 @@
 import React from 'react';
 import { Container } from 'components/atoms/Container';
 import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
-
-import './Home.css';
+import styled from '@emotion/styled';
 
 const version = require('../../package.json').version;
 
@@ -10,55 +9,136 @@ interface Props {
   onSubmit: (name: string) => void;
 }
 
+const Section = styled.div({
+  background: "url('images/bg.jpg')  top center no-repeat",
+  backgroundSize: 'cover',
+  height: '100%',
+  textAlign: 'center',
+  position: 'relative',
+  color: '#fff',
+  '@media only screen and (min-width: 1200px)': {
+    backgroundAttachment: 'fixed',
+  },
+});
+
+const Header = styled.header({
+  backgroundColor: 'transparent',
+  color: '#fff',
+});
+
+const HeaderImg = styled.img({
+  maxWidth: 200,
+  marginRight: 10,
+  marginTop: 10,
+});
+
+const Logo = styled.img({
+  margin: 'auto',
+  '@media only screen and (max-width: 600px) ': {
+    maxWidth: '80%',
+  },
+  '@media only screen and (min-width: 600px)': {
+    maxWidth: '75%',
+  },
+  '@media only screen and (min-width: 992px)': {
+    maxWidth: '60%',
+  },
+  '@media only screen and (min-width: 1200px)': {
+    maxWidth: '50%',
+  },
+});
+
+const Version = styled.div({
+  position: 'absolute',
+  right: 5,
+  fontSize: 16,
+  fontWeight: 'bold',
+  '@media only screen and (max-width: 600px)': {
+    display: 'none',
+  },
+});
+
+const H4 = styled.h4({
+  fontSize: 25,
+  fontWeight: 500,
+  color: '#fff',
+  position: 'relative',
+  paddingBottom: 5,
+  '@media only screen and (max-width: 600px)': {
+    fontSize: 16,
+  },
+});
+
+const FormContainer = styled.div({
+  fontSize: 20,
+  textAlign: 'center',
+});
+
+const Footer = styled.footer({
+  backgroundColor: 'transparent',
+  color: '#fff',
+  position: 'absolute',
+  bottom: 0,
+  fontSize: 9,
+  height: 'auto',
+  '@media only screen and (min-width: 1200px)': {
+    display: 'none',
+  },
+});
+
+const FooterLabel = styled.div({
+  display: 'inline-block',
+  padding: 8,
+});
+
+const FooterLink = styled.a({
+  color: '#fff',
+});
+
 const Home: React.FC<Props> = ({ onSubmit }) => {
   return (
-    <div className="section1">
-      <header id="header">
+    <Section>
+      <Header>
         <a href="https://openvidu.io/" target="_blank">
-          <img
-            id="header_img"
-            alt="OpenVidu Logo"
-            src="images/openvidu_logo.png"
-          />
+          <HeaderImg alt="OpenVidu Logo" src="images/openvidu_logo.png" />
         </a>
-        <div className="ovVersion">
+        <Version>
           <span>{version}</span>
-        </div>
-      </header>
+        </Version>
+      </Header>
       <Container>
-        <div className="ovInfo">
-          <img
-            className="ovLogo"
+        <div>
+          <Logo
             alt="OpenVidu Logo"
             src="images/openvidu_vert_white_bg_trans_cropped.png"
           />
-          <h4>Videoconference rooms in one click</h4>
+          <H4>Videoconference rooms in one click</H4>
         </div>
-        <div className="formContainer">
+        <FormContainer>
           <EnterRoomForm onSubmit={onSubmit} />
-        </div>
+        </FormContainer>
       </Container>
 
-      <footer className="footer">
-        <span>
+      <Footer>
+        <FooterLabel>
           Photo by
-          <a
+          <FooterLink
             rel="noopener noreferrer"
             target="_blank"
             href="https://unsplash.com/@danielleone?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
           >
             Daniel Leone
-          </a>
+          </FooterLink>
           on
-          <a
+          <FooterLink
             href="https://unsplash.com/s/photos/mountain?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
             target="_blank"
           >
             Unsplash
-          </a>
-        </span>
-      </footer>
-    </div>
+          </FooterLink>
+        </FooterLabel>
+      </Footer>
+    </Section>
   );
 };
 
