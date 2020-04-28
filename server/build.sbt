@@ -4,7 +4,13 @@ lazy val commonSettings = Seq(
   version := "0.1.0-SNAPSHOT",
   scalaVersion := "2.13.1",
   organization := "tech.ignission",
-  test in assembly := {}
+  test in assembly := {},
+  scalacOptions ++= List(
+    "-deprecation",
+    "-feature",
+    "-unchecked",
+    "-Xlint:unused"
+  )
 )
 
 val catsVersion     = "2.1.1"
