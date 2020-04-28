@@ -21,7 +21,7 @@ A simple video chat party app with OpenVidu that brings you a freedom space
 Then, you can access `http://localhost:3000`
 
 ### Server
-    cd server
+    cd emoi-server
 
 You must run `sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck` before commit.
 
