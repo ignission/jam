@@ -9,3 +9,4 @@ target
 ## Scala with VSCode
 .metals
 .bloop
+metals.sbt
