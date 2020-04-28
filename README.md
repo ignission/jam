@@ -20,13 +20,22 @@ A simple video chat party app with OpenVidu that brings you a freedom space
 
 Then, you can access `http://localhost:3000`
 
-#### NOTE
+### Server
+    cd server
+
+You must run `sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck` before commit.
+
+
+### NOTE
 
 If an error occurs with `ERR_CERT_AUTHORITY_INVALID` in your browser's console,
 you need to access `https://localhost:4443` only once.
 Then, click `Proceed to localhost (unsafe)`.
 
-### Contributers
+#### Scala with VSCode
+- `Settings` -> `Text Editor` -> `Formatting` -> Check `Format on Save`
+
+## Contributers
 
 - [iwa](@mananyuki)
 - [Yudai Ogawa](@yudaiogawa)
