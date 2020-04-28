@@ -7,12 +7,15 @@ import akka.actor.ActorSystem
 import scala.concurrent.Future
 
 object Server {
-  def start(host: String, port: Int)(implicit mat: Materializer, system: ActorSystem): Future[Http.ServerBinding] = {
+  def start(host: String, port: Int)(implicit
+      mat: Materializer,
+      system: ActorSystem
+  ): Future[Http.ServerBinding] = {
     val routes = path("ping") {
-        get {
-          complete("pong")
-        }
+      get {
+        complete("pong")
       }
+    }
 
     Http().bindAndHandle(routes, host, port)
   }
