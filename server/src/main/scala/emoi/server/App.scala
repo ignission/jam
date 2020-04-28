@@ -1,7 +1,6 @@
 package emoi.server
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import emoi.server.dsl.{AppError, InternalError}
 import monix.eval.Task
 import emoi.server.rest.Server
@@ -11,9 +10,8 @@ import scala.util.control.NonFatal
 object App {
   import dsl.syntax._
 
-  implicit val system       = ActorSystem()
-  implicit val materializer = ActorMaterializer()
-  implicit val exc          = monix.execution.Scheduler.Implicits.global
+  implicit val system = ActorSystem()
+  implicit val exc    = monix.execution.Scheduler.Implicits.global
 
   type Result[A]     = Either[AppError, A]
   type TaskResult[A] = Task[Result[A]]
