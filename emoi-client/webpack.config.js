@@ -1,11 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyFilePlugin = require('copy-webpack-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: `${__dirname}/src/index.tsx`,
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../emoi-server/src/main/resources/static'),
     filename: 'index.js',
   },
   module: {
@@ -59,5 +61,19 @@ module.exports = {
       template: `${__dirname}/public/index.html`,
       minify: false,
     }),
+    new CopyFilePlugin(
+      [
+        {
+          context: 'public/images',
+          from: '**/*',
+          to: path.resolve(
+            __dirname,
+            '../emoi-server/src/main/resources/static/images'
+          ),
+        },
+      ],
+      { copyUnmodified: true }
+    ),
+    new WriteFilePlugin(),
   ],
 };
