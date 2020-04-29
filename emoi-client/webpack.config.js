@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   entry: `${__dirname}/src/index.tsx`,
   output: {
-    path: path.resolve(__dirname, '../emoi-server/src/main/resources/dist'),
+    path: path.resolve(__dirname, '../emoi-server/src/main/resources/static'),
     filename: 'index.js',
   },
   module: {
