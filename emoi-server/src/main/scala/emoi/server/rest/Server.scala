@@ -11,7 +11,7 @@ object Server {
       system: ActorSystem
   ): Future[Http.ServerBinding] = {
     val routes =
-      htmlRoute ~ assetsRoutes ~
+      htmlRoute ~ jsRoute ~ assetsRoutes ~
         path("ping") {
           get {
             complete("pong")
@@ -28,10 +28,17 @@ object Server {
       }
     }
 
-  private def assetsRoutes: Route =
+  private def jsRoute: Route =
     path("index.js") {
       get {
         getFromResource("static/index.js")
+      }
+    }
+
+  private def assetsRoutes: Route =
+    pathPrefix("images" / ".+".r) { str =>
+      get {
+        getFromResource(s"static/images/$str")
       }
     }
 }
