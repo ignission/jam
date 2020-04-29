@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - '*'
+      - 'master'
   pull_request:
     branches:
       - master
@@ -85,4 +85,4 @@ jobs:
           cd emoi-server
           sbt assembly
           mkdir -p target/dist
-          mv target/scala-2.13/*.jar target/dist
+          mv target/scala-2.13/emoi-server.jar target/dist
