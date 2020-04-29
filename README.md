@@ -38,4 +38,5 @@ Then, click `Proceed to localhost (unsafe)`.
 ## Contributers
 
 - [iwa](@mananyuki)
+- [Makky](@makotofukuda)
 - [Yudai Ogawa](@yudaiogawa)
