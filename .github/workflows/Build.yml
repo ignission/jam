@@ -80,8 +80,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sbt-cache-
 
-       - name: assemble
-         run: |
-           sbt assembly
-           mkdir -p target/dist
-           mv target/scala-2.13/*.jar target/dist
+      - name: assemble a jar file
+        run: |
+          cd emoi-server
+          sbt assembly
+          mkdir -p target/dist
+          mv target/scala-2.13/*.jar target/dist
