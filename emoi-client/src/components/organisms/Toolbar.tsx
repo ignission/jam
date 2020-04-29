@@ -4,10 +4,11 @@ import * as Button from '../atoms/Button';
 
 const Toolbar = styled.div({
   gridArea: 'Toolbar',
-  display: 'flex',
+  display: 'grid',
+  alignItems: 'center',
+  gridTemplateColumns: '1fr 1fr 1fr',
   color: '#fff',
   backgroundColor: '#333',
-  padding: '0 14px 0 0',
   justifyContent: 'space-between',
 });
 
@@ -20,12 +21,17 @@ const RoomLable = styled.div({
 
 const Left = styled.div({
   display: 'flex',
+  // display: 'grid',
   alignItems: 'center',
 });
 
-const Center = styled.div({});
+const Center = styled.div({
+  textAlign: 'center',
+});
 
-const Right = styled.div({});
+const Right = styled.div({
+  textAlign: 'right',
+});
 
 const LogoImg = styled.img({
   height: 40,

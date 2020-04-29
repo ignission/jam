@@ -11,6 +11,7 @@ export const IconButton = styled.button({
   height: 40,
   flexShrink: 0,
   // lineHeight: 40,
+  cursor: 'pointer',
   borderRadius: '50%',
 });
 
