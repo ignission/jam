@@ -7,10 +7,10 @@ import {
   OpenVidu,
   StreamEvent,
 } from 'openvidu-browser';
-import Home from 'pages/Home';
+import Home from 'components/pages/Home';
 import { WindowServiceImpl } from 'WindowService';
 import { OpenViduClientImpl } from 'OpenViduClient';
-import { Room } from 'pages/Room';
+import { Room } from 'components/pages/Room';
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
