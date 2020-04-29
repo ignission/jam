@@ -11,6 +11,7 @@ A simple video chat party app with OpenVidu that brings you a freedom space
 - Node.js > 12.16.2
 - Yarn > 1.22.4
 - Java > 1.8
+- sbt
 
 ### Server
     cd emoi-server
@@ -20,6 +21,8 @@ After that, `http://localhost:8855` is available.
 
 #### NOTE
 You must run `sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck` before commit.
+If you need hot-reload feature, run folloing command instead of `sbt run`
+    sbt ~reStart
 
 
 ### Client
