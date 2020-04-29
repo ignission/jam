@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import * as Button from '../atoms/Button';
 
 const Toolbar = styled.div({
   gridArea: 'Toolbar',
@@ -38,7 +39,27 @@ export const View: React.FC = ({ children }) => (
       </a>
       <RoomLable>{children}</RoomLable>
     </Left>
-    <Center></Center>
-    <Right></Right>
+    <Center>
+      <Button.IconButton>
+        <i className="material-icons">mic</i>
+      </Button.IconButton>
+      <Button.IconButton>
+        <i className="material-icons">videocam</i>
+      </Button.IconButton>
+      <Button.IconButton>
+        <i className="material-icons">screen_share</i>
+      </Button.IconButton>
+      <Button.IconButton>
+        <i className="material-icons">fullscreen</i>
+      </Button.IconButton>
+      <Button.IconButton>
+        <i className="material-icons">power_settings_new</i>
+      </Button.IconButton>
+    </Center>
+    <Right>
+      <Button.IconButton>
+        <i className="material-icons">chat</i>
+      </Button.IconButton>
+    </Right>
   </Toolbar>
 );
