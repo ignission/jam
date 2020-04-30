@@ -46,26 +46,14 @@ export const View: React.FC = ({ children }) => (
       <RoomLable>{children}</RoomLable>
     </Left>
     <Center>
-      <Button.IconButton>
-        <i className="material-icons">mic</i>
-      </Button.IconButton>
-      <Button.IconButton>
-        <i className="material-icons">videocam</i>
-      </Button.IconButton>
-      <Button.IconButton>
-        <i className="material-icons">screen_share</i>
-      </Button.IconButton>
-      <Button.IconButton>
-        <i className="material-icons">fullscreen</i>
-      </Button.IconButton>
-      <Button.IconButton>
-        <i className="material-icons">power_settings_new</i>
-      </Button.IconButton>
+      <Button.IconButton>mic</Button.IconButton>
+      <Button.IconButton>videocam</Button.IconButton>
+      <Button.IconButton>screen_share</Button.IconButton>
+      <Button.IconButton>fullscreen</Button.IconButton>
+      <Button.IconButton>power_settings_new</Button.IconButton>
     </Center>
     <Right>
-      <Button.IconButton>
-        <i className="material-icons">chat</i>
-      </Button.IconButton>
+      <Button.IconButton>chat</Button.IconButton>
     </Right>
   </Toolbar>
 );
