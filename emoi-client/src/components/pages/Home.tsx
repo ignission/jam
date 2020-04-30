@@ -3,7 +3,7 @@ import { Container } from 'components/atoms/Container';
 import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
 import styled from '@emotion/styled';
 
-const version = require('../../package.json').version;
+const version = require('../../../package.json').version;
 
 interface Props {
   onSubmit: (name: string) => void;
