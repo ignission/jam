@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'components/atoms/Container';
+// import { Container } from 'components/atoms/Container';
 import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
 import styled from '@emotion/styled';
 
@@ -22,14 +22,18 @@ const Section = styled.div({
 });
 
 const Header = styled.header({
+  display: 'flex',
   backgroundColor: 'transparent',
   color: '#fff',
+  alignItems: 'center',
 });
 
 const HeaderImg = styled.img({
   maxWidth: 200,
-  marginRight: 10,
-  marginTop: 10,
+  marginLeft: 20,
+  '@media only screen and (max-width: 600px)': {
+    opacity: 0,
+  },
 });
 
 const Logo = styled.img({
@@ -49,13 +53,18 @@ const Logo = styled.img({
 });
 
 const Version = styled.div({
-  position: 'absolute',
-  right: 5,
+  marginLeft: 'auto',
+  marginRight: 10,
   fontSize: 16,
   fontWeight: 'bold',
-  '@media only screen and (max-width: 600px)': {
-    display: 'none',
-  },
+});
+
+const Container = styled.div({
+  width: '100%',
+  position: 'absolute',
+  top: '40%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
 });
 
 const H4 = styled.h4({
