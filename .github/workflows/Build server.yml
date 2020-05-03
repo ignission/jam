@@ -50,6 +50,7 @@ jobs:
       
       - name: Check format
         run: |
+          cd emoi-server
           sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck
 
       - name: Test
