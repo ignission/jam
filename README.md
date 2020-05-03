@@ -1,5 +1,6 @@
 # Emoi Chat
-![](https://github.com/ignission/emoi-chat/workflows/Build/badge.svg)
+![](https://github.com/ignission/emoi-chat/workflows/Build%20server/badge.svg) 
+![](https://github.com/ignission/emoi-chat/workflows/Build%20client/badge.svg)
 
 A simple video chat party app with OpenVidu that brings you a freedom space
 

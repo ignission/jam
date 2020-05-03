@@ -1,52 +1,20 @@
-name: Build
+name: Build server
 
 on:
   push:
     branches:
       - 'master'
+    paths:
+      - 'emoi-server/**'
   pull_request:
     branches:
       - master
+    paths:
+      - 'emoi-server/**'
 
 jobs:
-  build-client:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
-      - name: use Node.js 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - name: cache node_modules
-        uses: actions/cache@v1
-        id: client_node_modules
-        with:
-          path: emoi-client/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/emoi-client/yarn.lock')}}
-  
-      - name: yarn install
-        if: steps.client_node_modules.outputs.cache-hit != 'true'
-        uses: Borales/actions-yarn@master
-        with:
-          cmd: --cwd emoi-client install
-
-      - name: yarn build
-        uses: Borales/actions-yarn@master
-        with:
-          cmd: --cwd emoi-client build
-
-      - name: upload artifacts of the client
-        uses: actions/upload-artifact@master
-        with:
-          name: client-artifacts
-          path: emoi-server/src/main/resources/static
-
   build-server:
     runs-on: ubuntu-latest
-    needs: build-client
     steps:
       - name: checkout
         uses: actions/checkout@v2
