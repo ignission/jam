@@ -7,7 +7,7 @@ import akka.actor.ActorSystem
 import scala.concurrent.Future
 
 object Server {
-  def start(host: String, port: Int)(implicit
+  def start(interface: String, port: Int)(implicit
       mat: Materializer,
       system: ActorSystem
   ): Future[Http.ServerBinding] = {
@@ -17,6 +17,6 @@ object Server {
       }
     }
 
-    Http().bindAndHandle(routes, host, port)
+    Http().bindAndHandle(routes, interface, port)
   }
 }
