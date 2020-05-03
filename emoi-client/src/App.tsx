@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import {
-  StreamManager,
-  Publisher,
-  Session,
-  OpenVidu,
-  StreamEvent,
-} from 'openvidu-browser';
-import Home from 'components/pages/Home';
+import loadable from "@loadable/component";
 import { WindowServiceImpl } from 'WindowService';
 import { OpenViduClientImpl } from 'OpenViduClient';
-import { Room } from 'components/pages/Room';
+
+const Home = loadable(() => import('components/pages/Home'))
+const Room = loadable(() => import('components/pages/Room').then(({ Room }) => Room))
 
 const OPENVIDU_SERVER_URL = 'https://localhost:4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';

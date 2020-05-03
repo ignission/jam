@@ -7,14 +7,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
+    chunkFilename: '[name].bundle.js',
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
@@ -44,15 +40,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     modules: ['node_modules', path.resolve(__dirname, 'src')],
-  },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: `${__dirname}/public`,
-    port: '3000',
-    historyApiFallback: { disableDotRule: true },
-    watchOptions: {
-      poll: 1000,
-    },
   },
   plugins: [
     new HtmlWebpackPlugin({
