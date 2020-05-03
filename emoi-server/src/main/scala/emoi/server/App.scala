@@ -16,9 +16,9 @@ object App {
   type Result[A]     = Either[AppError, A]
   type TaskResult[A] = Task[Result[A]]
 
-  private def startServer(host: String, port: Int): TaskResult[Http.ServerBinding] =
+  private def startServer(interface: String, port: Int): TaskResult[Http.ServerBinding] =
     Task.deferFuture {
-      Server.start(host, port).map(Right(_)).recover {
+      Server.start(interface, port).map(Right(_)).recover {
         case NonFatal(ex) =>
           Left(InternalError(ex): AppError)
       }
@@ -26,11 +26,11 @@ object App {
 
   def main(args: Array[String]): Unit = {
 
-    val host = "0.0.0.0"
-    val port = 8855
+    val interface = "0.0.0.0"
+    val port      = 8855
 
     val startupTask = for {
-      bindings <- startServer(host, port).handleError
+      bindings <- startServer(interface, port).handleError
     } yield bindings
 
     startupTask.value.map {
