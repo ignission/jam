@@ -1,7 +1,7 @@
 ## Node
 node_modules
 yarn-error.log
-emoi-client/dist
+emoi-server/src/main/resources/static
 
 ## Scala
 target
