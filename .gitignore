@@ -10,3 +10,6 @@ target
 .metals
 .bloop
 metals.sbt
+
+## Build
+docker/*.jar
