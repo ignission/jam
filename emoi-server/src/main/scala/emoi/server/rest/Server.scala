@@ -10,7 +10,7 @@ object Server {
   def start(interface: String, port: Int)(implicit
       system: ActorSystem
   ): Future[Http.ServerBinding] = {
-    val routes = htmlRoute ~ jsRoutes ~ imageRoutes ~ defaultRoutes ~ path("ping") {
+    val routes = htmlRoute ~ jsRoutes ~ imageRoutes ~ defaultRoute ~ path("ping") {
       get {
         complete("pong")
       }
@@ -40,7 +40,7 @@ object Server {
       }
     }
 
-  private def defaultRoutes: Route =
+  private def defaultRoute: Route =
     pathPrefix(".+".r) { _ =>
       get {
         getFromResource("static/index.html")
