@@ -11,7 +11,7 @@ RUN set -xe \
     openjdk-8-jre \
     && rm -rf /var/lib/apt/lists/*
 
-COPY emoi-server.jar /
+COPY dist/emoi-server.jar /
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 
