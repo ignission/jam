@@ -6,6 +6,13 @@ import akka.http.scaladsl.server.Route
 object StaticRoute {
   def routes: Route = htmlRoute ~ jsRoutes ~ imageRoutes
 
+  def defaultRoute: Route =
+    pathPrefix(".+".r) { _ =>
+      get {
+        getFromResource("static/index.html")
+      }
+    }
+
   private def htmlRoute: Route =
     get {
       pathEndOrSingleSlash {
@@ -26,4 +33,5 @@ object StaticRoute {
         getFromResource(s"static/images/$str")
       }
     }
+
 }

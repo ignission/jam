@@ -49,7 +49,9 @@ lazy val root = (project in file("."))
       "org.apache.logging.log4j" % "log4j-api"            % log4j2Version,
       "org.apache.logging.log4j" % "log4j-slf4j-impl"     % log4j2Version,
       "com.typesafe"             % "config"               % "1.4.0",
-      "org.scalatest"           %% "scalatest"            % "3.1.1" % "test"
+      "org.scalatest"           %% "scalatest"            % "3.1.1"         % "test",
+      "com.typesafe.akka"       %% "akka-stream-testkit"  % akkaVersion     % "test",
+      "com.typesafe.akka"       %% "akka-http-testkit"    % akkaHttpVersion % "test"
     ),
     assemblyJarName in assembly := "emoi-server.jar"
   )
