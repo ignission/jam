@@ -10,35 +10,11 @@ object Server {
   def start(interface: String, port: Int)(implicit
       system: ActorSystem
   ): Future[Http.ServerBinding] = {
-    val routes = htmlRoute ~ jsRoutes ~ imageRoutes ~ defaultRoute ~ path("ping") {
-      get {
-        complete("pong")
-      }
-    }
+    val routes =
+      StaticRoute.routes ~ defaultRoute ~ ApiRoute.routes
 
     Http().bindAndHandle(routes, interface, port)
   }
-
-  private def htmlRoute: Route =
-    get {
-      pathEndOrSingleSlash {
-        getFromResource("static/index.html")
-      }
-    }
-
-  private def jsRoutes: Route =
-    pathPrefix(".+.js".r) { str =>
-      get {
-        getFromResource(s"static/$str")
-      }
-    }
-
-  private def imageRoutes: Route =
-    pathPrefix("images" / ".+".r) { str =>
-      get {
-        getFromResource(s"static/images/$str")
-      }
-    }
 
   private def defaultRoute: Route =
     pathPrefix(".+".r) { _ =>
