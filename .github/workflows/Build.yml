@@ -56,6 +56,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
+          name: client-artifacts
           path: emoi-server/src/main/resources/static
       
       - name: Cache ivy
