@@ -18,7 +18,7 @@ object ApiRoute {
     }
 
   private def tokenRoutes: Route =
-    path("tokens") {
+    pathPrefix("tokens" / ".+".r) { sessionId =>
       post {
         complete("post")
       }

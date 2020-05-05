@@ -16,13 +16,16 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
     }
 
     "return a valid result for POST requests to the tokens" in {
-      Post("/rest/api/v1/tokens") ~> ApiRoute.routes ~> check {
+      Post("/rest/api/v1/tokens/session-a") ~> ApiRoute.routes ~> check {
         status shouldEqual StatusCodes.OK
       }
     }
 
     "return a NotFound error for GET requests to the tokens" in {
       Get("/rest/api/v1/tokens") ~> ApiRoute.routes ~> check {
+        status shouldEqual StatusCodes.NotFound
+      }
+      Post("/rest/api/v1/tokens") ~> ApiRoute.routes ~> check {
         status shouldEqual StatusCodes.NotFound
       }
     }
