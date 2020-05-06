@@ -22,7 +22,7 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
   private val http    = Http()
   private val timeout = 10.seconds
   private val reqHeaders: Seq[HttpHeader] = Seq(
-    headers.`User-Agent`("jira4s"),
+    headers.`User-Agent`("openvidu-client"),
     headers.`Accept-Charset`(HttpCharsets.`UTF-8`)
   )
 
@@ -35,16 +35,50 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
       response = serverResponse.map(_.parseJson.convertTo[A](format))
     } yield response
 
-  private def createRequest(method: HttpMethod, query: HttpQuery): HttpRequest =
+  override def post[Body, A](query: HttpQuery, body: Body)(implicit
+      format: JsonReader[A],
+      bodyFormat: JsonWriter[Body]
+  ): Task[Response[A]] =
+    for {
+      serverResponse <- doRequest(createRequest(HttpMethods.POST, query, body, bodyFormat))
+      response = serverResponse.map { content =>
+        if (content.isEmpty) "{}" else content
+      }.map(_.parseJson.convertTo[A](format))
+    } yield response
+
+  private def createRequest(
+      method: HttpMethod,
+      query: HttpQuery,
+      optBody: Option[String] = None
+  ): HttpRequest =
     query.credentials match {
       case Basic(username, password) =>
         val uri = Uri(query.baseUrl + query.path)
         logger.info(s"Create HTTP request method: ${method.value} and uri: $uri")
-        HttpRequest(
-          method = method,
-          uri = uri
-        ).withHeaders(reqHeaders :+ createAuthHeader(username = username, password = password))
+        optBody.map { body =>
+          HttpRequest(
+            method = method,
+            uri = uri,
+            entity = HttpEntity(ContentTypes.`application/json`, body)
+          )
+        }.getOrElse {
+          HttpRequest(
+            method = method,
+            uri = uri
+          )
+        }.withHeaders(reqHeaders :+ createAuthHeader(username = username, password = password))
     }
+
+  private def createRequest[Body](
+      method: HttpMethod,
+      query: HttpQuery,
+      body: Body,
+      format: JsonWriter[Body]
+  ): HttpRequest = {
+    logger.info(s"Prepare request with body $body")
+
+    createRequest(method, query, Some(body.toJson(format).compactPrint))
+  }
 
   private def createAuthHeader(username: String, password: String): HttpHeader =
     headers.Authorization(BasicHttpCredentials(username = username, password = password))

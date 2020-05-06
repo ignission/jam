@@ -1,0 +1,22 @@
+# Initialize a session
+# https://docs.openvidu.io/en/2.13.0/reference-docs/REST-API/#post-apisessions
+POST https://localhost:4443/api/sessions HTTP/1.1
+Authorization: Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU
+content-type: application/json
+
+{
+    "customSessionId": "test-session"
+}
+
+# Respoinse
+# {
+#   "id": "test-session",
+#   "createdAt": 1588768585016
+# }
+
+
+###
+
+# https://docs.openvidu.io/en/2.13.0/reference-docs/REST-API/#get-apisessions
+GET https://localhost:4443/api/sessions HTTP/1.1
+Authorization: Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU
