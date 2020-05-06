@@ -11,5 +11,8 @@ target
 .bloop
 metals.sbt
 
+## Scala with Intellij
+.idea
+
 ## Build
 docker/dist/*.jar
