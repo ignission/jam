@@ -13,6 +13,7 @@ import spray.json._
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
+import tech.ignission.openvidu4s.core.dsl.AlreadyExists
 
 class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionContext)
     extends HttpDSL[Task] {
@@ -92,7 +93,9 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
         val status = response.status.intValue()
         logger.info(s"Received response with status: $status")
         if (response.status.isFailure()) {
-          if (status >= 400 && status < 500)
+          if (status == 409)
+            Left(AlreadyExists)
+          else if (status >= 400 && status < 500)
             Left(RequestError(data))
           else {
             Left(ServerDown)

@@ -17,6 +17,7 @@ object OpenViduHttpDsl {
 }
 
 sealed trait HttpError
+case object AlreadyExists               extends HttpError
 case class RequestError(msg: String)    extends HttpError
 case class InvalidResponse(msg: String) extends HttpError
 case object ServerDown                  extends HttpError
