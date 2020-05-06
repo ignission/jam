@@ -4,7 +4,7 @@ import spray.json._
 import OpenViduHttpDsl.Response
 
 trait HttpDSL[F[_]] {
-  def get[A](query: HttpQuery)(implicit format: JsonFormat[A]): F[Response[A]]
+  def get[A](query: HttpQuery)(implicit format: JsonReader[A]): F[Response[A]]
   def post[Payload, A](query: HttpQuery, payload: Payload)(implicit
       format: JsonReader[A],
       payloadFormat: JsonWriter[Payload]

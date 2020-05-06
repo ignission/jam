@@ -30,7 +30,7 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
   def terminate(): Task[Unit] =
     Task.deferFuture(http.shutdownAllConnectionPools())
 
-  override def get[A](query: HttpQuery)(implicit format: JsonFormat[A]): Task[Response[A]] =
+  override def get[A](query: HttpQuery)(implicit format: JsonReader[A]): Task[Response[A]] =
     for {
       serverResponse <- doRequest(createRequest(HttpMethods.GET, query))
       response = serverResponse.map(_.parseJson.convertTo[A](format))

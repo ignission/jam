@@ -7,6 +7,7 @@ import tech.ignission.openvidu4s.core.datas.InitializedSession
 import java.time.ZonedDateTime
 import java.time.ZoneId
 import java.time.Instant
+import tech.ignission.openvidu4s.core.datas.Session
 
 object SprayJsonFormats extends DefaultJsonProtocol {
 
@@ -56,6 +57,30 @@ object SprayJsonFormats extends DefaultJsonProtocol {
         case _ =>
           throw DeserializationException(
             s"Expected an initialized session. Input: ${json.prettyPrint}"
+          )
+      }
+  }
+
+  implicit object SessionsFormat extends RootJsonReader[Seq[Session]] {
+    override def read(json: JsValue): Seq[Session] =
+      json.asJsObject.getFields("content") match {
+        case Seq(JsArray(contents)) =>
+          contents.map { content =>
+            content.asJsObject.getFields("sessionId", "createdAt") match {
+              case Seq(JsString(sessionId), createdAt) =>
+                Session(
+                  id = SessionId(sessionId),
+                  createdAt = ZonedDateTimeFormat.read(createdAt)
+                )
+              case _ =>
+                throw DeserializationException(
+                  s"Expected a session. Input: ${json.prettyPrint}"
+                )
+            }
+          }
+        case _ =>
+          throw DeserializationException(
+            s"Expected sessions. Input: ${json.prettyPrint}"
           )
       }
   }
