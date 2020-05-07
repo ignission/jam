@@ -1,0 +1,19 @@
+# Genarate a session
+# https://docs.openvidu.io/en/2.13.0/reference-docs/REST-API/#post-apitokens
+POST https://localhost:4443/api/tokens HTTP/1.1
+Authorization: Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU
+content-type: application/json
+
+{
+    "session": "test-session", 
+    "role": "PUBLISHER"
+}
+
+
+# {
+#   "id": "wss://localhost:4443?sessionId=test-session&token=tok_S4B2VYfh50qcowCx&role=PUBLISHER&version=2.13.0",
+#   "session": "test-session",
+#   "role": "PUBLISHER",
+#   "data": "",
+#   "token": "wss://localhost:4443?sessionId=test-session&token=tok_S4B2VYfh50qcowCx&role=PUBLISHER&version=2.13.0"
+# }

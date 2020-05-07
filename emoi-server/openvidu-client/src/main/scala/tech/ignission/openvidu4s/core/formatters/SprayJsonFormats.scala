@@ -8,6 +8,13 @@ import java.time.ZonedDateTime
 import java.time.ZoneId
 import java.time.Instant
 import tech.ignission.openvidu4s.core.datas.Session
+import tech.ignission.openvidu4s.core.datas.GenerateToken
+import tech.ignission.openvidu4s.core.datas.Role
+import tech.ignission.openvidu4s.core.datas.Role.MODERATOR
+import tech.ignission.openvidu4s.core.datas.Role.PUBLISHER
+import tech.ignission.openvidu4s.core.datas.Role.SUBSCRIBER
+import tech.ignission.openvidu4s.core.datas.GeneratedToken
+import tech.ignission.openvidu4s.core.datas.Token
 
 object SprayJsonFormats extends DefaultJsonProtocol {
 
@@ -26,6 +33,7 @@ object SprayJsonFormats extends DefaultJsonProtocol {
         obj.toInstant.toEpochMilli
       )
   }
+
   implicit object SessionIdFormat extends RootJsonFormat[SessionId] {
     override def read(json: JsValue): SessionId =
       json match {
@@ -49,10 +57,10 @@ object SprayJsonFormats extends DefaultJsonProtocol {
   implicit object InitializedSessionFormat extends RootJsonReader[InitializedSession] {
     override def read(json: JsValue): InitializedSession =
       json.asJsObject.getFields("id", "createdAt") match {
-        case Seq(JsString(id), JsNumber(createdAt)) =>
+        case Seq(JsString(id), createdAt) =>
           InitializedSession(
             id = SessionId(id),
-            createdAt = ZonedDateTimeFormat.read(JsNumber(createdAt))
+            createdAt = ZonedDateTimeFormat.read(createdAt)
           )
         case _ =>
           throw DeserializationException(
@@ -81,6 +89,52 @@ object SprayJsonFormats extends DefaultJsonProtocol {
         case _ =>
           throw DeserializationException(
             s"Expected sessions. Input: ${json.prettyPrint}"
+          )
+      }
+  }
+
+  implicit object RoleFormat extends RootJsonFormat[Role] {
+    override def read(json: JsValue): Role =
+      json match {
+        case JsString(value) =>
+          value match {
+            case "MODERATOR" =>
+              Role.MODERATOR
+            case "PUBLISHER" =>
+              Role.PUBLISHER
+            case "SUBSCRIBER" =>
+              Role.SUBSCRIBER
+            case _ =>
+              throw DeserializationException(s"Expected role string. Input: ${value}")
+          }
+        case _ =>
+          throw DeserializationException(
+            s"Expected role. Input: ${json.prettyPrint}"
+          )
+      }
+    override def write(obj: Role): JsValue =
+      obj match {
+        case MODERATOR  => JsString("MODERATOR")
+        case PUBLISHER  => JsString("PUBLISHER")
+        case SUBSCRIBER => JsString("SUBSCRIBER")
+      }
+  }
+
+  implicit object GenerateTokenFormat extends RootJsonWriter[GenerateToken] {
+    override def write(obj: GenerateToken): JsValue =
+      JsObject(
+        "session" -> obj.sessionId.value.toJson,
+        "role"    -> obj.role.toJson
+      )
+  }
+
+  implicit object GeneratedTokenFormat extends RootJsonReader[GeneratedToken] {
+    override def read(json: JsValue): GeneratedToken =
+      json.asJsObject.getFields("session", "role", "token") match {
+        case Seq(JsString(session), JsString(role), JsString(token)) =>
+          GeneratedToken(
+            sessionId = SessionId(session),
+            token = Token(token)
           )
       }
   }
