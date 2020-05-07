@@ -40,3 +40,7 @@ Authorization: Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU
 #     }
 #   ]
 # }
+
+###
+DELETE https://localhost:4443/api/sessions/test-session HTTP/1.1
+Authorization: Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU

@@ -47,6 +47,12 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
       }.map(_.parseJson.convertTo[A](format))
     } yield response
 
+  override def delete(query: HttpQuery): Task[Response[Unit]] =
+    for {
+      serverResponse <- doRequest(createRequest(HttpMethods.DELETE, query))
+      response = serverResponse.map(_ => ())
+    } yield response
+
   private def createRequest(
       method: HttpMethod,
       query: HttpQuery,

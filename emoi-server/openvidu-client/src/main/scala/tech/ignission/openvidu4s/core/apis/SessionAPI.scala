@@ -7,6 +7,7 @@ import tech.ignission.openvidu4s.core.dsl.HttpQuery
 import tech.ignission.openvidu4s.core.datas.InitializeSession
 import tech.ignission.openvidu4s.core.datas.InitializedSession
 import tech.ignission.openvidu4s.core.datas.Session
+import tech.ignission.openvidu4s.core.datas.SessionId
 
 class SessionAPI[F[_]](baseUrl: String, credentials: Credentials)(implicit httpDSL: HttpDSL[F]) {
   import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._
@@ -30,5 +31,14 @@ class SessionAPI[F[_]](baseUrl: String, credentials: Credentials)(implicit httpD
         baseUrl = baseUrl
       ),
       initializeSession
+    )
+
+  def closeSession(sessionId: SessionId): F[Response[Unit]] =
+    httpDSL.delete(
+      HttpQuery(
+        path = s"$resource/${sessionId.value}",
+        credentials = credentials,
+        baseUrl = baseUrl
+      )
     )
 }

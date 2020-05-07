@@ -136,6 +136,8 @@ object SprayJsonFormats extends DefaultJsonProtocol {
             sessionId = SessionId(session),
             token = Token(token)
           )
+        case _ =>
+          throw DeserializationException(s"Expected token. Input: ${json.prettyPrint}")
       }
   }
 }
