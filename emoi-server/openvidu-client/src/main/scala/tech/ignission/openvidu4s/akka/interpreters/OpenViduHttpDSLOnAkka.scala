@@ -1,5 +1,8 @@
 package tech.ignission.openvidu4s.akka.interpreters
 
+import java.security.cert.X509Certificate
+import javax.net.ssl.{KeyManager, SSLContext, X509TrustManager}
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.BasicHttpCredentials
@@ -14,9 +17,12 @@ import spray.json._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import tech.ignission.openvidu4s.core.dsl.AlreadyExists
+import akka.http.scaladsl.ConnectionContext
 
-class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionContext)
-    extends HttpDSL[Task] {
+class OpenViduHttpDSLOnAkka(debug: Boolean = false)(implicit
+    actorSystem: ActorSystem,
+    exc: ExecutionContext
+) extends HttpDSL[Task] {
 
   private val logger = LoggerFactory.getLogger(getClass)
 
@@ -26,6 +32,7 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
     headers.`User-Agent`("openvidu-client"),
     headers.`Accept-Charset`(HttpCharsets.`UTF-8`)
   )
+  private lazy val noCertificateCheckContext = ConnectionContext.https(trustfulSslContext)
 
   def terminate(): Task[Unit] =
     Task.deferFuture(http.shutdownAllConnectionPools())
@@ -93,8 +100,13 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
   private def doRequest(request: HttpRequest): Task[Response[String]] = {
     logger.info(s"Execute request $request")
     for {
-      response <- Task.deferFuture(http.singleRequest(request))
-      data     <- Task.deferFuture(response.entity.toStrict(timeout).map(_.data.utf8String))
+      response <- Task.deferFuture {
+        if (!debug)
+          http.singleRequest(request)
+        else
+          http.singleRequest(request, noCertificateCheckContext)
+      }
+      data <- Task.deferFuture(response.entity.toStrict(timeout).map(_.data.utf8String))
       result = {
         val status = response.status.intValue()
         logger.info(s"Received response with status: $status")
@@ -112,5 +124,17 @@ class OpenViduHttpDSLOnAkka()(implicit actorSystem: ActorSystem, exc: ExecutionC
         }
       }
     } yield result
+  }
+
+  private def trustfulSslContext: SSLContext = {
+    object NoCheckX509TrustManager extends X509TrustManager {
+      override def checkClientTrusted(chain: Array[X509Certificate], authType: String) = ()
+      override def checkServerTrusted(chain: Array[X509Certificate], authType: String) = ()
+      override def getAcceptedIssuers                                                  = Array[X509Certificate]()
+    }
+
+    val context = SSLContext.getInstance("TLS")
+    context.init(Array[KeyManager](), Array(NoCheckX509TrustManager), null)
+    context
   }
 }

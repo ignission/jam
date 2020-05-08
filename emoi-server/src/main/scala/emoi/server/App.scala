@@ -6,6 +6,9 @@ import monix.eval.Task
 import emoi.server.rest.Server
 import akka.http.scaladsl.Http
 import scala.util.control.NonFatal
+import tech.ignission.openvidu4s.akka.interpreters.OpenViduHttpDSLOnAkka
+import tech.ignission.openvidu4s.core.Basic
+import tech.ignission.openvidu4s.core.apis.AllAPI
 
 object App {
   import dsl.syntax._
@@ -32,6 +35,10 @@ object App {
     val startupTask = for {
       bindings <- startServer(interface, port).handleError
     } yield bindings
+
+    val akkaHttpDSL = new OpenViduHttpDSLOnAkka(debug = true)
+    val credential  = Basic("OPENVIDUAPP", "MY_SECRET")
+    val allAPI      = new AllAPI("https://localhost:4443", credential)(akkaHttpDSL)
 
     startupTask.value.map {
       case Left(error) =>
