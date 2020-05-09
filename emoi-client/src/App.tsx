@@ -14,8 +14,9 @@ const App: React.FC = () => {
   // services
   const client = APIClientOnAxios('');
 
-  client.listSessions().then((data) => console.dir(data));
-  client.generateToken('test-session').then((data) => console.dir(data));
+  // client.listSessions().then((data) => console.dir(data));
+  // client.generateToken('test-session').then((data) => console.dir(data));
+
   return (
     <BrowserRouter>
       <Route
