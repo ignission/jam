@@ -1,49 +1,24 @@
 package emoi.server.rest
 
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
-import akka.actor.ActorSystem
+import emoi.server.dsl.RestDSL
+import emoi.server.rest.routes.{ApiRoute, StaticRoute}
+import monix.eval.Task
+import monix.execution.Scheduler
+
 import scala.concurrent.Future
-import akka.http.scaladsl.server.Route
 
 object Server {
-  def start(interface: String, port: Int)(implicit
-      system: ActorSystem
+  def start(interface: String, port: Int, restDSL: RestDSL[Task])(implicit
+      system: ActorSystem,
+      s: Scheduler
   ): Future[Http.ServerBinding] = {
-    val routes = htmlRoute ~ jsRoutes ~ imageRoutes ~ defaultRoute ~ path("ping") {
-      get {
-        complete("pong")
-      }
-    }
+    val routes =
+      StaticRoute.routes ~ new ApiRoute(restDSL).routes ~ StaticRoute.defaultRoute
 
     Http().bindAndHandle(routes, interface, port)
   }
 
-  private def htmlRoute: Route =
-    get {
-      pathEndOrSingleSlash {
-        getFromResource("static/index.html")
-      }
-    }
-
-  private def jsRoutes: Route =
-    pathPrefix(".+.js".r) { str =>
-      get {
-        getFromResource(s"static/$str")
-      }
-    }
-
-  private def imageRoutes: Route =
-    pathPrefix("images" / ".+".r) { str =>
-      get {
-        getFromResource(s"static/images/$str")
-      }
-    }
-
-  private def defaultRoute: Route =
-    pathPrefix(".+".r) { _ =>
-      get {
-        getFromResource("static/index.html")
-      }
-    }
 }
