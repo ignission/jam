@@ -9,9 +9,18 @@
             "command": "cd ../ && docker-compose up -d"
         },
         {
-            "label": "Start",
+            "label": "Start server",
             "type": "shell",
             "command": "sbt \"~reStart --- -Dconfig.resource=local.conf\"",
+            "group": "build",
+            "dependsOn": [
+                "docker-compose up -d"
+            ]
+        },
+        {
+            "label": "Test watch",
+            "type": "shell",
+            "command": "sbt \"~test\" -Dconfig.resource=test.conf",
             "group": "build",
             "dependsOn": [
                 "docker-compose up -d"

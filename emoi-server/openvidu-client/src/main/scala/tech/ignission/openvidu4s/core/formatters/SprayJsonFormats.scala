@@ -69,7 +69,7 @@ object SprayJsonFormats extends DefaultJsonProtocol {
       }
   }
 
-  implicit object SessionsFormat extends RootJsonFormat[Seq[Session]] {
+  implicit object SessionsFormat extends RootJsonReader[Seq[Session]] {
     override def read(json: JsValue): Seq[Session] =
       json.asJsObject.getFields("content") match {
         case Seq(JsArray(contents)) =>
@@ -91,14 +91,6 @@ object SprayJsonFormats extends DefaultJsonProtocol {
             s"Expected sessions. Input: ${json.prettyPrint}"
           )
       }
-
-    override def write(obj: Seq[Session]): JsValue =
-      obj.map { session =>
-        JsObject(
-          "sessionId" -> session.id.toJson,
-          "createdAt" -> ZonedDateTimeFormat.write(session.createdAt)
-        )
-      }.toJson
   }
 
   implicit object RoleFormat extends RootJsonFormat[Role] {

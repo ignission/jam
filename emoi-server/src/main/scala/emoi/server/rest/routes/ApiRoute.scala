@@ -3,16 +3,14 @@ package emoi.server.rest.routes
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Route, StandardRoute}
-import emoi.server.dsl.{AppError, OpenViduClientError}
+import emoi.server.dsl.{AppError, OpenViduClientError, RestDSL}
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
-import tech.ignission.openvidu4s.core.apis.AllAPI
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-object ApiRoute {
-  import emoi.server.dsl.syntax._
-  import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._
+class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
+  import emoi.server.rest.formatters.SprayJsonFormats._
 
   implicit class ResponseHandler[A](result: Task[Either[AppError, A]]) {
     def handleResponse(implicit s: Scheduler, formatter: JsonWriter[A]): StandardRoute = {
@@ -36,15 +34,15 @@ object ApiRoute {
     }
   }
 
-  def routes(openviduAPI: AllAPI[Task])(implicit s: Scheduler): Route =
+  def routes: Route =
     pathPrefix("rest" / "api" / "v1") {
-      sessionRoutes(openviduAPI) ~ tokenRoutes
+      sessionRoutes(restDSL) ~ tokenRoutes
     } ~ defaultRoute
 
-  private def sessionRoutes(openviduAPI: AllAPI[Task])(implicit s: Scheduler): Route =
+  private def sessionRoutes(restDSL: RestDSL[Task]): Route =
     path("sessions") {
       get {
-        openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError).handleResponse
+        restDSL.listSessions.handleResponse
       }
     }
 

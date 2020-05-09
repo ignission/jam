@@ -1,9 +1,11 @@
 GET http://localhost:8855/rest/api/v1/sessions HTTP/1.1
 
-# [
-#   {
-#     "createdAt": 1589035535985,
-#     "sessionId": "test-session"
-#   }
-# ]
+# {
+#   "sessions": [
+#     {
+#       "createdAt": 1589041743400,
+#       "sessionId": "test-session"
+#     }
+#   ]
+# }
 
