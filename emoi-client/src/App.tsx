@@ -12,7 +12,7 @@ const Room = loadable(() =>
 
 const App: React.FC = () => {
   // services
-  const client = APIClientOnAxios('http://localhost:8855');
+  const client = APIClientOnAxios('');
 
   client.listSessions().then((data) => console.dir(data));
   client.generateToken('test-session').then((data) => console.dir(data));
