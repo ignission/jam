@@ -1,7 +1,7 @@
 package emoi.server
 
 import akka.actor.ActorSystem
-import emoi.server.dsl.{AppError, InternalError}
+import emoi.server.dsl.{AppError, InternalError, OpenViduClientError}
 import monix.eval.Task
 import emoi.server.rest.Server
 import akka.http.scaladsl.Http
@@ -29,16 +29,17 @@ object App {
 
   def main(args: Array[String]): Unit = {
 
-    val interface = "0.0.0.0"
-    val port      = 8855
+    val interface    = "0.0.0.0"
+    val port         = 8855
+    val serverConfig = Config.OpenVidu.Server
+    val akkaHttpDSL  = new OpenViduHttpDSLOnAkka(debug = true)
+    val credential   = Basic(serverConfig.username, serverConfig.password)
+    val allAPI       = new AllAPI(serverConfig.url, credential)(akkaHttpDSL)
 
     val startupTask = for {
+      _        <- allAPI.sessionAPI.getSessions.mapError(OpenViduClientError(_)).handleError
       bindings <- startServer(interface, port).handleError
     } yield bindings
-
-    val akkaHttpDSL = new OpenViduHttpDSLOnAkka(debug = true)
-    val credential  = Basic("OPENVIDUAPP", "MY_SECRET")
-    val allAPI      = new AllAPI("https://localhost:4443", credential)(akkaHttpDSL)
 
     startupTask.value.map {
       case Left(error) =>
