@@ -16,8 +16,9 @@ A simple video chat party app with OpenVidu that brings you a freedom space
 - sbt
 
 ### Server
+    docker-compose up -d
     cd emoi-server
-    sbt run
+    sbt "~reStart --- -Dconfig.resource=local.conf"
 
 After that, `http://localhost:8855` is available.
 
