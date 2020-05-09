@@ -27,6 +27,8 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
     "return a valid result for POST requests to the tokens" in {
       Post("/rest/api/v1/tokens/session-a") ~> routes ~> check {
         status shouldEqual StatusCodes.OK
+        entityAs[String] shouldEqual
+          """{"token":"abcdefg"}"""
       }
     }
 

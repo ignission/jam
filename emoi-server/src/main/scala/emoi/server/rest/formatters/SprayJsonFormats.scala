@@ -2,6 +2,7 @@ package emoi.server.rest.formatters
 
 import spray.json._
 import tech.ignission.openvidu4s.core.datas.Session
+import tech.ignission.openvidu4s.core.datas.GeneratedToken
 
 object SprayJsonFormats extends DefaultJsonProtocol {
   import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._
@@ -16,6 +17,13 @@ object SprayJsonFormats extends DefaultJsonProtocol {
               "createdAt" -> ZonedDateTimeFormat.write(session.createdAt)
             )
           }.toJson
+      )
+  }
+
+  implicit object GeneratedTokenFormat extends RootJsonWriter[GeneratedToken] {
+    override def write(obj: GeneratedToken): JsValue =
+      JsObject(
+        "token" -> obj.token.value.toJson
       )
   }
 }

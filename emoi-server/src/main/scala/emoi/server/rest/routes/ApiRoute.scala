@@ -7,6 +7,7 @@ import emoi.server.dsl.{AppError, OpenViduClientError, RestDSL}
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
+import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
 class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
@@ -49,7 +50,7 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
   private def tokenRoutes: Route =
     pathPrefix("tokens" / ".+".r) { sessionId =>
       post {
-        complete("post")
+        restDSL.generateToken(SessionId(sessionId)).handleResponse
       }
     }
 

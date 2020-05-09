@@ -1,10 +1,11 @@
 package emoi.server.dsl
 
 import emoi.server.dsl.RestDSL.Result
-import tech.ignission.openvidu4s.core.datas.Session
+import tech.ignission.openvidu4s.core.datas.{GeneratedToken, Session, SessionId}
 
 trait RestDSL[F[_]] {
   def listSessions: Result[F, Seq[Session]]
+  def generateToken(sessionId: SessionId): Result[F, GeneratedToken]
 }
 
 object RestDSL {
