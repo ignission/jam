@@ -1,8 +1,10 @@
 package emoi.server.rest
 
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
-import akka.actor.ActorSystem
+import emoi.server.rest.routes.{ApiRoute, StaticRoute}
+
 import scala.concurrent.Future
 
 object Server {
