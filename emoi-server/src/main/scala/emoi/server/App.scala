@@ -42,7 +42,7 @@ object App {
     val openviduAPI  = new AllAPI(serverConfig.url, credential)(akkaHttpDSL)
 
     val startupTask = for {
-      _        <- openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError(_)).handleError
+      _        <- openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError).handleError
       bindings <- startServer(interface, port, openviduAPI).handleError
     } yield bindings
 
