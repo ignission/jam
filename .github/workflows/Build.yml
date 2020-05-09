@@ -91,5 +91,5 @@ jobs:
       - name: Test
         run: |
           cd emoi-server
-          sbt test
+          sbt test -Dconf.resource=test.conf
 
