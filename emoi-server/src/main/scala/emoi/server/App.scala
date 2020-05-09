@@ -19,9 +19,13 @@ object App {
   type Result[A]     = Either[AppError, A]
   type TaskResult[A] = Task[Result[A]]
 
-  private def startServer(interface: String, port: Int): TaskResult[Http.ServerBinding] =
+  private def startServer(
+      interface: String,
+      port: Int,
+      openviduAPI: AllAPI[Task]
+  ): TaskResult[Http.ServerBinding] =
     Task.deferFuture {
-      Server.start(interface, port).map(Right(_)).recover {
+      Server.start(interface, port, openviduAPI).map(Right(_)).recover {
         case NonFatal(ex) =>
           Left(InternalError(ex): AppError)
       }
@@ -29,16 +33,17 @@ object App {
 
   def main(args: Array[String]): Unit = {
 
-    val interface    = "0.0.0.0"
-    val port         = 8855
+    val interface    = Config.interface
+    val port         = Config.port
+    val mode         = Config.mode
     val serverConfig = Config.OpenVidu.Server
-    val akkaHttpDSL  = new OpenViduHttpDSLOnAkka(debug = true)
+    val akkaHttpDSL  = new OpenViduHttpDSLOnAkka(debug = mode == Mode.Local || mode == Mode.Test)
     val credential   = Basic(serverConfig.username, serverConfig.password)
-    val allAPI       = new AllAPI(serverConfig.url, credential)(akkaHttpDSL)
+    val openviduAPI  = new AllAPI(serverConfig.url, credential)(akkaHttpDSL)
 
     val startupTask = for {
-      _        <- allAPI.sessionAPI.getSessions.mapError(OpenViduClientError(_)).handleError
-      bindings <- startServer(interface, port).handleError
+      _        <- openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError(_)).handleError
+      bindings <- startServer(interface, port, openviduAPI).handleError
     } yield bindings
 
     startupTask.value.map {

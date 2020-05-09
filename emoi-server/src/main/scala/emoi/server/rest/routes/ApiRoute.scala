@@ -3,9 +3,11 @@ package emoi.server.rest.routes
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.model.HttpResponse
+import tech.ignission.openvidu4s.core.apis.AllAPI
+import monix.eval.Task
 
 object ApiRoute {
-  def routes: Route =
+  def routes(openviduAPI: AllAPI[Task]): Route =
     pathPrefix("rest" / "api" / "v1") {
       sessionRoutes ~ tokenRoutes
     } ~ defaultRoute
