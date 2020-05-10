@@ -115,12 +115,13 @@ jobs:
 
       - name: Build docker image
         run: |
-          VERSION=`cat emoi-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
-          docker build -t ignission/emoi-chat/emoi-chat:$VERSION docker/
+          docker build -t ignission/emoi-chat:latest docker/
 
       - name: Push docker image
         run: |
           VERSION=`cat emoi-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker push ignission/emoi-chat/emoi-chat:$VERSION
+          docker tag ignission/emoi-chat:latest ignission/emoi-chat:$VERSION
+          docker push ignission/emoi-chat:latest
+          docker push ignission/emoi-chat:$VERSION
 
