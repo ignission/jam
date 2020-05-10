@@ -2,7 +2,7 @@ name := "emoi-server"
 
 lazy val commonSettings = Seq(
   version := "0.1.0-SNAPSHOT",
-  scalaVersion := "2.13.1",
+  scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
   scalacOptions ++= List(
