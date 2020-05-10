@@ -4,6 +4,7 @@ import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Route, StandardRoute}
 import emoi.server.dsl.{AppError, OpenViduClientError, RestDSL}
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
@@ -36,9 +37,11 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
   }
 
   def routes: Route =
-    pathPrefix("rest" / "api" / "v1") {
-      sessionRoutes(restDSL) ~ tokenRoutes
-    } ~ defaultRoute
+    cors() {
+      pathPrefix("rest" / "api" / "v1") {
+        sessionRoutes(restDSL) ~ tokenRoutes
+      } ~ defaultRoute
+    }
 
   private def sessionRoutes(restDSL: RestDSL[Task]): Route =
     path("sessions") {
