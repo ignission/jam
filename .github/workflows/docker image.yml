@@ -56,6 +56,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
+          name: client-artifacts
           path: emoi-server/src/main/resources/static
       
       - name: Cache ivy
@@ -115,12 +116,13 @@ jobs:
 
       - name: Build docker image
         run: |
-          VERSION=`cat emoi-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
-          docker build -t docker.pkg.github.com/ignission/emoi-chat/emoi-chat:$VERSION docker/
+          docker build -t ignission/emoi-chat:latest docker/
 
       - name: Push docker image
         run: |
           VERSION=`cat emoi-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
-          docker login docker.pkg.github.com -u shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker push docker.pkg.github.com/ignission/emoi-chat/emoi-chat:$VERSION
+          docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
+          docker tag ignission/emoi-chat:latest ignission/emoi-chat:$VERSION
+          docker push ignission/emoi-chat:latest
+          docker push ignission/emoi-chat:$VERSION
 

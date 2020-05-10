@@ -4,6 +4,11 @@
 
 A simple video chat party app with OpenVidu that brings you a freedom space
 
+## Getting started
+    make up
+
+Try to access `http://localhost:8855`
+
 ## Development
 
 ### Requirements
