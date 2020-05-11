@@ -8,7 +8,7 @@ private[mysql] abstract class BaseTable[A <: Entity[A]](tag: Tag, name: String)
     extends Table[A](tag, name) {
 
   import JdbcMapper._
-  
+
   def id: Rep[Id[A]] = column[Id[A]]("id", O.PrimaryKey, O.Unique, O.AutoInc)
 
 }

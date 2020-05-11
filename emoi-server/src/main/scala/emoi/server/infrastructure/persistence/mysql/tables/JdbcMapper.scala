@@ -10,11 +10,11 @@ import slick.jdbc.SQLiteProfile.api._
 
 object JdbcMapper {
 
-  implicit def idMapper[A] = MappedColumnType.base[Id[A], AnyId](
+  implicit def idMapper[A] =
+    MappedColumnType.base[Id[A], AnyId](
       id => id.value,
       anyid => Id[A](anyid)
     )
-  
 
   implicit val zonedDateTimeMapper: JdbcType[DateTime] with BaseTypedType[DateTime] =
     MappedColumnType.base[DateTime, Long](
