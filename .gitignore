@@ -16,6 +16,3 @@ metals.sbt
 
 ## Build
 docker/dist/*.jar
-
-## Docker volumes
-docker/.data

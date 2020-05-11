@@ -6,7 +6,7 @@ up: ## Start
 	docker-compose logs -f
 
 down: ## Stop and destroy
-	docker-compose down
+	docker-compose down -v
 
 dev: ## For development (server + client)
 	docker-compose up -d kms && \

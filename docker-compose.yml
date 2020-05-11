@@ -24,7 +24,7 @@ services:
     container_name: emoi-db
     image: mysql:5.7
     volumes:
-      - ./docker/.data/mysql:/var/lib/mysql
+      - db-data:/var/lib/mysql
       - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
       - MYSQL_DATABASE=emoi
@@ -33,3 +33,6 @@ services:
       - MYSQL_ROOT_PASSWORD=emoi
     ports:
       - 33055:3306
+
+volumes:
+  db-data:
