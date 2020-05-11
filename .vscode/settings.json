@@ -1,4 +1,7 @@
 {
+  "extensions": {
+    "recommendations": ["mtxr.sqltools"]
+  },
   "sqltools.connections": [
     {
       "database": "emoi",
