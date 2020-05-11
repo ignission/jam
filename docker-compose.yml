@@ -22,7 +22,7 @@ services:
 
   db:
     container_name: emoi-db
-    image: mysql:8.0
+    image: mysql:5.7
     volumes:
       - ./docker/.data/mysql:/var/lib/mysql
       - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
