@@ -18,6 +18,7 @@ val monixVersion    = "3.2.0"
 val akkaHttpVersion = "10.1.11"
 val akkaVersion     = "2.6.4"
 val log4j2Version   = "2.13.2"
+val slickVersion    = "3.3.2"
 
 lazy val openviduClient = (project in file("openvidu-client"))
   .settings(commonSettings)
@@ -48,6 +49,9 @@ lazy val root = (project in file("."))
       "org.apache.logging.log4j" % "log4j-core"           % log4j2Version,
       "org.apache.logging.log4j" % "log4j-api"            % log4j2Version,
       "org.apache.logging.log4j" % "log4j-slf4j-impl"     % log4j2Version,
+      "com.typesafe.slick"      %% "slick"                % slickVersion,
+      "com.typesafe.slick"      %% "slick-hikaricp"       % slickVersion,
+      "mysql"                    % "mysql-connector-java" % "8.0.20",
       "com.typesafe"             % "config"               % "1.4.0",
       "ch.megard"               %% "akka-http-cors"       % "0.4.3",
       "org.scalatest"           %% "scalatest"            % "3.1.1"         % "test",
