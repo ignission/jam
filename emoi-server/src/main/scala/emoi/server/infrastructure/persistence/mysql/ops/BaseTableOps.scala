@@ -7,9 +7,7 @@ import emoi.server.infrastructure.persistence.mysql.DBIOTypes._
 import slick.lifted.TableQuery
 import slick.jdbc.SQLiteProfile.api._
 
-import scala.concurrent.ExecutionContext
-
-trait BaseTableOps[A <: Entity, Table <: BaseTable[A]] {
+trait BaseTableOps[A <: Entity[A], Table <: BaseTable[A]] {
 
   protected val tableQuery: TableQuery[Table]
 
@@ -21,10 +19,10 @@ trait BaseTableOps[A <: Entity, Table <: BaseTable[A]] {
   def select(id: Id[A]): DBIORead[Option[A]] =
     tableQuery.filter(_.id === id.value).result.headOption
 
-  def write(obj: A)(implicit exc: ExecutionContext): DBIOWrite =
-    tableQuery.filter(_.id === obj.id).insertOrUpdate(obj)
+  def write(obj: Entity[A]): DBIOWrite = ???
+    // tableQuery.filter(_.id.value === obj.id.value).insertOrUpdate(obj)
 
-  def write(objs: Seq[A])(implicit exc: ExecutionContext): DBIOWrites = {
+  def write(objs: Seq[A]): DBIOWrites = {
     DBIO.sequence(
       objs.map(write)
     )

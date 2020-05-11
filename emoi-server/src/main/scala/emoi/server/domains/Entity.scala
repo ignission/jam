@@ -1,7 +1,5 @@
 package emoi.server.domains
 
-import emoi.server.domains.Types._
-
-trait Entity {
-  def id: AnyId
+trait Entity[A] {
+  def id: Id[A]
 }
