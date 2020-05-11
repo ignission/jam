@@ -1,30 +1,19 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "docker-compose up -d",
-            "type": "shell",
-            "command": "cd ../ && docker-compose up -d"
-        },
-        {
-            "label": "Start server",
-            "type": "shell",
-            "command": "sbt \"~reStart --- -Dconfig.resource=local.conf\"",
-            "group": "build",
-            "dependsOn": [
-                "docker-compose up -d"
-            ]
-        },
-        {
-            "label": "Test watch",
-            "type": "shell",
-            "command": "sbt \"~test\" -Dconfig.resource=test.conf",
-            "group": "build",
-            "dependsOn": [
-                "docker-compose up -d"
-            ]
-        },
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start server",
+      "type": "shell",
+      "command": "make dev",
+      "group": "build"
+    },
+    {
+      "label": "Test watch",
+      "type": "shell",
+      "command": "make dev-test",
+      "group": "build"
+    }
+  ]
 }
