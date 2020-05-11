@@ -1,10 +1,12 @@
 # Emoi Chat
-![](https://github.com/ignission/emoi-chat/workflows/build/badge.svg) 
-![](https://github.com/ignission/emoi-chat/workflows/docker%20image/badge.svg) 
+
+![](https://github.com/ignission/emoi-chat/workflows/build/badge.svg)
+![](https://github.com/ignission/emoi-chat/workflows/docker%20image/badge.svg)
 
 A simple video chat party app with OpenVidu that brings you a freedom space
 
 ## Getting started
+
     make up
 
 Try to access `http://localhost:8855`
@@ -20,7 +22,15 @@ Try to access `http://localhost:8855`
 - Java > 1.8
 - sbt
 
+### Server + Client
+
+    make dev
+
+- server: http://localhost:8855
+- client: http://localhost:3000
+
 ### Server
+
     docker-compose up -d
     cd emoi-server
     sbt "~reStart --- -Dconfig.resource=local.conf"
@@ -28,12 +38,13 @@ Try to access `http://localhost:8855`
 After that, `http://localhost:8855` is available.
 
 #### NOTE
+
 You must run `sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck` before commit.
 If you need hot-reload feature, run folloing command instead of `sbt run`
-    sbt ~reStart
-
+sbt ~reStart
 
 ### Client
+
 ```shell
     docker-compose up -d # optional: if you want to watch logs, `docker-compose up`
     cd emoi-client
@@ -43,7 +54,6 @@ If you need hot-reload feature, run folloing command instead of `sbt run`
 
 Then, you can access `http://localhost:3000`
 
-
 #### NOTE
 
 If an error occurs with `ERR_CERT_AUTHORITY_INVALID` in your browser's console,
@@ -51,8 +61,8 @@ you need to access `https://localhost:4443` only once.
 Then, click `Proceed to localhost (unsafe)`.
 
 ##### Scala with VSCode
-- `Settings` -> `Text Editor` -> `Formatting` -> Check `Format on Save`
 
+- `Settings` -> `Text Editor` -> `Formatting` -> Check `Format on Save`
 
 ## Contributers
 
