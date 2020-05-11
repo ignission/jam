@@ -1,10 +1,12 @@
 .DEFAULT_GOAL := help
 
+COMPOSE_COMMAND := docker-compose -f ../docker-compose.yml up -d kms db
+
 dev: ## For development (server + client)
-	docker-compose up -d kms && sbt "~reStart --- -Dconfig.resource=local.conf"
+	${COMPOSE_COMMAND} && sbt "~reStart --- -Dconfig.resource=local.conf"
 
 dev-test:
-	docker-compose up -d kms && sbt "~test" -Dconfig.resource=test.conf
+	${COMPOSE_COMMAND} && sbt "~test" -Dconfig.resource=test.conf
 
 .PHONY: help
 help:

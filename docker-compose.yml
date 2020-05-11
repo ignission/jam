@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-
   server:
     container_name: emoi-chat
     image: ignission/emoi-chat:latest
@@ -10,7 +9,7 @@ services:
       OPENVIDU_SERVER_URL: https://kms:4443
     ports:
       - 8855:8855
-    depends_on: 
+    depends_on:
       - kms
 
   kms:
@@ -20,3 +19,17 @@ services:
       openvidu.secret: MY_SECRET
     ports:
       - 4443:4443
+
+  db:
+    container_name: emoi-db
+    image: mysql:8.0
+    volumes:
+      - ./docker/.data/mysql:/var/lib/mysql
+      - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_DATABASE=emoi
+      - MYSQL_USER=emoi
+      - MYSQL_PASSWORD=emoi
+      - MYSQL_ROOT_PASSWORD=emoi
+    ports:
+      - 33055:3306
