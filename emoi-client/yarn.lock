@@ -3325,9 +3325,10 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
-openvidu-browser@2.13.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/openvidu-browser/-/openvidu-browser-2.13.0.tgz#d2dbe5d3877fe1611e4dbd7d4a03c4bb2e6564d6"
+openvidu-browser@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/openvidu-browser/-/openvidu-browser-2.14.0.tgz#5bea9802003c4b233bf1237d520d8a6c7e3e0b9e"
+  integrity sha512-MImYBxShx/dAj3tW6GjGV1NZbibB4aNlGaQyJGj6lQiI2aT9+RmsjSHtUchiOMV62Q6frovkevJcy1j9PMFokQ==
   dependencies:
     "@types/node" "13.13.2"
     "@types/platform" "1.3.2"

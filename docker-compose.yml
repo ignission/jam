@@ -14,7 +14,7 @@ services:
 
   kms:
     container_name: emoi-kms
-    image: openvidu/openvidu-server-kms:2.13.0
+    image: openvidu/openvidu-server-kms:2.14.0
     environment:
       openvidu.secret: MY_SECRET
     ports:

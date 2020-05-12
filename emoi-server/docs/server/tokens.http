@@ -2,5 +2,5 @@ POST http://localhost:8855/rest/api/v1/tokens/test-session HTTP/1.1
 content-type: application/json
 
 # {
-#   "token": "wss://localhost:4443?sessionId=test-session&token=tok_S0EzJX1J9BPetp73&role=PUBLISHER&version=2.13.0"
+#   "token": "wss://localhost:4443?sessionId=test-session&token=tok_S0EzJX1J9BPetp73&role=PUBLISHER&version=2.14.0"
 # }
