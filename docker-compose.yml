@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-
   server:
     container_name: emoi-chat
     image: ignission/emoi-chat:latest
@@ -10,7 +9,7 @@ services:
       OPENVIDU_SERVER_URL: https://kms:4443
     ports:
       - 8855:8855
-    depends_on: 
+    depends_on:
       - kms
 
   kms:
@@ -20,3 +19,7 @@ services:
       openvidu.secret: MY_SECRET
     ports:
       - 4443:4443
+
+networks:
+  default:
+    name: emoi-network

@@ -1,7 +1,10 @@
 .DEFAULT_GOAL := help
 
-dev: ## For development (server + client)
-	docker-compose up -d kms && sbt "~reStart --- -Dconfig.resource=local.conf"
+dev: ## For development
+	docker-compose up -d kms && make dev-only
+
+dev-only: ## For root call
+	sbt "~reStart --- -Dconfig.resource=local.conf"
 
 dev-test:
 	docker-compose up -d kms && sbt "~test" -Dconfig.resource=test.conf
