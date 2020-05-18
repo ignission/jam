@@ -7,7 +7,7 @@ module.exports = {
   mode: 'development',
   entry: `${__dirname}/src/index.tsx`,
   output: {
-    path: path.resolve(__dirname, '../emoi-server/src/main/resources/static'),
+    path: path.resolve(__dirname, '../jam-server/src/main/resources/static'),
     filename: 'index.js',
     chunkFilename: '[name].bundle.js',
   },
@@ -55,7 +55,7 @@ module.exports = {
           from: '**/*',
           to: path.resolve(
             __dirname,
-            '../emoi-server/src/main/resources/static/images'
+            '../jam-server/src/main/resources/static/images'
           ),
         },
       ],
