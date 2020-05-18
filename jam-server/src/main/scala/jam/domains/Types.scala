@@ -1,4 +1,4 @@
-package emoi.server.domains
+package jam.domains
 
 import java.time.ZonedDateTime
 

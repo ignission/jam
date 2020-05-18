@@ -1,4 +1,4 @@
-package emoi.server.domains
+package jam.domains
 
 trait Entity[A] {
   def id: Id[A]

@@ -1,6 +1,6 @@
-package emoi.server.domains
+package jam.domains
 
-import emoi.server.domains.Types.AnyId
+import jam.domains.Types.AnyId
 
 case class Id[T] private (value: AnyId) extends AnyVal
 
