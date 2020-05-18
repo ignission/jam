@@ -1,7 +1,7 @@
 import React from 'react';
-// import { Container } from 'components/atoms/Container';
 import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
 import styled from '@emotion/styled';
+import JamLogo from '../atoms/Logo';
 
 const version = require('../../../package.json').version;
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Section = styled.div({
-  background: "url('images/bg.jpg')  top center no-repeat",
+  background: "url('images/bg.png')  top center no-repeat",
   backgroundSize: 'cover',
   height: '100%',
   textAlign: 'center',
@@ -28,27 +28,12 @@ const Header = styled.header({
   alignItems: 'center',
 });
 
-const HeaderImg = styled.img({
-  maxWidth: 200,
+const HeaderImg = styled.div({
+  marginTop: 20,
   marginLeft: 20,
+  color: '#fff',
   '@media only screen and (max-width: 600px)': {
     opacity: 0,
-  },
-});
-
-const Logo = styled.img({
-  margin: 'auto',
-  '@media only screen and (max-width: 600px) ': {
-    maxWidth: '80%',
-  },
-  '@media only screen and (min-width: 600px)': {
-    maxWidth: '75%',
-  },
-  '@media only screen and (min-width: 992px)': {
-    maxWidth: '60%',
-  },
-  '@media only screen and (min-width: 1200px)': {
-    maxWidth: '50%',
   },
 });
 
@@ -109,7 +94,9 @@ const Home: React.FC<Props> = ({ onSubmit }) => {
     <Section>
       <Header>
         <a href="https://openvidu.io/" target="_blank">
-          <HeaderImg alt="OpenVidu Logo" src="images/openvidu_logo.png" />
+          <HeaderImg>
+            <JamLogo width={60} />
+          </HeaderImg>
         </a>
         <Version>
           <span>{version}</span>
@@ -117,10 +104,7 @@ const Home: React.FC<Props> = ({ onSubmit }) => {
       </Header>
       <Container>
         <div>
-          <Logo
-            alt="OpenVidu Logo"
-            src="images/openvidu_vert_white_bg_trans_cropped.png"
-          />
+          <JamLogo width={200} />
           <H4>Videoconference rooms in one click</H4>
         </div>
         <FormContainer>

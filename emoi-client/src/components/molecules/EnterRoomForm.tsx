@@ -51,14 +51,15 @@ const Button = styled.button({
   fontSize: 16,
   fontWeight: 'bold',
   padding: '0 20px',
-  background: '#00ad4e',
+  background: '#ec9b5f',
   color: '#fff',
   borderRadius: '0px 5px 10px 0px',
   transition: '0.3s',
   boxShadow: '0px 2px 15px rgba(0, 0, 0, 0.1)',
   margin: 0,
+  cursor: 'pointer',
   '&:hover': {
-    background: '#009242',
+    background: '#e48844',
   },
 });
 
