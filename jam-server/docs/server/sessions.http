@@ -21,6 +21,6 @@ content-type: application/json
 # {
 #   "session": {
 #     "createdAt": 1589820164540,
-#     "sessionId": "test-session"
+#     "id": "test-session"
 #   }
 # }

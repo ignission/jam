@@ -26,7 +26,7 @@ object SprayJsonFormats extends DefaultJsonProtocol {
     override def write(obj: InitializedSession): JsValue =
       JsObject(
         "session" -> JsObject(
-          "sessionId" -> obj.id.toJson,
+          "id" -> obj.id.toJson,
           "createdAt" -> ZonedDateTimeFormat.write(obj.createdAt)
         )
       )

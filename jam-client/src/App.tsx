@@ -14,6 +14,7 @@ const App: React.FC = () => {
   // services
   const client = APIClientOnAxios('');
 
+  //client.createSession('test1').then((data) => console.dir(data));
   // client.listSessions().then((data) => console.dir(data));
   // client.generateToken('test-session').then((data) => console.dir(data));
 
