@@ -1,7 +1,7 @@
 import React from 'react';
 import { EnterRoomForm } from 'components/molecules/EnterRoomForm';
 import styled from '@emotion/styled';
-import JamLogo from '../atoms/Logo';
+import Logo from '../atoms/Logo';
 
 const version = require('../../../package.json').version;
 
@@ -95,7 +95,7 @@ const Home: React.FC<Props> = ({ onSubmit }) => {
       <Header>
         <a href="https://openvidu.io/" target="_blank">
           <HeaderImg>
-            <JamLogo width={60} />
+            <Logo width={60} />
           </HeaderImg>
         </a>
         <Version>
@@ -104,7 +104,7 @@ const Home: React.FC<Props> = ({ onSubmit }) => {
       </Header>
       <Container>
         <div>
-          <JamLogo width={200} />
+          <Logo width={200} />
           <H4>Videoconference rooms in one click</H4>
         </div>
         <FormContainer>

@@ -2,9 +2,10 @@ import React from 'react';
 
 interface Props {
   width?: number | string;
+  color?: string;
 }
 
-const Logo: React.FC<Props> = ({ width }) => {
+const Logo: React.FC<Props> = ({ width, color }) => {
   return (
     <svg
       x="0px"
@@ -12,7 +13,7 @@ const Logo: React.FC<Props> = ({ width }) => {
       width={width ? width : '100%'}
       viewBox="0 0 220.9 122.2"
     >
-      <g fill="currentColor">
+      <g fill={color ? color : 'currentColor'}>
         <path
           d="M28.1,85.3 M28.1,85.3h3.4L31.5,66h-3.3l0,0C12.6,66,0,78.6,0,94.1s12.6,28.1,28.1,28.1
 		c15.5,0,28.1-12.6,28.1-28.1H37c0,4.9-4,8.8-8.8,8.8c-4.9,0-8.8-4-8.8-8.8S23.3,85.3,28.1,85.3"
