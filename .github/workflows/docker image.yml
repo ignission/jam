@@ -22,25 +22,25 @@ jobs:
         uses: actions/cache@v1
         id: client_node_modules
         with:
-          path: emoi-client/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/emoi-client/yarn.lock')}}
+          path: jam-client/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/jam-client/yarn.lock')}}
   
       - name: yarn install
         if: steps.client_node_modules.outputs.cache-hit != 'true'
         uses: Borales/actions-yarn@master
         with:
-          cmd: --cwd emoi-client install
+          cmd: --cwd jam-client install
 
       - name: yarn build
         uses: Borales/actions-yarn@master
         with:
-          cmd: --cwd emoi-client build
+          cmd: --cwd jam-client build
 
       - name: Upload artifacts of the client
         uses: actions/upload-artifact@master
         with:
           name: client-artifacts
-          path: emoi-server/src/main/resources/static
+          path: jam-server/src/main/resources/static
 
   build-server:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: client-artifacts
-          path: emoi-server/src/main/resources/static
+          path: jam-server/src/main/resources/static
       
       - name: Cache ivy
         uses: actions/cache@v1
@@ -85,16 +85,16 @@ jobs:
       
       - name: Check format
         run: |
-          cd emoi-server
+          cd jam-server
           sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck
 
       - name: Assembly
         run: |
-          cd emoi-server
+          cd jam-server
           sbt assembly
           cd ../
           mkdir -p docker/dist
-          mv emoi-server/target/scala-2.13/emoi-server.jar docker/dist
+          mv jam-server/target/scala-2.13/jam-server.jar docker/dist
 
       - name: Upload artifacts of the server
         uses: actions/upload-artifact@master
@@ -116,13 +116,13 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -t ignission/emoi-chat:latest docker/
+          docker build -t ignission/jam-chat:latest docker/
 
       - name: Push docker image
         run: |
-          VERSION=`cat emoi-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
+          VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker tag ignission/emoi-chat:latest ignission/emoi-chat:$VERSION
-          docker push ignission/emoi-chat:latest
-          docker push ignission/emoi-chat:$VERSION
+          docker tag ignission/jam-chat:latest ignission/jam-chat:$VERSION
+          docker push ignission/jam-chat:latest
+          docker push ignission/jam-chat:$VERSION
 

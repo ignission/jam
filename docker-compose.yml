@@ -2,8 +2,8 @@ version: "3.7"
 
 services:
   server:
-    container_name: emoi-chat
-    image: ignission/emoi-chat:latest
+    container_name: jam-chat
+    image: ignission/jam-chat:latest
     environment:
       JAVA_OPTIONS: -Dconfig.resource=local.conf
       OPENVIDU_SERVER_URL: https://kms:4443
@@ -13,7 +13,7 @@ services:
       - kms
 
   kms:
-    container_name: emoi-kms
+    container_name: jam-kms
     image: openvidu/openvidu-server-kms:2.14.0
     environment:
       openvidu.secret: MY_SECRET
@@ -22,4 +22,4 @@ services:
 
 networks:
   default:
-    name: emoi-network
+    name: jam-network

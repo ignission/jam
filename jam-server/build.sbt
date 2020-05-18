@@ -1,7 +1,7 @@
-name := "emoi-server"
+name := "jam-server"
 
 lazy val commonSettings = Seq(
-  version := "0.1.0-SNAPSHOT",
+  version := "0.2.0-SNAPSHOT",
   scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
@@ -54,6 +54,6 @@ lazy val root = (project in file("."))
       "com.typesafe.akka"       %% "akka-stream-testkit"  % akkaVersion     % "test",
       "com.typesafe.akka"       %% "akka-http-testkit"    % akkaHttpVersion % "test"
     ),
-    assemblyJarName in assembly := "emoi-server.jar"
+    assemblyJarName in assembly := "jam-server.jar"
   )
   .dependsOn(openviduClient)
