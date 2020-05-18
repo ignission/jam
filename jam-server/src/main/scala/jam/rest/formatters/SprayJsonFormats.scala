@@ -3,6 +3,8 @@ package jam.rest.formatters
 import spray.json._
 import tech.ignission.openvidu4s.core.datas.Session
 import tech.ignission.openvidu4s.core.datas.GeneratedToken
+import jam.rest.routes.CreateSessionRequest
+import tech.ignission.openvidu4s.core.datas.InitializedSession
 
 object SprayJsonFormats extends DefaultJsonProtocol {
   import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._
@@ -20,10 +22,22 @@ object SprayJsonFormats extends DefaultJsonProtocol {
       )
   }
 
+  implicit object InitializedSessionFormat extends RootJsonWriter[InitializedSession] {
+    override def write(obj: InitializedSession): JsValue =
+      JsObject(
+        "session" -> JsObject(
+          "sessionId" -> obj.id.toJson,
+          "createdAt" -> ZonedDateTimeFormat.write(obj.createdAt)
+        )
+      )
+  }
+
   implicit object GeneratedTokenFormat extends RootJsonWriter[GeneratedToken] {
     override def write(obj: GeneratedToken): JsValue =
       JsObject(
         "token" -> obj.token.value.toJson
       )
   }
+
+  implicit val createSessionRequestFormat = jsonFormat1(CreateSessionRequest)
 }

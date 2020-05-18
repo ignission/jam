@@ -8,3 +8,19 @@ GET http://localhost:8855/rest/api/v1/sessions HTTP/1.1
 #     }
 #   ]
 # }
+
+###
+
+POST http://localhost:8855/rest/api/v1/sessions HTTP/1.1
+content-type: application/json
+
+{
+    "sessionId": "test-session"
+}
+
+# {
+#   "session": {
+#     "createdAt": 1589820164540,
+#     "sessionId": "test-session"
+#   }
+# }
