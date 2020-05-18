@@ -33,7 +33,7 @@ class NopRestInterpreter extends RestDSL[Task] {
       )
     }
 
-  override def createSession(sessionId: SessionId): RestDSL.Result[Task,InitializedSession] =
+  override def createSession(sessionId: SessionId): RestDSL.Result[Task, InitializedSession] =
     Task {
       Right(
         InitializedSession(

@@ -12,7 +12,9 @@ import spray.json._
 import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) extends SprayJsonSupport with DefaultJsonProtocol {
+class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
+    extends SprayJsonSupport
+    with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
 
   implicit class ResponseHandler[A](result: Task[Either[AppError, A]]) {
@@ -53,7 +55,7 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) extends SprayJsonS
         post {
           entity(as[CreateSessionRequest]) { req =>
             restDSL.createSession(req.sessionId).handleResponse
-            
+
           }
         }
       )

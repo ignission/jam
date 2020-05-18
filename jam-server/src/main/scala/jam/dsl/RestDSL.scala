@@ -1,7 +1,7 @@
 package jam.dsl
 
 import jam.dsl.RestDSL.Result
-import tech.ignission.openvidu4s.core.datas.{GeneratedToken, Session, SessionId, InitializedSession}
+import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId}
 
 trait RestDSL[F[_]] {
   def listSessions: Result[F, Seq[Session]]
