@@ -1,9 +1,9 @@
-# Emoi Chat
+# JAM
 
-![](https://github.com/ignission/emoi-chat/workflows/build/badge.svg)
-![](https://github.com/ignission/emoi-chat/workflows/docker%20image/badge.svg)
+![](https://github.com/ignission/jam/workflows/build/badge.svg)
+![](https://github.com/ignission/jam/workflows/docker%20image/badge.svg)
 
-A simple video chat party app with OpenVidu that brings you a freedom space
+Simplicity and Freedom of Space Video Chat Party App with OpenVidu.
 
 ## Getting started
 
@@ -32,7 +32,7 @@ Try to access `http://localhost:8855`
 ### Server
 
     docker-compose up -d
-    cd emoi-server
+    cd jam-server
     sbt "~reStart --- -Dconfig.resource=local.conf"
 
 After that, `http://localhost:8855` is available.
@@ -47,7 +47,7 @@ sbt ~reStart
 
 ```shell
     docker-compose up -d # optional: if you want to watch logs, `docker-compose up`
-    cd emoi-client
+    cd jam-client
     yarn
     yarn hot
 ```
