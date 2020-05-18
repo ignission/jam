@@ -2,8 +2,8 @@ package interpreters
 
 import java.time.{Instant, ZoneId, ZonedDateTime}
 
-import emoi.server.dsl.RestDSL
-import emoi.server.dsl.RestDSL.Result
+import jam.dsl.RestDSL
+import jam.dsl.RestDSL.Result
 import monix.eval.Task
 import tech.ignission.openvidu4s.core.datas
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, Session, SessionId, Token}

@@ -1,9 +1,9 @@
-package emoi.server.rest.routes
+package jam.rest.routes
 
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Route, StandardRoute}
-import emoi.server.dsl.{AppError, OpenViduClientError, RestDSL}
+import jam.dsl.{AppError, OpenViduClientError, RestDSL}
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 import monix.eval.Task
 import monix.execution.Scheduler
@@ -12,7 +12,7 @@ import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
 class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
-  import emoi.server.rest.formatters.SprayJsonFormats._
+  import jam.rest.formatters.SprayJsonFormats._
 
   implicit class ResponseHandler[A](result: Task[Either[AppError, A]]) {
     def handleResponse(implicit s: Scheduler, formatter: JsonWriter[A]): StandardRoute = {
@@ -28,7 +28,7 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
             case ServerDown =>
               HttpResponse(StatusCodes.BadGateway)
           }
-        case Left(_: emoi.server.dsl.InternalError) =>
+        case Left(_: jam.dsl.InternalError) =>
           HttpResponse(StatusCodes.InternalServerError)
       }.runToFuture
 

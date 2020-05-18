@@ -1,6 +1,6 @@
-package emoi.server.dsl
+package jam.dsl
 
-import emoi.server.dsl.RestDSL.Result
+import jam.dsl.RestDSL.Result
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, Session, SessionId}
 
 trait RestDSL[F[_]] {

@@ -3,8 +3,8 @@ package unit.rest.routes
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import emoi.server.dsl.RestDSL
-import emoi.server.rest.routes.ApiRoute
+import jam.dsl.RestDSL
+import jam.rest.routes.ApiRoute
 import interpreters.NopRestInterpreter
 import monix.eval.Task
 import org.scalatest.matchers.should.Matchers

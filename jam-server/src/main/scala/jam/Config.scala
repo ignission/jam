@@ -1,4 +1,4 @@
-package emoi.server
+package jam
 
 import com.typesafe.config._
 

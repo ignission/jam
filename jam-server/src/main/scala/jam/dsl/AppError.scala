@@ -1,4 +1,4 @@
-package emoi.server.dsl
+package jam.dsl
 
 import tech.ignission.openvidu4s.core.dsl.HttpError
 

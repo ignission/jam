@@ -1,4 +1,4 @@
-package emoi.server.rest.formatters
+package jam.rest.formatters
 
 import spray.json._
 import tech.ignission.openvidu4s.core.datas.Session

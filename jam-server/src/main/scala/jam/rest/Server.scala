@@ -1,10 +1,10 @@
-package emoi.server.rest
+package jam.rest
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
-import emoi.server.dsl.RestDSL
-import emoi.server.rest.routes.{ApiRoute, StaticRoute}
+import jam.dsl.RestDSL
+import jam.rest.routes.{ApiRoute, StaticRoute}
 import monix.eval.Task
 import monix.execution.Scheduler
 
