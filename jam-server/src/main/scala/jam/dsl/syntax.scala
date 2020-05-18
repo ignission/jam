@@ -1,4 +1,4 @@
-package emoi.server.dsl
+package jam.dsl
 
 import cats.Monad
 import cats.data.EitherT
