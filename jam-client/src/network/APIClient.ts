@@ -5,8 +5,14 @@ export interface Session {
   readonly createdAt: number;
 }
 
+const Session = (id: string, createdAt: number) => ({
+  id,
+  createdAt,
+});
+
 export interface APIClient {
   listSessions: () => Promise<ReadonlyArray<Session>>;
+  createSession: (sessionId: string) => Promise<Session>;
   generateToken: (sessionId: string) => Promise<string>;
 }
 
@@ -23,6 +29,22 @@ export const APIClientOnAxios = (baseUrl: string): APIClient => ({
           reject(error);
         });
     }),
+  createSession: (sessionId: string): Promise<Session> => {
+    return new Promise((resolve, reject) => {
+      Axios.post<{ session: Session }>(baseUrl + '/rest/api/v1/sessions', {
+        sessionId,
+      })
+        .then((response) => {
+          console.log('CREATE SESSION');
+          const s = response.data.session;
+          resolve(Session(s.id, s.createdAt));
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  },
   generateToken: (sessionId: string): Promise<string> => {
     return new Promise((resolve, reject) => {
       Axios.post(baseUrl + '/rest/api/v1/tokens/' + sessionId, {})

@@ -3,6 +3,7 @@ package jam.rest.routes
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Route, StandardRoute}
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import jam.dsl.{AppError, OpenViduClientError, RestDSL}
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 import monix.eval.Task
@@ -11,7 +12,9 @@ import spray.json._
 import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
+class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
+    extends SprayJsonSupport
+    with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
 
   implicit class ResponseHandler[A](result: Task[Either[AppError, A]]) {
@@ -45,9 +48,17 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler) {
 
   private def sessionRoutes(restDSL: RestDSL[Task]): Route =
     path("sessions") {
-      get {
-        restDSL.listSessions.handleResponse
-      }
+      concat(
+        get {
+          restDSL.listSessions.handleResponse
+        },
+        post {
+          entity(as[CreateSessionRequest]) { req =>
+            restDSL.createSession(req.sessionId).handleResponse
+
+          }
+        }
+      )
     }
 
   private def tokenRoutes: Route =
