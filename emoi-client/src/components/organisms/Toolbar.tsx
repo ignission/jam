@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import * as Button from '../atoms/Button';
+import Logo from '../atoms/Logo';
 
 const Toolbar = styled.div({
   gridArea: 'Toolbar',
@@ -33,16 +34,17 @@ const Right = styled.div({
   textAlign: 'right',
 });
 
-const LogoImg = styled.img({
-  height: 40,
+const LogoLink = styled.a({
+  margin: '0 16px',
 });
 
 export const View: React.FC = ({ children }) => (
   <Toolbar>
     <Left>
-      <a href="https://openvidu.io/" target="_blank">
-        <LogoImg alt="OpenVidu Logo" src="images/openvidu_logo.png" />
-      </a>
+      <LogoLink href="https://openvidu.io/" target="_blank">
+        {/* <LogoImg alt="OpenVidu Logo" src="images/openvidu_logo.png" /> */}
+        <Logo width={40} color="#fff" />
+      </LogoLink>
       <RoomLable>{children}</RoomLable>
     </Left>
     <Center>
