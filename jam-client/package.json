@@ -1,6 +1,6 @@
 {
   "name": "pivot-talk-client",
-  "version": "0.2.0",
+  "version": "0.2.0-SNAPSHOT",
   "description": "",
   "scripts": {
     "hot": "webpack-dev-server --host 0.0.0.0 --config webpack.dev.js",
