@@ -6,7 +6,7 @@ dev: ## For development
 dev-only: ## For root call
 	sbt "~reStart --- -Dconfig.resource=local.conf"
 
-dev-test:
+dev-test: ## Test with reloading
 	docker-compose up -d kms && sbt "~test" -Dconfig.resource=test.conf
 
 .PHONY: help

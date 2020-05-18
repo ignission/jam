@@ -37,7 +37,7 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       Post("/rest/api/v1/sessions", entity) ~> routes ~> check {
         status shouldEqual StatusCodes.OK
         entityAs[String] shouldEqual
-          """{"session":{"createdAt":1589035535985,"sessionId":"test-session"}}"""
+          """{"session":{"createdAt":1589035535985,"id":"test-session"}}"""
       }
     }
 
