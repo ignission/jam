@@ -8,15 +8,20 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
+  // scalafix
   semanticdbEnabled := true,
   semanticdbVersion := "4.3.10",
   addCompilerPlugin(scalafixSemanticdb),
+  scalafixDependencies ++= Seq(
+    "com.nequissimus" %% "sort-imports" % "0.5.0"
+  ),
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
     "-unchecked",
     "-Yrangepos",
-    "-Ywarn-unused"
+    "-Ywarn-unused",
+    "-Xfatal-warnings"
   )
 )
 
