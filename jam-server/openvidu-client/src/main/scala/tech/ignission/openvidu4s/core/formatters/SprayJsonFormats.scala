@@ -131,7 +131,7 @@ object SprayJsonFormats extends DefaultJsonProtocol {
   implicit object GeneratedTokenFormat extends RootJsonReader[GeneratedToken] {
     override def read(json: JsValue): GeneratedToken =
       json.asJsObject.getFields("session", "role", "token") match {
-        case Seq(JsString(session), JsString(role), JsString(token)) =>
+        case Seq(JsString(session), JsString(_), JsString(token)) =>
           GeneratedToken(
             sessionId = SessionId(session),
             token = Token(token)
