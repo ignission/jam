@@ -21,18 +21,31 @@ services:
       - 4443:4443
 
   db:
-    container_name: emoi-db
+    container_name: jam-db
     image: mysql:5.7
     volumes:
       - db-data:/var/lib/mysql
       - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
-      - MYSQL_DATABASE=emoi
-      - MYSQL_USER=emoi
-      - MYSQL_PASSWORD=emoi
-      - MYSQL_ROOT_PASSWORD=emoi
+      - MYSQL_DATABASE=jam
+      - MYSQL_USER=jam
+      - MYSQL_PASSWORD=jam
+      - MYSQL_ROOT_PASSWORD=jam
     ports:
       - 33055:3306
+  db-test:
+    container_name: jam-db-test
+    image: mysql:5.7
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_DATABASE=jam
+      - MYSQL_USER=jam
+      - MYSQL_PASSWORD=jam
+      - MYSQL_ROOT_PASSWORD=jam
+    ports:
+      - 33056:3306
 
 volumes:
   db-data:

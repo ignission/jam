@@ -1,13 +1,13 @@
 .DEFAULT_GOAL := help
 
 dev: ## For development
-	docker-compose up -d kms && make dev-only
+	docker-compose up -d kms db && make dev-only
 
 dev-only: ## For root call
 	sbt "~reStart --- -Dconfig.resource=local.conf"
 
 dev-test: ## Test with reloading
-	docker-compose up -d kms && sbt "~test" -Dconfig.resource=test.conf
+	docker-compose up -d kms db-test && sbt "~test" -Dconfig.resource=test.conf
 
 format: ## Format code with scalafmt
 	sbt "scalafmt; test:scalafmt; scalafmtSbt"

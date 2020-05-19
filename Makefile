@@ -9,7 +9,7 @@ down: ## Stop and destroy
 	docker-compose down -v
 
 dev: ## For development (server + client)
-	docker-compose up -d kms && \
+	docker-compose up -d kms db && \
 	cd jam-client && yarn hot & \
 	cd jam-server && make dev-only || \
 	cd ../ ; jobs -p | xargs kill && \
