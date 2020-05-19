@@ -41,8 +41,7 @@ const LogoLink = styled.a({
 export const View: React.FC = ({ children }) => (
   <Toolbar>
     <Left>
-      <LogoLink href="https://openvidu.io/" target="_blank">
-        {/* <LogoImg alt="OpenVidu Logo" src="images/openvidu_logo.png" /> */}
+      <LogoLink href="/">
         <Logo width={40} color="#fff" />
       </LogoLink>
       <RoomLable>{children}</RoomLable>
