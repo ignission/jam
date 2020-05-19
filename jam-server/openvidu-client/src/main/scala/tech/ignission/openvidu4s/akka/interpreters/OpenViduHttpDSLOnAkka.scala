@@ -6,18 +6,17 @@ import javax.net.ssl.{KeyManager, SSLContext, X509TrustManager}
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.BasicHttpCredentials
-import akka.http.scaladsl.Http
+import akka.http.scaladsl.{ConnectionContext, Http}
 import monix.eval.Task
 import org.slf4j.LoggerFactory
-import tech.ignission.openvidu4s.core.Basic
-import tech.ignission.openvidu4s.core.dsl.{HttpDSL, HttpQuery, RequestError, ServerDown}
-import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
 import spray.json._
+
+import tech.ignission.openvidu4s.core.Basic
+import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
+import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, HttpDSL, HttpQuery, RequestError, ServerDown}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
-import tech.ignission.openvidu4s.core.dsl.AlreadyExists
-import akka.http.scaladsl.ConnectionContext
 
 class OpenViduHttpDSLOnAkka(debug: Boolean = false)(implicit
     actorSystem: ActorSystem,

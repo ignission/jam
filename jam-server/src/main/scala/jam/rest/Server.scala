@@ -3,10 +3,11 @@ package jam.rest
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
-import jam.dsl.RestDSL
-import jam.rest.routes.{ApiRoute, StaticRoute}
 import monix.eval.Task
 import monix.execution.Scheduler
+
+import jam.dsl.RestDSL
+import jam.rest.routes.{ApiRoute, StaticRoute}
 
 import scala.concurrent.Future
 

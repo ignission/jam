@@ -1,5 +1,11 @@
 .DEFAULT_GOAL := help
 
+init: ## Initialize and set up local development environment
+	cd jam-client && \
+	yarn && \
+	yarn build && \
+	cd ../
+
 up: ## Start
 	docker-compose pull server
 	docker-compose up -d

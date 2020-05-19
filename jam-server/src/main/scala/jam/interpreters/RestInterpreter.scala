@@ -1,8 +1,10 @@
 package jam.interpreters
 
-import jam.dsl.{OpenViduClientError, RestDSL}
-import jam.dsl.RestDSL.Result
 import monix.eval.Task
+
+import jam.dsl.RestDSL.Result
+import jam.dsl.{OpenViduClientError, RestDSL}
+
 import tech.ignission.openvidu4s.core.apis.AllAPI
 import tech.ignission.openvidu4s.core.datas.{
   GenerateToken,

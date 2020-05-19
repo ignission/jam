@@ -1,10 +1,10 @@
 package jam.rest.formatters
 
 import spray.json._
-import tech.ignission.openvidu4s.core.datas.Session
-import tech.ignission.openvidu4s.core.datas.GeneratedToken
+
 import jam.rest.routes.CreateSessionRequest
-import tech.ignission.openvidu4s.core.datas.InitializedSession
+
+import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session}
 
 object SprayJsonFormats extends DefaultJsonProtocol {
   import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._
