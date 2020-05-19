@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import * as Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
@@ -38,23 +38,35 @@ const LogoLink = styled.a({
   margin: '0 16px',
 });
 
-export const View: React.FC = ({ children }) => (
-  <Toolbar>
-    <Left>
-      <LogoLink href="/">
-        <Logo width={40} color="#fff" />
-      </LogoLink>
-      <RoomLable>{children}</RoomLable>
-    </Left>
-    <Center>
-      <Button.IconButton>mic</Button.IconButton>
-      <Button.IconButton>videocam</Button.IconButton>
-      <Button.IconButton>screen_share</Button.IconButton>
-      <Button.IconButton>fullscreen</Button.IconButton>
-      <Button.IconButton>power_settings_new</Button.IconButton>
-    </Center>
-    <Right>
-      <Button.IconButton>chat</Button.IconButton>
-    </Right>
-  </Toolbar>
-);
+export const View: React.FC = ({ children }) => {
+  const [clickState, setClickState] = useState(false);
+  const ToggleState = () => setClickState(!clickState);
+  return (
+    <Toolbar>
+      <Left>
+        <LogoLink href="/">
+          <Logo width={40} color="#fff" />
+        </LogoLink>
+        <RoomLable>{children}</RoomLable>
+      </Left>
+      <Center>
+        <Button.IconButton onClick={() => ToggleState}>mic</Button.IconButton>
+        <Button.IconButton onClick={() => ToggleState}>
+          videocam
+        </Button.IconButton>
+        <Button.IconButton onClick={() => ToggleState}>
+          screen_share
+        </Button.IconButton>
+        <Button.IconButton onClick={() => ToggleState}>
+          fullscreen
+        </Button.IconButton>
+        <Button.IconButton onClick={() => ToggleState}>
+          power_settings_new
+        </Button.IconButton>
+      </Center>
+      <Right>
+        <Button.IconButton>chat</Button.IconButton>
+      </Right>
+    </Toolbar>
+  );
+};

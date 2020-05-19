@@ -2,6 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from '@emotion/styled';
 import * as Toolber from '../organisms/Toolbar';
+import * as Modal from '../organisms/Modal';
 
 type PageProps = {} & RouteComponentProps<{ id: string }>;
 
@@ -23,7 +24,10 @@ export const Room: React.FC<PageProps> = (props) => {
   return (
     <Grid>
       <Toolber.View>{props.match.params.id}</Toolber.View>
-      <Contents>Room: {props.match.params.id}</Contents>
+      <Contents>
+        Room: {props.match.params.id}
+        <Modal.View>aaa</Modal.View>
+      </Contents>
     </Grid>
   );
 };
