@@ -87,6 +87,11 @@ jobs:
         run: |
           cd jam-server
           sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck
+      
+      - name: Check lint
+        run: |
+          cd jam-server
+          sbt fixCheck
 
       - name: Test
         run: |
