@@ -1,21 +1,36 @@
 name := "jam-server"
 
+addCommandAlias("fix", "all compile:scalafix; openviduClient/scalafix") // TODO: test:scalafix
+addCommandAlias(
+  "fixCheck",
+  "; compile:scalafix --check; openviduClient/scalafix --check"
+) // TODO:  ; test:scalafix --check
+
+ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.3.1-RC1"
+
 lazy val commonSettings = Seq(
   version := "0.2.0-SNAPSHOT",
   scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
+  // scalafix
+  semanticdbEnabled := true,
+  semanticdbVersion := "4.3.10",
+  addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
     "-unchecked",
-    "-Xlint:unused"
+    "-Yrangepos",
+    "-Ywarn-unused",
+    "-Xlint",
+    "-Xfatal-warnings"
   )
 )
 
 val catsVersion     = "2.1.1"
 val monixVersion    = "3.2.0"
-val akkaHttpVersion = "10.1.11"
+val akkaHttpVersion = "10.1.12"
 val akkaVersion     = "2.6.4"
 val log4j2Version   = "2.13.2"
 
@@ -31,7 +46,7 @@ lazy val openviduClient = (project in file("openvidu-client"))
       "com.typesafe.akka" %% "akka-http"      % akkaHttpVersion,
       "com.typesafe.akka" %% "akka-stream"    % akkaVersion,
       "org.slf4j"          % "slf4j-api"      % "1.7.30",
-      "org.scalatest"     %% "scalatest"      % "3.1.1" % "test"
+      "org.scalatest"     %% "scalatest"      % "3.1.2" % "test"
     )
   )
 
@@ -50,7 +65,7 @@ lazy val root = (project in file("."))
       "org.apache.logging.log4j" % "log4j-slf4j-impl"     % log4j2Version,
       "com.typesafe"             % "config"               % "1.4.0",
       "ch.megard"               %% "akka-http-cors"       % "0.4.3",
-      "org.scalatest"           %% "scalatest"            % "3.1.1"         % "test",
+      "org.scalatest"           %% "scalatest"            % "3.1.2"         % "test",
       "com.typesafe.akka"       %% "akka-stream-testkit"  % akkaVersion     % "test",
       "com.typesafe.akka"       %% "akka-http-testkit"    % akkaHttpVersion % "test"
     ),
