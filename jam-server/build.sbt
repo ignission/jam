@@ -1,10 +1,7 @@
 name := "jam-server"
 
-addCommandAlias("fix", "all compile:scalafix test:scalafix")
-addCommandAlias(
-  "fixCheck",
-  "; compile:scalafix --check ; test:scalafix --check"
-)
+addCommandAlias("fix", "all compile:scalafix")            // TODO: test:scalafix
+addCommandAlias("fixCheck", "; compile:scalafix --check") // TODO:  ; test:scalafix --check
 
 lazy val commonSettings = Seq(
   version := "0.2.0-SNAPSHOT",
