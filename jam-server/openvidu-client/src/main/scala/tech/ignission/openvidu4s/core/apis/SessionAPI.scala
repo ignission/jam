@@ -1,13 +1,9 @@
 package tech.ignission.openvidu4s.core.apis
 
-import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
 import tech.ignission.openvidu4s.core.Credentials
-import tech.ignission.openvidu4s.core.dsl.HttpDSL
-import tech.ignission.openvidu4s.core.dsl.HttpQuery
-import tech.ignission.openvidu4s.core.datas.InitializeSession
-import tech.ignission.openvidu4s.core.datas.InitializedSession
-import tech.ignission.openvidu4s.core.datas.Session
-import tech.ignission.openvidu4s.core.datas.SessionId
+import tech.ignission.openvidu4s.core.datas.{InitializeSession, InitializedSession, Session, SessionId}
+import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
+import tech.ignission.openvidu4s.core.dsl.{HttpDSL, HttpQuery}
 
 class SessionAPI[F[_]](baseUrl: String, credentials: Credentials)(implicit httpDSL: HttpDSL[F]) {
   import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._

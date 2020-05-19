@@ -1,7 +1,12 @@
 name := "jam-server"
 
-addCommandAlias("fix", "all compile:scalafix")            // TODO: test:scalafix
-addCommandAlias("fixCheck", "; compile:scalafix --check") // TODO:  ; test:scalafix --check
+addCommandAlias("fix", "all compile:scalafix; openviduClient/scalafix") // TODO: test:scalafix
+addCommandAlias(
+  "fixCheck",
+  "; compile:scalafix --check; openviduClient/scalafix --check"
+) // TODO:  ; test:scalafix --check
+
+ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.3.1-RC1"
 
 lazy val commonSettings = Seq(
   version := "0.2.0-SNAPSHOT",
@@ -12,15 +17,13 @@ lazy val commonSettings = Seq(
   semanticdbEnabled := true,
   semanticdbVersion := "4.3.10",
   addCompilerPlugin(scalafixSemanticdb),
-  scalafixDependencies ++= Seq(
-    "com.nequissimus" %% "sort-imports" % "0.5.0"
-  ),
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
     "-unchecked",
     "-Yrangepos",
     "-Ywarn-unused",
+    "-Xlint",
     "-Xfatal-warnings"
   )
 )

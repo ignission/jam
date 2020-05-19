@@ -2,10 +2,12 @@ package jam
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import monix.eval.Task
+
 import jam.dsl.{AppError, InternalError, RestDSL}
 import jam.interpreters.RestInterpreter
 import jam.rest.Server
-import monix.eval.Task
+
 import tech.ignission.openvidu4s.akka.interpreters.OpenViduHttpDSLOnAkka
 import tech.ignission.openvidu4s.core.Basic
 import tech.ignission.openvidu4s.core.apis.AllAPI

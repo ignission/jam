@@ -1,20 +1,11 @@
 package tech.ignission.openvidu4s.core.formatters
 
+import java.time.{Instant, ZoneId, ZonedDateTime}
+
 import spray.json._
-import tech.ignission.openvidu4s.core.datas.InitializeSession
-import tech.ignission.openvidu4s.core.datas.SessionId
-import tech.ignission.openvidu4s.core.datas.InitializedSession
-import java.time.ZonedDateTime
-import java.time.ZoneId
-import java.time.Instant
-import tech.ignission.openvidu4s.core.datas.Session
-import tech.ignission.openvidu4s.core.datas.GenerateToken
-import tech.ignission.openvidu4s.core.datas.Role
-import tech.ignission.openvidu4s.core.datas.Role.MODERATOR
-import tech.ignission.openvidu4s.core.datas.Role.PUBLISHER
-import tech.ignission.openvidu4s.core.datas.Role.SUBSCRIBER
-import tech.ignission.openvidu4s.core.datas.GeneratedToken
-import tech.ignission.openvidu4s.core.datas.Token
+
+import tech.ignission.openvidu4s.core.datas.Role.{MODERATOR, PUBLISHER, SUBSCRIBER}
+import tech.ignission.openvidu4s.core.datas.{GenerateToken, GeneratedToken, InitializeSession, InitializedSession, Role, Session, SessionId, Token}
 
 object SprayJsonFormats extends DefaultJsonProtocol {
 

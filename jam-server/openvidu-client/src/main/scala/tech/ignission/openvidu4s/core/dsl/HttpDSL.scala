@@ -1,7 +1,8 @@
 package tech.ignission.openvidu4s.core.dsl
 
 import spray.json._
-import OpenViduHttpDsl.Response
+
+import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
 
 trait HttpDSL[F[_]] {
 
