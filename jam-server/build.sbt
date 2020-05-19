@@ -1,15 +1,25 @@
 name := "jam-server"
 
+addCommandAlias("fix", "all compile:scalafix test:scalafix")
+addCommandAlias(
+  "fixCheck",
+  "; compile:scalafix --check ; test:scalafix --check"
+)
+
 lazy val commonSettings = Seq(
   version := "0.2.0-SNAPSHOT",
   scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
+  semanticdbEnabled := true,
+  semanticdbVersion := "4.3.10",
+  addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
     "-unchecked",
-    "-Xlint:unused"
+    "-Yrangepos",
+    "-Ywarn-unused"
   )
 )
 
