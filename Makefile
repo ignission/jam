@@ -8,7 +8,7 @@ init: ## Initialize and set up local development environment
 
 up: ## Start
 	docker-compose pull server
-	docker-compose up -d
+	docker-compose up -d server kms db
 	docker-compose logs -f
 
 down: ## Stop and destroy

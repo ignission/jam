@@ -33,11 +33,11 @@ services:
       - MYSQL_ROOT_PASSWORD=jam
     ports:
       - 33055:3306
+
   db-test:
     container_name: jam-db-test
     image: mysql:5.7
     volumes:
-      - db-data:/var/lib/mysql
       - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
       - MYSQL_DATABASE=jam

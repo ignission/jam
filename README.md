@@ -22,6 +22,10 @@ Try to access `http://localhost:8855`
 - Java > 1.8
 - sbt
 
+### First step
+
+    make init
+
 ### Server + Client
 
     make dev
