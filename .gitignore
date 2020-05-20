@@ -1,7 +1,7 @@
 ## Node
 node_modules
 yarn-error.log
-jam-server/src/main/resources/static
+jam-server/jam-server/src/main/resources/static
 
 ## Scala
 target

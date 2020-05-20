@@ -4,7 +4,7 @@ dev: ## For development
 	docker-compose up -d kms && make dev-only
 
 dev-only: ## For root call
-	sbt "~reStart --- -Dconfig.resource=local.conf"
+	sbt "~server/reStart --- -Dconfig.resource=local.conf"
 
 dev-test: ## Test with reloading
 	docker-compose up -d kms && sbt "~test" -Dconfig.resource=test.conf

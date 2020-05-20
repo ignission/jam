@@ -40,7 +40,7 @@ lazy val domain = (project in file("jam-domain")).settings(commonSettings)
 
 lazy val infra = (project in file("jam-infrastructure")).settings(commonSettings).dependsOn(domain)
 
-lazy val root = (project in file("."))
+lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
@@ -61,4 +61,4 @@ lazy val root = (project in file("."))
     ),
     assemblyJarName in assembly := "jam-server.jar"
   )
-  .dependsOn(openviduClient)
+  .dependsOn(domain, infra, openviduClient)
