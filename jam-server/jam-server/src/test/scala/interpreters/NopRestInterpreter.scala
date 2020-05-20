@@ -8,7 +8,13 @@ import jam.dsl.RestDSL
 import jam.dsl.RestDSL.Result
 
 import tech.ignission.openvidu4s.core.datas
-import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId, Token}
+import tech.ignission.openvidu4s.core.datas.{
+  GeneratedToken,
+  InitializedSession,
+  Session,
+  SessionId,
+  Token
+}
 
 class NopRestInterpreter extends RestDSL[Task] {
 
