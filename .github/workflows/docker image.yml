@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: client-artifacts
-          path: jam-server/src/main/resources/static
+          path: jam-server/jam-server/src/main/resources/static
 
   build-server:
     runs-on: ubuntu-latest
@@ -56,7 +56,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: client-artifacts
-          path: jam-server/src/main/resources/static
+          path: jam-server/jam-server/src/main/resources/static
 
       - name: Cache ivy
         uses: actions/cache@v1
@@ -95,10 +95,10 @@ jobs:
       - name: Assembly
         run: |
           cd jam-server
-          sbt assembly
+          sbt server/assembly
           cd ../
           mkdir -p docker/dist
-          mv jam-server/target/scala-2.13/jam-server.jar docker/dist
+          mv jam-server/jam-server/target/scala-2.13/jam-server.jar docker/dist
 
       - name: Upload artifacts of the server
         uses: actions/upload-artifact@master
