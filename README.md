@@ -31,17 +31,17 @@ Try to access `http://localhost:8855`
 
 ### Server
 
-    docker-compose up -d
     cd jam-server
-    sbt "~reStart --- -Dconfig.resource=local.conf"
+    make dev
 
-After that, `http://localhost:8855` is available.
+Next, `http://localhost:8855` done.
 
 #### NOTE
 
-You must run `sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck` before commit.
-If you need hot-reload feature, run folloing command instead of `sbt run`
-sbt ~reStart
+You must run `sbt format` and `sbt fix` before committing.
+If you need hot-reload feature, run the following command instead of `sbt run`
+
+    sbt ~reStart
 
 ### Client
 
