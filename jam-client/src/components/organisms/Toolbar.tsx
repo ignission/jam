@@ -38,31 +38,33 @@ const LogoLink = styled.a({
   margin: '0 16px',
 });
 
-export const View: React.FC = ({ children }) => {
+const ToggleIconButton = ({ text }) => {
   const [clickState, setClickState] = useState(false);
-  const ToggleState = () => setClickState(!clickState);
+  return (
+    <Button.IconButton
+      onClick={() => setClickState(!clickState)}
+      iconColor={clickState}
+    >
+      {text}
+    </Button.IconButton>
+  );
+};
+
+export const View: React.FC = ({ children }) => {
   return (
     <Toolbar>
       <Left>
-        <LogoLink href="/">
+        <LogoLink href="/" target="_blank">
           <Logo width={40} color="#fff" />
         </LogoLink>
         <RoomLable>{children}</RoomLable>
       </Left>
       <Center>
-        <Button.IconButton onClick={() => ToggleState}>mic</Button.IconButton>
-        <Button.IconButton onClick={() => ToggleState}>
-          videocam
-        </Button.IconButton>
-        <Button.IconButton onClick={() => ToggleState}>
-          screen_share
-        </Button.IconButton>
-        <Button.IconButton onClick={() => ToggleState}>
-          fullscreen
-        </Button.IconButton>
-        <Button.IconButton onClick={() => ToggleState}>
-          power_settings_new
-        </Button.IconButton>
+        <ToggleIconButton text="mic" />
+        <ToggleIconButton text="videocam" />
+        <ToggleIconButton text="screen_share" />
+        <ToggleIconButton text="fullscreen" />
+        <ToggleIconButton text="power_settings_new" />
       </Center>
       <Right>
         <Button.IconButton>chat</Button.IconButton>

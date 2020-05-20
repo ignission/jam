@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 interface Props {
+  iconColor?: boolean;
   onClick?: () => void;
 }
 
@@ -23,13 +24,13 @@ export const IconButtonStyled = styled.button(
   })
 );
 
-export const IconButton: React.FC<Props> = ({ onClick, children }) => {
-  // const [clickState, setClickState] = useState(false);
+export const IconButton: React.FC<Props> = ({
+  iconColor,
+  onClick,
+  children,
+}) => {
   return (
-    <IconButtonStyled
-      onClick={onClick}
-      // iconColor={clickState}
-    >
+    <IconButtonStyled onClick={onClick} iconColor={iconColor}>
       <i className="material-icons">{children}</i>
     </IconButtonStyled>
   );

@@ -26,6 +26,10 @@ const Modal = styled.div({
   boxShadow: '0 0 10px rgba(0,0,0,0.2)',
 });
 
+const Header = styled.div({
+  textAlign: 'center',
+});
+
 const Close = styled.div({
   position: 'absolute',
   top: 0,
@@ -39,6 +43,7 @@ export const View: React.FC = ({ children }) => {
       {showModalState ? (
         <>
           <Modal>
+            <Header>Set up your room</Header>
             {children}
             <Close>
               <Button.IconButton
