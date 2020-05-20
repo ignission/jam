@@ -1,10 +1,9 @@
 name := "jam-server"
 
-addCommandAlias("fix", "all compile:scalafix; openviduClient/scalafix") // TODO: test:scalafix
-addCommandAlias(
-  "fixCheck",
-  "; compile:scalafix --check; openviduClient/scalafix --check"
-) // TODO:  ; test:scalafix --check
+addCommandAlias("fix", "all compile:scalafix")            // TODO: test:scalafix
+addCommandAlias("fixCheck", "; compile:scalafix --check") // TODO:  ; test:scalafix --check
+addCommandAlias("format", "; scalafmt; test:scalafmt; scalafmtSbt")
+addCommandAlias("formatCheck", "; scalafmtCheck; test:scalafmtCheck; scalafmtSbtCheck")
 
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.3.1-RC1"
 

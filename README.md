@@ -38,7 +38,7 @@ Next, `http://localhost:8855` done.
 
 #### NOTE
 
-You must run `sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck` before committing.
+You must run `sbt format` and `sbt fix` before committing.
 If you need hot-reload feature, run the following command instead of `sbt run`
 
     sbt ~reStart

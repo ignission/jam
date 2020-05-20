@@ -3,10 +3,9 @@ name: build
 on:
   pull_request:
     branches:
-      - '*'
+      - "*"
 
 jobs:
-
   build-client:
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +23,7 @@ jobs:
         with:
           path: jam-client/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/jam-client/yarn.lock')}}
-  
+
       - name: yarn install
         if: steps.client_node_modules.outputs.cache-hit != 'true'
         uses: Borales/actions-yarn@master
@@ -58,7 +57,7 @@ jobs:
         with:
           name: client-artifacts
           path: jam-server/src/main/resources/static
-      
+
       - name: Cache ivy
         uses: actions/cache@v1
         with:
@@ -82,12 +81,12 @@ jobs:
           key: ${{ runner.os }}-sbt-cache-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-sbt-cache-
-      
+
       - name: Check format
         run: |
           cd jam-server
-          sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck
-      
+          sbt formatCheck
+
       - name: Check lint
         run: |
           cd jam-server
@@ -97,4 +96,3 @@ jobs:
         run: |
           cd jam-server
           sbt test -Dconfig.resource=test.conf
-

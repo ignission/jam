@@ -5,7 +5,16 @@ import java.time.{Instant, ZoneId, ZonedDateTime}
 import spray.json._
 
 import tech.ignission.openvidu4s.core.datas.Role.{MODERATOR, PUBLISHER, SUBSCRIBER}
-import tech.ignission.openvidu4s.core.datas.{GenerateToken, GeneratedToken, InitializeSession, InitializedSession, Role, Session, SessionId, Token}
+import tech.ignission.openvidu4s.core.datas.{
+  GenerateToken,
+  GeneratedToken,
+  InitializeSession,
+  InitializedSession,
+  Role,
+  Session,
+  SessionId,
+  Token
+}
 
 object SprayJsonFormats extends DefaultJsonProtocol {
 

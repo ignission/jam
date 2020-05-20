@@ -1,7 +1,12 @@
 package tech.ignission.openvidu4s.core.apis
 
 import tech.ignission.openvidu4s.core.Credentials
-import tech.ignission.openvidu4s.core.datas.{InitializeSession, InitializedSession, Session, SessionId}
+import tech.ignission.openvidu4s.core.datas.{
+  InitializeSession,
+  InitializedSession,
+  Session,
+  SessionId
+}
 import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
 import tech.ignission.openvidu4s.core.dsl.{HttpDSL, HttpQuery}
 

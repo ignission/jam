@@ -85,7 +85,7 @@ jobs:
       - name: Check format
         run: |
           cd jam-server
-          sbt scalafmtCheck test:scalafmtCheck scalafmtSbtCheck
+          sbt formatCheck
 
       - name: Check lint
         run: |
