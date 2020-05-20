@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import styled from '@emotion/styled';
 import * as Toolber from '../organisms/Toolbar';
 import * as Modal from '../organisms/Modal';
+import * as Config from '../organisms/RoomConfig';
 
 type PageProps = {} & RouteComponentProps<{ id: string }>;
 
@@ -26,7 +27,9 @@ export const Room: React.FC<PageProps> = (props) => {
       <Toolber.View>{props.match.params.id}</Toolber.View>
       <Contents>
         Room: {props.match.params.id}
-        <Modal.View>aaa</Modal.View>
+        <Modal.View>
+          <Config.View roomName={props.match.params.id} />
+        </Modal.View>
       </Contents>
     </Grid>
   );

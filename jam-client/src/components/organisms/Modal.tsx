@@ -18,16 +18,17 @@ const Modal = styled.div({
   right: 40,
   bottom: 40,
   left: 40,
-  padding: 40,
-  overflowY: 'auto',
   background: '#fff',
   borderRadius: 8,
   zIndex: 1,
   boxShadow: '0 0 10px rgba(0,0,0,0.2)',
+  overflow: 'hidden',
 });
 
-const Header = styled.div({
-  textAlign: 'center',
+const ModalContents = styled.div({
+  overflowY: 'auto',
+  maxHeight: '100%',
+  padding: 40,
 });
 
 const Close = styled.div({
@@ -43,8 +44,7 @@ export const View: React.FC = ({ children }) => {
       {showModalState ? (
         <>
           <Modal>
-            <Header>Set up your room</Header>
-            {children}
+            <ModalContents>{children}</ModalContents>
             <Close>
               <Button.IconButton
                 onClick={() => setShowModalState(!showModalState)}
