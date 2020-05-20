@@ -1,7 +1,7 @@
 name := "jam-server"
 
-addCommandAlias("fix", "all compile:scalafix")            // TODO: test:scalafix
-addCommandAlias("fixCheck", "; compile:scalafix --check") // TODO:  ; test:scalafix --check
+addCommandAlias("fix", "all compile:scalafix; test:scalafix")
+addCommandAlias("fixCheck", "; compile:scalafix --check; test:scalafix --check")
 addCommandAlias("format", "; scalafmt; test:scalafmt; scalafmtSbt")
 addCommandAlias("formatCheck", "; scalafmtCheck; test:scalafmtCheck; scalafmtSbtCheck")
 
@@ -12,10 +12,6 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
-  // scalafix
-  semanticdbEnabled := true,
-  semanticdbVersion := "4.3.10",
-  addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
@@ -24,7 +20,17 @@ lazy val commonSettings = Seq(
     "-Ywarn-unused",
     "-Xlint",
     "-Xfatal-warnings"
-  )
+  ),
+  // scalafix
+  semanticdbEnabled := true,
+  semanticdbVersion := "4.3.10",
+  addCompilerPlugin(scalafixSemanticdb),
+  scalacOptions in Test := { // https://github.com/scalacenter/scalafix/pull/1116
+    val initial           = (scalacOptions in Test).value
+    val semanticDbOptions = initial.filter(_.contains("-P:semanticdb:"))
+    val semanticDbLess    = initial.filterNot(_.contains("-P:semanticdb:"))
+    semanticDbLess ++ semanticDbOptions.lastOption.toSeq
+  }
 )
 
 val catsVersion     = "2.1.1"

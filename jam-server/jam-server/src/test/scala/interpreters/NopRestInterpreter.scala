@@ -2,12 +2,13 @@ package interpreters
 
 import java.time.{Instant, ZoneId, ZonedDateTime}
 
+import monix.eval.Task
+
 import jam.dsl.RestDSL
 import jam.dsl.RestDSL.Result
-import monix.eval.Task
+
 import tech.ignission.openvidu4s.core.datas
-import tech.ignission.openvidu4s.core.datas.{GeneratedToken, Session, SessionId, Token}
-import tech.ignission.openvidu4s.core.datas.InitializedSession
+import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId, Token}
 
 class NopRestInterpreter extends RestDSL[Task] {
 
