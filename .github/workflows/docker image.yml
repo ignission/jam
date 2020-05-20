@@ -3,10 +3,9 @@ name: docker image
 on:
   push:
     branches:
-      - 'master'
+      - "master"
 
 jobs:
-
   build-client:
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +23,7 @@ jobs:
         with:
           path: jam-client/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/jam-client/yarn.lock')}}
-  
+
       - name: yarn install
         if: steps.client_node_modules.outputs.cache-hit != 'true'
         uses: Borales/actions-yarn@master
@@ -58,7 +57,7 @@ jobs:
         with:
           name: client-artifacts
           path: jam-server/src/main/resources/static
-      
+
       - name: Cache ivy
         uses: actions/cache@v1
         with:
@@ -82,7 +81,7 @@ jobs:
           key: ${{ runner.os }}-sbt-cache-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-sbt-cache-
-      
+
       - name: Check format
         run: |
           cd jam-server
@@ -121,13 +120,12 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -t ignission/jam-chat:latest docker/
+          docker build -t ignission/jam-server:latest docker/
 
       - name: Push docker image
         run: |
           VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker tag ignission/jam-chat:latest ignission/jam-chat:$VERSION
-          docker push ignission/jam-chat:latest
-          docker push ignission/jam-chat:$VERSION
-
+          docker tag ignission/jam-server:latest ignission/jam-server:$VERSION
+          docker push ignission/jam-server:latest
+          docker push ignission/jam-server:$VERSION
