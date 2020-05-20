@@ -13,7 +13,13 @@ import spray.json._
 
 import tech.ignission.openvidu4s.core.Basic
 import tech.ignission.openvidu4s.core.dsl.OpenViduHttpDsl.Response
-import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, HttpDSL, HttpQuery, RequestError, ServerDown}
+import tech.ignission.openvidu4s.core.dsl.{
+  AlreadyExists,
+  HttpDSL,
+  HttpQuery,
+  RequestError,
+  ServerDown
+}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._

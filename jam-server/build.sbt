@@ -1,10 +1,9 @@
 name := "jam-server"
 
-addCommandAlias("fix", "all compile:scalafix; openviduClient/scalafix") // TODO: test:scalafix
-addCommandAlias(
-  "fixCheck",
-  "; compile:scalafix --check; openviduClient/scalafix --check"
-) // TODO:  ; test:scalafix --check
+addCommandAlias("fix", "all compile:scalafix; test:scalafix")
+addCommandAlias("fixCheck", "; compile:scalafix --check; test:scalafix --check")
+addCommandAlias("format", "; scalafmt; test:scalafmt; scalafmtSbt")
+addCommandAlias("formatCheck", "; scalafmtCheck; test:scalafmtCheck; scalafmtSbtCheck")
 
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.3.1-RC1"
 
@@ -13,10 +12,6 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.13.2",
   organization := "tech.ignission",
   test in assembly := {},
-  // scalafix
-  semanticdbEnabled := true,
-  semanticdbVersion := "4.3.10",
-  addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
@@ -25,7 +20,17 @@ lazy val commonSettings = Seq(
     "-Ywarn-unused",
     "-Xlint",
     "-Xfatal-warnings"
-  )
+  ),
+  // scalafix
+  semanticdbEnabled := true,
+  semanticdbVersion := "4.3.10",
+  addCompilerPlugin(scalafixSemanticdb),
+  scalacOptions in Test := { // https://github.com/scalacenter/scalafix/pull/1116
+    val initial           = (scalacOptions in Test).value
+    val semanticDbOptions = initial.filter(_.contains("-P:semanticdb:"))
+    val semanticDbLess    = initial.filterNot(_.contains("-P:semanticdb:"))
+    semanticDbLess ++ semanticDbOptions.lastOption.toSeq
+  }
 )
 
 val catsVersion     = "2.1.1"
@@ -34,23 +39,13 @@ val akkaHttpVersion = "10.1.12"
 val akkaVersion     = "2.6.4"
 val log4j2Version   = "2.13.2"
 
-lazy val openviduClient = (project in file("openvidu-client"))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      "io.spray"          %% "spray-json"     % "1.3.5",
-      "org.typelevel"     %% "cats-core"      % catsVersion,
-      "io.monix"          %% "monix"          % monixVersion,
-      "io.monix"          %% "monix-eval"     % monixVersion,
-      "io.monix"          %% "monix-reactive" % monixVersion,
-      "com.typesafe.akka" %% "akka-http"      % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-stream"    % akkaVersion,
-      "org.slf4j"          % "slf4j-api"      % "1.7.30",
-      "org.scalatest"     %% "scalatest"      % "3.1.2" % "test"
-    )
-  )
+lazy val openviduClient = (project in file("openvidu-client")).settings(commonSettings)
 
-lazy val root = (project in file("."))
+lazy val domain = (project in file("jam-domain")).settings(commonSettings)
+
+lazy val infra = (project in file("jam-infrastructure")).settings(commonSettings).dependsOn(domain)
+
+lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
@@ -71,4 +66,4 @@ lazy val root = (project in file("."))
     ),
     assemblyJarName in assembly := "jam-server.jar"
   )
-  .dependsOn(openviduClient)
+  .dependsOn(domain, infra, openviduClient)
