@@ -4,6 +4,7 @@ import * as Button from '../atoms/Button';
 
 interface Props {
   roomName: string;
+  onClick: () => void;
 }
 
 // const Config = styled.div({});
@@ -49,7 +50,7 @@ const ToggleIconButton = ({ text }) => {
   );
 };
 
-export const View: React.FC<Props> = ({ roomName }) => {
+export const View: React.FC<Props> = ({ roomName, onClick }) => {
   return (
     <>
       <Header>Set up your room</Header>
@@ -89,7 +90,7 @@ export const View: React.FC<Props> = ({ roomName }) => {
         </Column>
       </Body>
       <Footer>
-        <Button.Contained hasBorder width="100%">
+        <Button.Contained hasBorder width="100%" onClick={onClick}>
           JOIN
         </Button.Contained>
       </Footer>

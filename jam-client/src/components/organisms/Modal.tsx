@@ -3,6 +3,10 @@ import styled from '@emotion/styled';
 import * as Button from '../atoms/Button';
 import { useHistory } from 'react-router-dom';
 
+interface Props {
+  onClick: () => void;
+}
+
 const Skin = styled.div({
   position: 'absolute',
   background: '#000',
@@ -38,28 +42,16 @@ const Close = styled.div({
   right: 0,
 });
 
-export const View: React.FC = ({ children }) => {
-  const [showModalState, setShowModalState] = useState(true);
-  let history = useHistory();
+export const View: React.FC<Props> = ({ onClick, children }) => {
   return (
     <>
-      {showModalState ? (
-        <>
-          <Modal>
-            <ModalContents>{children}</ModalContents>
-            <Close>
-              <Button.Contained
-                iconName="close"
-                onClick={() => {
-                  setShowModalState(!showModalState);
-                  history.push('/');
-                }}
-              />
-            </Close>
-          </Modal>
-          <Skin />
-        </>
-      ) : null}
+      <Modal>
+        <ModalContents>{children}</ModalContents>
+        <Close>
+          <Button.Contained iconName="close" onClick={onClick} />
+        </Close>
+      </Modal>
+      <Skin />
     </>
   );
 };
