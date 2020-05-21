@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { IconTextButton } from '../atoms/Button';
+import * as Button from '../atoms/Button';
 
 interface Props {
   roomName: string;
@@ -30,7 +30,24 @@ const Video = styled.video({
   background: '#ccc',
 });
 
+const FromSection = styled.div({
+  display: 'flex',
+  margin: '16px 0',
+});
+
 const Footer = styled.div({});
+
+const ToggleIconButton = ({ text }) => {
+  const [clickState, setClickState] = useState(false);
+  return (
+    <Button.Contained
+      iconName={text}
+      onClick={() => setClickState(!clickState)}
+      iconColor={clickState}
+      hasBorder
+    />
+  );
+};
 
 export const View: React.FC<Props> = ({ roomName }) => {
   return (
@@ -40,14 +57,41 @@ export const View: React.FC<Props> = ({ roomName }) => {
         <Column>
           <RoomName>Session: {roomName}</RoomName>
           <Video />
-          <IconTextButton iconName="camera_alt" hasBorder>
+          <Button.Contained iconName="camera_alt" hasBorder>
             Capture Avatar
-          </IconTextButton>
+          </Button.Contained>
         </Column>
-        <Column>aaaa</Column>
+        <Column>
+          <FromSection>
+            <ToggleIconButton text="mic" />
+            <select name="">
+              <option value="a">a</option>
+              <option value="b">b</option>
+              <option value="c">c</option>
+            </select>
+          </FromSection>
+          <FromSection>
+            <ToggleIconButton text="videocam" />
+            <select name="">
+              <option value="a">a</option>
+              <option value="b">b</option>
+              <option value="c">c</option>
+            </select>
+          </FromSection>
+          <FromSection>
+            <ToggleIconButton text="screen_share" />
+            <input type="text" />
+          </FromSection>
+          <FromSection>
+            <ToggleIconButton text="person" />
+            <input type="text" />
+          </FromSection>
+        </Column>
       </Body>
       <Footer>
-        <IconTextButton hasBorder>JOIN</IconTextButton>
+        <Button.Contained hasBorder width="100%">
+          JOIN
+        </Button.Contained>
       </Footer>
     </>
   );

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-interface Props {
-  iconColor?: boolean;
-  onClick?: () => void;
-}
-
 interface IconTextProps {
   iconName?: string;
   hasBorder?: boolean;
+  iconColor?: boolean;
+  width?: string | number;
+  onClick?: () => void;
 }
 
 export const CommonButtonStyled = {
@@ -18,42 +16,22 @@ export const CommonButtonStyled = {
   cursor: 'pointer',
 };
 
-export const IconButtonStyled = styled.button(
+const ButtonStyled = styled.button(
   CommonButtonStyled,
   {
-    minWidth: 0,
-    width: 40,
-    height: 40,
-    flexShrink: 0,
-    borderRadius: '50%',
-  },
-  (props: { iconColor?: boolean }) => ({
-    color: props.iconColor ? '#ff0000' : 'inherit',
-  })
-);
-
-export const IconButton: React.FC<Props> = ({
-  iconColor,
-  onClick,
-  children,
-}) => {
-  return (
-    <IconButtonStyled onClick={onClick} iconColor={iconColor}>
-      <i className="material-icons">{children}</i>
-    </IconButtonStyled>
-  );
-};
-
-const IconTextButtonStyled = styled.button(
-  CommonButtonStyled,
-  {
+    display: 'inline-flex',
     padding: '4px 8px',
-    display: 'flex',
     alignItems: 'center',
     borderRadius: 4,
   },
-  (props: { hasBorder?: boolean }) => ({
+  (props: {
+    hasBorder?: boolean;
+    iconColor?: boolean;
+    width?: string | number;
+  }) => ({
     border: props.hasBorder ? '1px solid #ddd' : 'none',
+    color: props.iconColor ? '#ff0000' : 'inherit',
+    width: props.width ? props.width : 'auto',
   })
 );
 
@@ -61,15 +39,23 @@ const IconTextButtonLabel = styled.span({
   marginLeft: 4,
 });
 
-export const IconTextButton: React.FC<IconTextProps> = ({
+export const Contained: React.FC<IconTextProps> = ({
   iconName,
   hasBorder,
+  iconColor,
+  onClick,
+  width,
   children,
 }) => {
   return (
-    <IconTextButtonStyled hasBorder={hasBorder}>
-      <i className="material-icons">{iconName}</i>
-      <IconTextButtonLabel>{children}</IconTextButtonLabel>
-    </IconTextButtonStyled>
+    <ButtonStyled
+      hasBorder={hasBorder}
+      iconColor={iconColor}
+      onClick={onClick}
+      width={width}
+    >
+      {iconName ? <i className="material-icons">{iconName}</i> : null}
+      {children ? <IconTextButtonLabel>{children}</IconTextButtonLabel> : null}
+    </ButtonStyled>
   );
 };

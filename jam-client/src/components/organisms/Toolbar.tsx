@@ -41,12 +41,11 @@ const LogoLink = styled.a({
 const ToggleIconButton = ({ text }) => {
   const [clickState, setClickState] = useState(false);
   return (
-    <Button.IconButton
+    <Button.Contained
+      iconName={text}
       onClick={() => setClickState(!clickState)}
       iconColor={clickState}
-    >
-      {text}
-    </Button.IconButton>
+    />
   );
 };
 
@@ -67,7 +66,7 @@ export const View: React.FC = ({ children }) => {
         <ToggleIconButton text="power_settings_new" />
       </Center>
       <Right>
-        <Button.IconButton>chat</Button.IconButton>
+        <Button.Contained iconName="chat" />
       </Right>
     </Toolbar>
   );
