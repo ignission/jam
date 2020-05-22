@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import * as Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
@@ -38,24 +38,36 @@ const LogoLink = styled.a({
   margin: '0 16px',
 });
 
-export const View: React.FC = ({ children }) => (
-  <Toolbar>
-    <Left>
-      <LogoLink href="https://openvidu.io/" target="_blank">
-        {/* <LogoImg alt="OpenVidu Logo" src="images/openvidu_logo.png" /> */}
-        <Logo width={40} color="#fff" />
-      </LogoLink>
-      <RoomLable>{children}</RoomLable>
-    </Left>
-    <Center>
-      <Button.IconButton>mic</Button.IconButton>
-      <Button.IconButton>videocam</Button.IconButton>
-      <Button.IconButton>screen_share</Button.IconButton>
-      <Button.IconButton>fullscreen</Button.IconButton>
-      <Button.IconButton>power_settings_new</Button.IconButton>
-    </Center>
-    <Right>
-      <Button.IconButton>chat</Button.IconButton>
-    </Right>
-  </Toolbar>
-);
+const ToggleIconButton = ({ text }) => {
+  const [clickState, setClickState] = useState(false);
+  return (
+    <Button.Contained
+      iconName={text}
+      onClick={() => setClickState(!clickState)}
+      iconColor={clickState}
+    />
+  );
+};
+
+export const View: React.FC = ({ children }) => {
+  return (
+    <Toolbar>
+      <Left>
+        <LogoLink href="/" target="_blank">
+          <Logo width={40} color="#fff" />
+        </LogoLink>
+        <RoomLable>{children}</RoomLable>
+      </Left>
+      <Center>
+        <ToggleIconButton text="mic" />
+        <ToggleIconButton text="videocam" />
+        <ToggleIconButton text="screen_share" />
+        <ToggleIconButton text="fullscreen" />
+        <ToggleIconButton text="power_settings_new" />
+      </Center>
+      <Right>
+        <Button.Contained iconName="chat" />
+      </Right>
+    </Toolbar>
+  );
+};

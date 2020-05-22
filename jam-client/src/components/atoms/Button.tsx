@@ -1,32 +1,61 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-export const IconButtonStyled = styled.button(
+interface IconTextProps {
+  iconName?: string;
+  hasBorder?: boolean;
+  iconColor?: boolean;
+  width?: string | number;
+  onClick?: () => void;
+}
+
+export const CommonButtonStyled = {
+  background: 'transparent',
+  border: 'transparent',
+  padding: 0,
+  cursor: 'pointer',
+};
+
+const ButtonStyled = styled.button(
+  CommonButtonStyled,
   {
-    // color: 'inherit',
-    background: 'transparent',
-    border: 'transparent',
-    padding: 0,
-    minWidth: 0,
-    width: 40,
-    height: 40,
-    flexShrink: 0,
-    cursor: 'pointer',
-    borderRadius: '50%',
+    display: 'inline-flex',
+    padding: '4px 8px',
+    alignItems: 'center',
+    borderRadius: 4,
   },
-  (props: { iconColor: boolean }) => ({
+  (props: {
+    hasBorder?: boolean;
+    iconColor?: boolean;
+    width?: string | number;
+  }) => ({
+    border: props.hasBorder ? '1px solid #ddd' : 'none',
     color: props.iconColor ? '#ff0000' : 'inherit',
+    width: props.width ? props.width : 'auto',
   })
 );
 
-export const IconButton: React.FC = ({ children }) => {
-  const [clickState, setClickState] = useState(false);
+const IconTextButtonLabel = styled.span({
+  marginLeft: 4,
+});
+
+export const Contained: React.FC<IconTextProps> = ({
+  iconName,
+  hasBorder,
+  iconColor,
+  onClick,
+  width,
+  children,
+}) => {
   return (
-    <IconButtonStyled
-      onClick={() => setClickState(!clickState)}
-      iconColor={clickState}
+    <ButtonStyled
+      hasBorder={hasBorder}
+      iconColor={iconColor}
+      onClick={onClick}
+      width={width}
     >
-      <i className="material-icons">{children}</i>
-    </IconButtonStyled>
+      {iconName ? <i className="material-icons">{iconName}</i> : null}
+      {children ? <IconTextButtonLabel>{children}</IconTextButtonLabel> : null}
+    </ButtonStyled>
   );
 };

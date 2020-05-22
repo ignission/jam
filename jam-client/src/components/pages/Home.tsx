@@ -93,7 +93,7 @@ const Home: React.FC<Props> = ({ onSubmit }) => {
   return (
     <Section>
       <Header>
-        <a href="https://openvidu.io/" target="_blank">
+        <a href="/">
           <HeaderImg>
             <Logo width={60} />
           </HeaderImg>
