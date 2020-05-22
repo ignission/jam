@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import * as Button from '../atoms/Button';
-import { useHistory } from 'react-router-dom';
 
 interface Props {
   onClick: () => void;
