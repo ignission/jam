@@ -1,13 +1,13 @@
 {
   "sqltools.connections": [
     {
-      "database": "emoi",
+      "database": "jam",
       "dialect": "MySQL",
-      "name": "emoi",
-      "password": "emoi",
+      "name": "Local",
+      "password": "jam",
       "port": 33055,
       "server": "127.0.0.1",
-      "username": "emoi"
+      "username": "jam"
     }
   ]
 }
