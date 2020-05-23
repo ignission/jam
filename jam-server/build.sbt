@@ -66,6 +66,16 @@ lazy val server = (project in file("jam-server"))
       "com.typesafe.akka"       %% "akka-stream-testkit"  % akkaVersion     % "test",
       "com.typesafe.akka"       %% "akka-http-testkit"    % akkaHttpVersion % "test"
     ),
-    assemblyJarName in assembly := "jam-server.jar"
+    // sbt assembly
+    assemblyJarName in assembly := "jam-server.jar",
+    // database migration
+    flywayUrl := "jdbc:mysql://localhost:33055/jam",
+    flywayUser := "jam",
+    flywayPassword := "jam",
+    flywayLocations += "db/migration",
+    flywayUrl in Test := "jdbc:mysql://localhost:33056/jam;shutdown=true",
+    flywayUser in Test := "jam",
+    flywayPassword in Test := "jam"
   )
+  .enablePlugins(FlywayPlugin)
   .dependsOn(domain, infra, openviduClient)
