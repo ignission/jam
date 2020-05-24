@@ -1,0 +1,13 @@
+{
+  "sqltools.connections": [
+    {
+      "database": "jam",
+      "dialect": "MySQL",
+      "name": "Local",
+      "password": "jam",
+      "port": 33055,
+      "server": "127.0.0.1",
+      "username": "jam"
+    }
+  ]
+}

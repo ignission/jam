@@ -8,14 +8,14 @@ init: ## Initialize and set up local development environment
 
 up: ## Start
 	docker-compose pull server
-	docker-compose up -d
+	docker-compose up -d server kms db
 	docker-compose logs -f
 
 down: ## Stop and destroy
-	docker-compose down
+	docker-compose down -v
 
 dev: ## For development (server + client)
-	docker-compose up -d kms && \
+	docker-compose up -d kms db && \
 	cd jam-client && yarn hot & \
 	cd jam-server && make dev-only || \
 	cd ../ ; jobs -p | xargs kill && \

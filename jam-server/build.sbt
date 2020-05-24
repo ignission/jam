@@ -58,12 +58,24 @@ lazy val server = (project in file("jam-server"))
       "org.apache.logging.log4j" % "log4j-core"           % log4j2Version,
       "org.apache.logging.log4j" % "log4j-api"            % log4j2Version,
       "org.apache.logging.log4j" % "log4j-slf4j-impl"     % log4j2Version,
+      "mysql"                    % "mysql-connector-java" % "8.0.17",
+      "io.getquill"             %% "quill-jdbc"           % "3.5.1",
       "com.typesafe"             % "config"               % "1.4.0",
       "ch.megard"               %% "akka-http-cors"       % "0.4.3",
       "org.scalatest"           %% "scalatest"            % "3.1.2"         % "test",
       "com.typesafe.akka"       %% "akka-stream-testkit"  % akkaVersion     % "test",
       "com.typesafe.akka"       %% "akka-http-testkit"    % akkaHttpVersion % "test"
     ),
-    assemblyJarName in assembly := "jam-server.jar"
+    // sbt assembly
+    assemblyJarName in assembly := "jam-server.jar",
+    // database migration
+    flywayUrl := "jdbc:mysql://localhost:33055/jam",
+    flywayUser := "jam",
+    flywayPassword := "jam",
+    flywayLocations += "db/migration",
+    flywayUrl in Test := "jdbc:mysql://localhost:33056/jam;shutdown=true",
+    flywayUser in Test := "jam",
+    flywayPassword in Test := "jam"
   )
+  .enablePlugins(FlywayPlugin)
   .dependsOn(domain, infra, openviduClient)
