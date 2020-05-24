@@ -44,7 +44,7 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
   def routes: Route =
     cors() {
       pathPrefix("rest" / "api" / "v1") {
-        sessionRoutes(restDSL) ~ tokenRoutes
+        sessionRoutes(restDSL) ~ tokenRoutes ~ authRoutes
       } ~ defaultRoute
     }
 
@@ -57,7 +57,6 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
         post {
           entity(as[CreateSessionRequest]) { req =>
             restDSL.createSession(req.sessionId).handleResponse
-
           }
         }
       )
@@ -69,6 +68,21 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
         restDSL.generateToken(SessionId(sessionId)).handleResponse
       }
     }
+
+  private def authRoutes: Route = {
+    def signUpRoute: Route =
+      path("signup") {
+        post {
+          entity(as[SignUpRequest]) { req =>
+            restDSL.signUp(req).handleResponse
+          }
+        }
+      }
+
+    pathPrefix("auth") {
+      signUpRoute
+    }
+  }
 
   private def defaultRoute: Route =
     pathPrefix(".+".r) { _ =>

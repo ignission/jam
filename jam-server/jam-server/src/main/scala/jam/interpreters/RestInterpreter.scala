@@ -14,8 +14,10 @@ import tech.ignission.openvidu4s.core.datas.{
   Session,
   SessionId
 }
+import jam.rest.routes.SignUpRequest
 
 class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
+
   import jam.dsl.syntax._
 
   override def listSessions: Result[Task, Seq[Session]] =
@@ -28,5 +30,7 @@ class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
     openviduAPI.sessionAPI
       .initializeSession(InitializeSession(sessionId))
       .mapError(OpenViduClientError)
+
+  override def signUp(requst: SignUpRequest): RestDSL.Result[Task, Unit] = ???
 
 }

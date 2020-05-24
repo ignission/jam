@@ -5,6 +5,7 @@ import spray.json._
 import jam.rest.routes.CreateSessionRequest
 
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session}
+import jam.rest.routes.SignUpRequest
 
 object SprayJsonFormats extends DefaultJsonProtocol {
   import tech.ignission.openvidu4s.core.formatters.SprayJsonFormats._
@@ -40,4 +41,5 @@ object SprayJsonFormats extends DefaultJsonProtocol {
   }
 
   implicit val createSessionRequestFormat = jsonFormat1(CreateSessionRequest)
+  implicit val signUpRequestFormat        = jsonFormat3(SignUpRequest)
 }
