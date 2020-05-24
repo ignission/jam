@@ -43,7 +43,15 @@ lazy val openvidu4s = (project in file("openvidu4s")).settings(commonSettings)
 
 lazy val domain = (project in file("jam-domain")).settings(commonSettings)
 
-lazy val infra = (project in file("jam-infrastructure")).settings(commonSettings).dependsOn(domain)
+lazy val infra = (project in file("jam-infrastructure"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "mysql"        % "mysql-connector-java" % "8.0.17",
+      "io.getquill" %% "quill-jdbc"           % "3.5.1"
+    )
+  )
+  .dependsOn(domain)
 
 lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
@@ -58,8 +66,6 @@ lazy val server = (project in file("jam-server"))
       "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
       "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
       "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
-      "mysql"                               % "mysql-connector-java" % "8.0.17",
-      "io.getquill"                        %% "quill-jdbc"           % "3.5.1",
       "com.typesafe"                        % "config"               % "1.4.0",
       "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
       "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
