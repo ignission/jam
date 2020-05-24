@@ -49,22 +49,25 @@ lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel"           %% "cats-core"            % catsVersion,
-      "io.monix"                %% "monix"                % monixVersion,
-      "com.typesafe.akka"       %% "akka-http"            % akkaHttpVersion,
-      "com.typesafe.akka"       %% "akka-http-spray-json" % akkaHttpVersion,
-      "com.typesafe.akka"       %% "akka-stream"          % akkaVersion,
-      "com.typesafe.akka"       %% "akka-actor"           % akkaVersion,
-      "org.apache.logging.log4j" % "log4j-core"           % log4j2Version,
-      "org.apache.logging.log4j" % "log4j-api"            % log4j2Version,
-      "org.apache.logging.log4j" % "log4j-slf4j-impl"     % log4j2Version,
-      "mysql"                    % "mysql-connector-java" % "8.0.17",
-      "io.getquill"             %% "quill-jdbc"           % "3.5.1",
-      "com.typesafe"             % "config"               % "1.4.0",
-      "ch.megard"               %% "akka-http-cors"       % "0.4.3",
-      "org.scalatest"           %% "scalatest"            % "3.1.2"         % "test",
-      "com.typesafe.akka"       %% "akka-stream-testkit"  % akkaVersion     % "test",
-      "com.typesafe.akka"       %% "akka-http-testkit"    % akkaHttpVersion % "test"
+      "org.typelevel"                      %% "cats-core"            % catsVersion,
+      "io.monix"                           %% "monix"                % monixVersion,
+      "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
+      "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
+      "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
+      "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
+      "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
+      "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
+      "mysql"                               % "mysql-connector-java" % "8.0.17",
+      "io.getquill"                        %% "quill-jdbc"           % "3.5.1",
+      "com.typesafe"                        % "config"               % "1.4.0",
+      "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
+      "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
+      "org.springframework.security"        % "spring-security-web"  % "5.3.2.RELEASE",
+      // test
+      "org.scalatest"     %% "scalatest"           % "3.1.2"         % "test",
+      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",
+      "com.typesafe.akka" %% "akka-http-testkit"   % akkaHttpVersion % "test"
     ),
     // sbt assembly
     assemblyJarName in assembly := "jam-server.jar",
