@@ -1,9 +1,10 @@
 package jam.interpreters
 
-import jam.dsl.AuthDSL
 import monix.eval.Task
-import jam.domains.auth.Password
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+
+import jam.domains.auth.Password
+import jam.dsl.AuthDSL
 
 class AuthInterpreter() extends AuthDSL[Task] {
 

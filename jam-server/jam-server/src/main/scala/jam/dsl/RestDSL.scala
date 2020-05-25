@@ -1,9 +1,9 @@
 package jam.dsl
 
 import jam.dsl.RestDSL.Result
+import jam.rest.routes.SignUpRequest
 
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId}
-import jam.rest.routes.SignUpRequest
 
 trait RestDSL[F[_]] {
   def listSessions: Result[F, Seq[Session]]

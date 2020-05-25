@@ -52,7 +52,6 @@ lazy val infra = (project in file("jam-infrastructure"))
       val quillVersion = "3.5.1"
       Seq(
         "mysql"        % "mysql-connector-java" % "8.0.17",
-        "io.getquill" %% "quill-jdbc"           % quillVersion,
         "io.getquill" %% "quill-jdbc-monix"     % quillVersion
       )
     }

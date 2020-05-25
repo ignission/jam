@@ -1,3 +1,5 @@
 package jam.domains.auth
 
-case class Account()
+import jam.domains.Id
+
+case class Account(id: Id[Account], name: String)

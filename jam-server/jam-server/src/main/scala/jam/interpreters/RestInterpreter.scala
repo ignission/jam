@@ -4,6 +4,7 @@ import monix.eval.Task
 
 import jam.dsl.RestDSL.Result
 import jam.dsl.{OpenViduClientError, RestDSL}
+import jam.rest.routes.SignUpRequest
 
 import tech.ignission.openvidu4s.core.apis.AllAPI
 import tech.ignission.openvidu4s.core.datas.{
@@ -14,7 +15,6 @@ import tech.ignission.openvidu4s.core.datas.{
   Session,
   SessionId
 }
-import jam.rest.routes.SignUpRequest
 
 class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
 

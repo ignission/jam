@@ -9,8 +9,8 @@ dev-only: ## For root call
 dev-test: ## Test with reloading
 	docker-compose up -d kms db-test && sbt "~test" -Dconfig.resource=test.conf
 
-format: ## Format code with scalafmt
-	sbt "scalafmt; test:scalafmt; scalafmtSbt"
+fixmat: ## Format code and fix
+	sbt "format; fix"
 
 .PHONY: help
 help:
