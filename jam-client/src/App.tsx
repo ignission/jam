@@ -9,6 +9,9 @@ const Home = loadable(() => import('components/pages/Home'));
 const Room = loadable(() =>
   import('components/pages/Room').then(({ Room }) => Room)
 );
+const Lobby = loadable(() =>
+  import('components/pages/Lobby').then(({ Lobby }) => Lobby)
+);
 
 const App: React.FC = () => {
   // services
@@ -27,7 +30,8 @@ const App: React.FC = () => {
           <Home onSubmit={(name) => props.history.push(name)} />
         )}
       />
-      <Route path="/:id" component={Room} />
+      <Route path="/lobby" component={Lobby} />
+      <Route path="/rooms/:id" component={Room} />
     </BrowserRouter>
   );
 };
