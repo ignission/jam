@@ -9,6 +9,7 @@ const Home = loadable(() => import('components/pages/Home'));
 const Room = loadable(() =>
   import('components/pages/Room').then(({ Room }) => Room)
 );
+const Login = loadable(() => import('components/pages/Login'));
 
 const App: React.FC = () => {
   // services
@@ -27,7 +28,8 @@ const App: React.FC = () => {
           <Home onSubmit={(name) => props.history.push(name)} />
         )}
       />
-      <Route path="/:id" component={Room} />
+      <Route exact strict path="/:id" component={Room} />
+      <Route path="/login/" component={Login} />
     </BrowserRouter>
   );
 };
