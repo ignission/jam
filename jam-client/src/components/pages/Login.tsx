@@ -31,7 +31,12 @@ const Box = styled.div({
 });
 
 const Contents = styled.div({
+  textAlign: 'center',
   maxWidth: 400,
+});
+
+const Head = styled.h1({
+  color: '#fff',
 });
 
 const View: React.FC = () => {
@@ -40,6 +45,7 @@ const View: React.FC = () => {
     <Base>
       <Box>
         <Contents>
+          <Head>LOGIN</Head>
           <form className={classes.root} noValidate autoComplete="off">
             <TextField label="ID" type="text" variant="filled" fullWidth />
             <TextField
