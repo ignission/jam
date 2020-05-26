@@ -7,8 +7,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-        // width: 200,
+        padding: theme.spacing(1),
       },
     },
   })
@@ -27,16 +26,12 @@ const Box = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',
-  // height: '100%',
   maxWidth: 600,
-  // background: '#fff',
   padding: 80,
 });
 
 const Contents = styled.div({
-  // background: '#fff',
   maxWidth: 400,
-  // height: '100%',
 });
 
 const View: React.FC = () => {
