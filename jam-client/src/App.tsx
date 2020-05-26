@@ -28,7 +28,7 @@ const App: React.FC = () => {
         exact
         path="/"
         render={(props) => (
-          <Home onSubmit={(name) => props.history.push(name)} />
+          <Home onSubmit={(name) => props.history.push(`/rooms/${name}`)} />
         )}
       />
       <Route path="/login" component={Login} />
