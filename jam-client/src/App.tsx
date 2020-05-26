@@ -10,6 +10,9 @@ const Room = loadable(() =>
   import('components/pages/Room').then(({ Room }) => Room)
 );
 const Login = loadable(() => import('components/pages/Login'));
+const Lobby = loadable(() =>
+  import('components/pages/Lobby').then(({ Lobby }) => Lobby)
+);
 
 const App: React.FC = () => {
   // services
@@ -28,8 +31,9 @@ const App: React.FC = () => {
           <Home onSubmit={(name) => props.history.push(name)} />
         )}
       />
-      <Route exact strict path="/:id" component={Room} />
-      <Route path="/login/" component={Login} />
+      <Route path="/login" component={Login} />
+      <Route path="/lobby" component={Lobby} />
+      <Route path="/rooms/:id" component={Room} />
     </BrowserRouter>
   );
 };
