@@ -4,7 +4,10 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import monix.eval.Task
 
+import jam.domains.auth.AccountRepository
 import jam.dsl.{AppError, InternalError, RestDSL}
+import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
+import jam.infrastructure.persistence.interpreters.mysql.types._
 import jam.interpreters.RestInterpreter
 import jam.rest.Server
 
@@ -13,7 +16,6 @@ import tech.ignission.openvidu4s.core.Basic
 import tech.ignission.openvidu4s.core.apis.AllAPI
 
 import scala.util.control.NonFatal
-
 object App {
   import dsl.syntax._
 
@@ -23,13 +25,15 @@ object App {
   type Result[A]     = Either[AppError, A]
   type TaskResult[A] = Task[Result[A]]
 
+  implicit val accountRepository: AccountRepository[Query] = AccountTableOps
+
   private def startServer(
       interface: String,
       port: Int,
       restDSL: RestDSL[Task]
   ): TaskResult[Http.ServerBinding] =
     Task.deferFuture {
-      Server.start(interface, port, restDSL).map(Right(_)).recover {
+      Server.start[Query](interface, port, restDSL).map(Right(_)).recover {
         case NonFatal(ex) =>
           Left(InternalError(ex): AppError)
       }

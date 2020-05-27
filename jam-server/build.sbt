@@ -19,14 +19,16 @@ lazy val commonSettings = Seq(
     "-Yrangepos",
     "-Ywarn-unused",
     "-Xlint",
-    "-Xfatal-warnings"
+    "-Xfatal-warnings",
+    "-Ymacro-annotations"
   ),
   libraryDependencies ++= {
     val catsVersion  = "2.1.1"
     val monixVersion = "3.2.0"
     Seq(
-      "org.typelevel" %% "cats-core" % catsVersion,
-      "io.monix"      %% "monix"     % monixVersion
+      "org.typelevel"        %% "cats-core"  % catsVersion,
+      "io.monix"             %% "monix"      % monixVersion,
+      "com.github.mpilquist" %% "simulacrum" % "0.19.0"
     )
   },
   // scalafix

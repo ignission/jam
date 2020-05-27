@@ -4,17 +4,20 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Route, StandardRoute}
+import cats.Monad
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
+import jam.domains.auth.AccountRepository
 import jam.dsl.{AppError, OpenViduClientError, RestDSL}
+import jam.infrastructure.persistence.interpreters.mysql.types._
 
 import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
+class ApiRoute[F[_]: Monad: AccountRepository](restDSL: RestDSL[Task])(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
@@ -74,7 +77,7 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
       path("signup") {
         post {
           entity(as[SignUpRequest]) { req =>
-            restDSL.signUp(req).handleResponse
+            restDSL.signUp[F](req).handleResponse
           }
         }
       }
