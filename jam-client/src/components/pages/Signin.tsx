@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import * as Button from '../atoms/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,7 +46,7 @@ const View: React.FC = () => {
     <Base>
       <Box>
         <Contents>
-          <Head>LOGIN</Head>
+          <Head>Sign in</Head>
           <form className={classes.root} noValidate autoComplete="off">
             <TextField label="ID" type="text" variant="filled" fullWidth />
             <TextField
@@ -55,6 +56,7 @@ const View: React.FC = () => {
               variant="filled"
               fullWidth
             />
+            <Button.Contained hasBorder>Sign in</Button.Contained>
           </form>
         </Contents>
       </Box>

@@ -9,7 +9,7 @@ const Home = loadable(() => import('components/pages/Home'));
 const Room = loadable(() =>
   import('components/pages/Room').then(({ Room }) => Room)
 );
-const Login = loadable(() => import('components/pages/Login'));
+const Signin = loadable(() => import('components/pages/Signin'));
 const Lobby = loadable(() =>
   import('components/pages/Lobby').then(({ Lobby }) => Lobby)
 );
@@ -31,7 +31,7 @@ const App: React.FC = () => {
           <Home onSubmit={(name) => props.history.push(`/rooms/${name}`)} />
         )}
       />
-      <Route path="/login" component={Login} />
+      <Route path="/signin" component={Signin} />
       <Route path="/lobby" component={Lobby} />
       <Route path="/rooms/:id" component={Room} />
     </BrowserRouter>
