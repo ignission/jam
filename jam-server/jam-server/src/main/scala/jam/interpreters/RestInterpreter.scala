@@ -20,7 +20,9 @@ import tech.ignission.openvidu4s.core.datas.{
   SessionId
 }
 
-class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
+class RestInterpreter(openviduAPI: AllAPI[Task])(implicit
+    accountRepository: AccountRepository[Query]
+) extends RestDSL[Task] {
 
   import jam.dsl.syntax._
 
@@ -35,4 +37,8 @@ class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
       .initializeSession(InitializeSession(sessionId))
       .mapError(OpenViduClientError)
 
+  override def signUp(requst: SignUpRequest): RestDSL.Result[Task, Unit] = {
+    accountRepository.find(Id[Account](1))
+    ???
+  }
 }

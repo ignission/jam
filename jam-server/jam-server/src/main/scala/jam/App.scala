@@ -33,7 +33,7 @@ object App {
       restDSL: RestDSL[Task]
   ): TaskResult[Http.ServerBinding] =
     Task.deferFuture {
-      Server.start[Query](interface, port, restDSL).map(Right(_)).recover {
+      Server.start(interface, port, restDSL).map(Right(_)).recover {
         case NonFatal(ex) =>
           Left(InternalError(ex): AppError)
       }

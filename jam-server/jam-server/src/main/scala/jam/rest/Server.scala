@@ -15,8 +15,7 @@ import jam.rest.routes.{ApiRoute, StaticRoute}
 import scala.concurrent.Future
 
 object Server {
-  def start[F[_]: Monad: AccountRepository](interface: String, port: Int, restDSL: RestDSL[Task])(
-      implicit
+  def start(interface: String, port: Int, restDSL: RestDSL[Task])(implicit
       system: ActorSystem,
       s: Scheduler
   ): Future[Http.ServerBinding] = {

@@ -17,7 +17,7 @@ import jam.infrastructure.persistence.interpreters.mysql.types._
 import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-class ApiRoute[F[_]: Monad: AccountRepository](restDSL: RestDSL[Task])(implicit s: Scheduler)
+class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
@@ -77,7 +77,7 @@ class ApiRoute[F[_]: Monad: AccountRepository](restDSL: RestDSL[Task])(implicit 
       path("signup") {
         post {
           entity(as[SignUpRequest]) { req =>
-            restDSL.signUp[F](req).handleResponse
+            restDSL.signUp(req).handleResponse
           }
         }
       }
