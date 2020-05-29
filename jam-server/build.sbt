@@ -26,9 +26,8 @@ lazy val commonSettings = Seq(
     val catsVersion  = "2.1.1"
     val monixVersion = "3.2.0"
     Seq(
-      "org.typelevel"        %% "cats-core"  % catsVersion,
-      "io.monix"             %% "monix"      % monixVersion,
-      "com.github.mpilquist" %% "simulacrum" % "0.19.0"
+      "org.typelevel" %% "cats-core" % catsVersion,
+      "io.monix"      %% "monix"     % monixVersion
     )
   },
   // scalafix
