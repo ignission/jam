@@ -1,34 +1,36 @@
 package jam.infrastructure.persistence.interpreters.mysql.ops
 
 import cats.data._
+import io.getquill.{MysqlMonixJdbcContext, SnakeCase}
+import monix.eval.Task
 
+import jam.application.accounts.AccountRepository
 import jam.domains.Id
-import jam.domains.auth.{Account, AccountRepository}
-import jam.infrastructure.persistence.interpreters.mysql.types._
+import jam.domains.auth.Account
 
-object AccountTableOps extends AccountRepository[Query] {
+object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[SnakeCase]] {
   import jam.infrastructure.persistence.interpreters.mysql.MappingTypes._
 
-  override def store(account: Account): Query[Id[Account]] =
-    Kleisli { implicit ctx =>
-      import ctx._
-
-      val q = quote {
-        query[Account].insert(lift(account)).onConflictIgnore(_.id)
-      }
-
-      ctx.run(q).map(Id[Account](_))
+  override def store(
+      account: Account
+  )(implicit ctx: MysqlMonixJdbcContext[SnakeCase]): Task[Id[Account]] = {
+    import ctx._
+    val q = quote {
+      query[Account].insert(lift(account)).onConflictIgnore(_.id)
     }
 
-  override def find(id: Id[Account]): Query[Option[Account]] =
-    Kleisli { implicit ctx =>
-      import ctx._
+    ctx.run(q).map(Id[Account](_))
+  }
 
-      val q = quote {
-        query[Account].filter(_.id == lift(id))
-      }
+  override def find(id: Id[Account])(implicit
+      ctx: MysqlMonixJdbcContext[SnakeCase]
+  ): Task[Option[Account]] = {
+    import ctx._
 
-      ctx.run(q).map(_.headOption)
+    val q = quote {
+      query[Account].filter(_.id == lift(id))
     }
 
+    ctx.run(q).map(_.headOption)
+  }
 }

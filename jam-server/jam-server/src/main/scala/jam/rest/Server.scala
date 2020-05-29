@@ -7,9 +7,7 @@ import cats.Monad
 import monix.eval.Task
 import monix.execution.Scheduler
 
-import jam.domains.auth.AccountRepository
 import jam.dsl.RestDSL
-import jam.infrastructure.persistence.interpreters.mysql.types._
 import jam.rest.routes.{ApiRoute, StaticRoute}
 
 import scala.concurrent.Future

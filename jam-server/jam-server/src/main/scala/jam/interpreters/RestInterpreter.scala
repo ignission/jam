@@ -4,10 +4,8 @@ import cats.Monad
 import monix.eval.Task
 
 import jam.domains.Id
-import jam.domains.auth.{Account, AccountRepository}
 import jam.dsl.RestDSL.Result
 import jam.dsl.{OpenViduClientError, RestDSL}
-import jam.infrastructure.persistence.interpreters.mysql.types._
 import jam.rest.routes.SignUpRequest
 
 import tech.ignission.openvidu4s.core.apis.AllAPI
@@ -20,9 +18,7 @@ import tech.ignission.openvidu4s.core.datas.{
   SessionId
 }
 
-class RestInterpreter(openviduAPI: AllAPI[Task])(implicit
-    accountRepository: AccountRepository[Query]
-) extends RestDSL[Task] {
+class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
 
   import jam.dsl.syntax._
 
@@ -37,8 +33,8 @@ class RestInterpreter(openviduAPI: AllAPI[Task])(implicit
       .initializeSession(InitializeSession(sessionId))
       .mapError(OpenViduClientError)
 
-  override def signUp(requst: SignUpRequest): RestDSL.Result[Task, Unit] = {
-    accountRepository.find(Id[Account](1))
+  override def signUp(requst: SignUpRequest): Result[Task, Unit] = {
+    // accountRepository.find(Id[Account](1))
     ???
   }
 }

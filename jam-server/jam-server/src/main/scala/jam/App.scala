@@ -4,10 +4,9 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import monix.eval.Task
 
-import jam.domains.auth.AccountRepository
+import jam.application.accounts.AccountRepository
 import jam.dsl.{AppError, InternalError, RestDSL}
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
-import jam.infrastructure.persistence.interpreters.mysql.types._
 import jam.interpreters.RestInterpreter
 import jam.rest.Server
 
@@ -25,7 +24,7 @@ object App {
   type Result[A]     = Either[AppError, A]
   type TaskResult[A] = Task[Result[A]]
 
-  implicit val accountRepository: AccountRepository[Query] = AccountTableOps
+  implicit val accountRepository = AccountTableOps
 
   private def startServer(
       interface: String,

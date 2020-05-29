@@ -10,9 +10,7 @@ import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.domains.auth.AccountRepository
 import jam.dsl.{AppError, OpenViduClientError, RestDSL}
-import jam.infrastructure.persistence.interpreters.mysql.types._
 
 import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}

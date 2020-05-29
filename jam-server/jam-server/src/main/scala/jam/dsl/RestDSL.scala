@@ -3,7 +3,6 @@ package jam.dsl
 import cats.Monad
 
 import jam.domains.Id
-import jam.domains.auth.{Account, AccountRepository}
 import jam.dsl.RestDSL.Result
 import jam.rest.routes.SignUpRequest
 

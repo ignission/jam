@@ -46,6 +46,9 @@ lazy val openvidu4s = (project in file("openvidu4s")).settings(commonSettings)
 
 lazy val domain = (project in file("jam-domain")).settings(commonSettings)
 
+lazy val application =
+  (project in file("jam-application")).settings(commonSettings).dependsOn(domain)
+
 lazy val infra = (project in file("jam-infrastructure"))
   .settings(commonSettings)
   .settings(
@@ -57,7 +60,7 @@ lazy val infra = (project in file("jam-infrastructure"))
       )
     }
   )
-  .dependsOn(domain)
+  .dependsOn(domain, application)
 
 lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
@@ -96,4 +99,4 @@ lazy val server = (project in file("jam-server"))
     flywayPassword in Test := "jam"
   )
   .enablePlugins(FlywayPlugin)
-  .dependsOn(domain, infra, openvidu4s)
+  .dependsOn(domain, infra, application, openvidu4s)
