@@ -1,7 +1,7 @@
 package jam.infrastructure.persistence.interpreters.mysql.tables
 
-import io.getquill.MysqlMonixJdbcContext
-import io.getquill.SnakeCase
+import io.getquill.{MysqlMonixJdbcContext, SnakeCase}
+
 import jam.domains.auth.Account
 
 object AccountTable {

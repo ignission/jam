@@ -13,13 +13,12 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import jam.application.AppModule
-import jam.application.accounts.{AccountModule, AccountService}
+import jam.application.accounts.{AccountModule, AccountService, SignUpRequest}
 import jam.dsl.RestDSL
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
 
 import tech.ignission.openvidu4s.core.datas.SessionId
-import jam.application.accounts.SignUpRequest
 
 class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
 
