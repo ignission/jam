@@ -1,7 +1,9 @@
 .DEFAULT_GOAL := help
 
 dev: ## For development
-	docker-compose up -d kms db && make dev-only
+	docker-compose up -d kms db
+	make NAME=jam-db wait-db
+	make dev-only
 
 dev-only: ## For root call
 	sbt "server/flywayMigrate; ~server/reStart --- -Dconfig.resource=local.conf"

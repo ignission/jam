@@ -4,7 +4,7 @@ import spray.json._
 
 import jam.application.accounts.SignUpRequest
 import jam.domains.Id
-import jam.domains.auth.Account
+import jam.domains.auth.{Account, Password}
 import jam.rest.routes.CreateSessionRequest
 
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session}
@@ -55,6 +55,18 @@ object SprayJsonFormats extends DefaultJsonProtocol {
       )
   }
 
+  implicit object PasswordFormat extends RootJsonReader[Password] {
+    override def read(json: JsValue): Password =
+      json match {
+        case JsString(value) =>
+          Password(value)
+        case _ =>
+          throw DeserializationException(
+            s"Expected a string. Input: ${json.prettyPrint}"
+          )
+      }
+  }
+
   implicit val createSessionRequestFormat = jsonFormat1(CreateSessionRequest)
-  implicit val signUpRequestFormat        = jsonFormat3(SignUpRequest)
+  implicit val signUpRequestFormat        = jsonFormat4(SignUpRequest)
 }

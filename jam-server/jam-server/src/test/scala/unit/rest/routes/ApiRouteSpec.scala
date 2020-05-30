@@ -5,7 +5,7 @@ import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.{StatusCodes, _}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import interpreters.NopRestInterpreter
+import interpreters.{NopAuthInterpreter, NopRestInterpreter}
 import io.getquill._
 import io.getquill.context.monix.Runner
 import monix.eval.Task
@@ -29,11 +29,12 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
     new MysqlMonixJdbcContext(SnakeCase, "ctx", Runner.using(exc))
 
   private val accountRepository = AccountTableOps
+  private val authDSL           = new NopAuthInterpreter
   private val appModule = new AppModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
     override val accountModule: AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] =
       new AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
         override val accountService: AccountService[Task, MysqlMonixJdbcContext[SnakeCase]] =
-          new AccountService(accountRepository)
+          new AccountService(accountRepository, authDSL)
       }
   }
 

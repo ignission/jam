@@ -1,4 +1,4 @@
-package jam.dsl
+package jam.application.dsl
 
 import jam.domains.auth.Password
 

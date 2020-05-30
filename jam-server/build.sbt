@@ -55,8 +55,9 @@ lazy val infra = (project in file("jam-infrastructure"))
     libraryDependencies ++= {
       val quillVersion = "3.5.1"
       Seq(
-        "mysql"        % "mysql-connector-java" % "8.0.17",
-        "io.getquill" %% "quill-jdbc-monix"     % quillVersion
+        "mysql"                        % "mysql-connector-java" % "8.0.17",
+        "io.getquill"                 %% "quill-jdbc-monix"     % quillVersion,
+        "org.springframework.security" % "spring-security-web"  % "5.3.2.RELEASE"
       )
     }
   )
@@ -80,7 +81,6 @@ lazy val server = (project in file("jam-server"))
         "com.typesafe"                        % "config"               % "1.4.0",
         "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
         "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
-        "org.springframework.security"        % "spring-security-web"  % "5.3.2.RELEASE",
         // test
         "org.scalatest"     %% "scalatest"           % "3.1.2"         % "test",
         "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",

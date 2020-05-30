@@ -10,6 +10,7 @@ import jam.application.Result.Result
 import jam.application.accounts.{AccountModule, AccountRepository, AccountService}
 import jam.application.{AppError, AppModule, InternalError}
 import jam.dsl.RestDSL
+import jam.infrastructure.interpreters.AuthInterpreter
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.interpreters.RestInterpreter
 import jam.rest.Server
@@ -31,11 +32,12 @@ object App {
     new MysqlMonixJdbcContext(SnakeCase, "ctx", Runner.using(exc))
 
   private val accountRepository = AccountTableOps
+  private val authInterpreter   = new AuthInterpreter
   private val appModule = new AppModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
     override val accountModule: AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] =
       new AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
         override val accountService: AccountService[Task, MysqlMonixJdbcContext[SnakeCase]] =
-          new AccountService(accountRepository)
+          new AccountService(accountRepository, authInterpreter)
       }
   }
 
