@@ -24,28 +24,7 @@ class ApiRoute(
     extends SprayJsonSupport
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
-
-  implicit class ResponseHandler[A](result: Task[Either[AppError, A]]) {
-    def handleResponse(implicit s: Scheduler, formatter: JsonWriter[A]): StandardRoute = {
-      val f = result.map {
-        case Right(value) =>
-          HttpResponse(StatusCodes.OK, entity = value.toJson.compactPrint)
-        case Left(error: OpenViduClientError) =>
-          error.inner match {
-            case AlreadyExists =>
-              HttpResponse(StatusCodes.Conflict)
-            case RequestError(msg) =>
-              HttpResponse(StatusCodes.BadRequest, entity = msg)
-            case ServerDown =>
-              HttpResponse(StatusCodes.BadGateway)
-          }
-        case Left(_: jam.application.InternalError) =>
-          HttpResponse(StatusCodes.InternalServerError)
-      }.runToFuture
-
-      complete(f)
-    }
-  }
+  import jam.rest.routes.ResponseHandler._
 
   private val authRoutes = new AuthRoutes(appModule.accountModule)
 
@@ -60,11 +39,11 @@ class ApiRoute(
     path("sessions") {
       concat(
         get {
-          restDSL.listSessions.handleResponse
+          restDSL.listSessions.handleResponse.toRoute
         },
         post {
           entity(as[CreateSessionRequest]) { req =>
-            restDSL.createSession(req.sessionId).handleResponse
+            restDSL.createSession(req.sessionId).handleResponse.toRoute
           }
         }
       )
@@ -73,7 +52,7 @@ class ApiRoute(
   private def tokenRoutes: Route =
     pathPrefix("tokens" / ".+".r) { sessionId =>
       post {
-        restDSL.generateToken(SessionId(sessionId)).handleResponse
+        restDSL.generateToken(SessionId(sessionId)).handleResponse.toRoute
       }
     }
 
