@@ -10,6 +10,7 @@ import jam.domains.auth.Account
 
 object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[SnakeCase]] {
   import jam.infrastructure.persistence.interpreters.mysql.MappingTypes._
+  import jam.infrastructure.persistence.interpreters.mysql.tables.AccountTable._
 
   override def store(
       account: Account
@@ -34,15 +35,4 @@ object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[Sna
     ctx.run(q).map(_.headOption)
   }
 
-  private def table(implicit ctx: MysqlMonixJdbcContext[SnakeCase]) =
-    ctx.quote {
-      ctx.querySchema[Account](
-        "accounts",
-        _.id          -> "id",
-        _.name        -> "name",
-        _.displayName -> "display_name",
-        _.email       -> "email",
-        _.password    -> "password"
-      )
-    }
 }
