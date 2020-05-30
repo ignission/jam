@@ -19,6 +19,7 @@ import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
 
 import tech.ignission.openvidu4s.core.datas.SessionId
+import jam.application.accounts.SignUpRequest
 
 class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
 
@@ -59,6 +60,15 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
         status shouldEqual StatusCodes.OK
         entityAs[String] shouldEqual
           """{"session":{"createdAt":1589035535985,"id":"test-session"}}"""
+      }
+    }
+
+    "return an account id for POST sign up" in {
+      val entity =
+        Marshal(SignUpRequest("abc", Some("shoma"), "email", "password")).to[MessageEntity]
+
+      Post("/rest/api/v1/auth/signup", entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.OK
       }
     }
 

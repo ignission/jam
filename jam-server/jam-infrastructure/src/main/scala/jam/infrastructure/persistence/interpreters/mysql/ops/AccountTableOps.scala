@@ -16,7 +16,7 @@ object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[Sna
   )(implicit ctx: MysqlMonixJdbcContext[SnakeCase]): Task[Id[Account]] = {
     import ctx._
     val q = quote {
-      query[Account].insert(lift(account)).onConflictIgnore(_.id)
+      table.insert(lift(account)).onConflictIgnore(_.id)
     }
 
     ctx.run(q).map(Id[Account](_))
@@ -28,9 +28,21 @@ object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[Sna
     import ctx._
 
     val q = quote {
-      query[Account].filter(_.id == lift(id))
+      table.filter(_.id == lift(id))
     }
 
     ctx.run(q).map(_.headOption)
   }
+
+  private def table(implicit ctx: MysqlMonixJdbcContext[SnakeCase]) =
+    ctx.quote {
+      ctx.querySchema[Account](
+        "accounts",
+        _.id          -> "id",
+        _.name        -> "name",
+        _.displayName -> "display_name",
+        _.email       -> "email",
+        _.password    -> "password"
+      )
+    }
 }
