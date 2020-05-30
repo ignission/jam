@@ -3,10 +3,10 @@ package jam.interpreters
 import cats.Monad
 import monix.eval.Task
 
+import jam.application.OpenViduClientError
 import jam.domains.Id
+import jam.dsl.RestDSL
 import jam.dsl.RestDSL.Result
-import jam.dsl.{OpenViduClientError, RestDSL}
-import jam.rest.routes.SignUpRequest
 
 import tech.ignission.openvidu4s.core.apis.AllAPI
 import tech.ignission.openvidu4s.core.datas.{
@@ -32,9 +32,4 @@ class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
     openviduAPI.sessionAPI
       .initializeSession(InitializeSession(sessionId))
       .mapError(OpenViduClientError)
-
-  override def signUp(requst: SignUpRequest): Result[Task, Unit] = {
-    // accountRepository.find(Id[Account](1))
-    ???
-  }
 }

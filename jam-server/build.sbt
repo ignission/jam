@@ -47,7 +47,7 @@ lazy val openvidu4s = (project in file("openvidu4s")).settings(commonSettings)
 lazy val domain = (project in file("jam-domain")).settings(commonSettings)
 
 lazy val application =
-  (project in file("jam-application")).settings(commonSettings).dependsOn(domain)
+  (project in file("jam-application")).settings(commonSettings).dependsOn(domain, openvidu4s)
 
 lazy val infra = (project in file("jam-infrastructure"))
   .settings(commonSettings)

@@ -1,4 +1,4 @@
-package jam.dsl
+package jam.application
 
 import tech.ignission.openvidu4s.core.dsl.HttpError
 

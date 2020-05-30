@@ -2,10 +2,14 @@ package jam
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import io.getquill.context.monix.Runner
+import io.getquill.{MysqlMonixJdbcContext, SnakeCase}
 import monix.eval.Task
 
-import jam.application.accounts.AccountRepository
-import jam.dsl.{AppError, InternalError, RestDSL}
+import jam.application.Result.Result
+import jam.application.accounts.{AccountModule, AccountRepository, AccountService}
+import jam.application.{AppError, AppModule, InternalError}
+import jam.dsl.RestDSL
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.interpreters.RestInterpreter
 import jam.rest.Server
@@ -15,16 +19,25 @@ import tech.ignission.openvidu4s.core.Basic
 import tech.ignission.openvidu4s.core.apis.AllAPI
 
 import scala.util.control.NonFatal
+
 object App {
   import dsl.syntax._
 
-  implicit val system = ActorSystem()
-  implicit val exc    = monix.execution.Scheduler.Implicits.global
-
-  type Result[A]     = Either[AppError, A]
   type TaskResult[A] = Task[Result[A]]
 
-  implicit val accountRepository = AccountTableOps
+  implicit val system = ActorSystem()
+  implicit val exc    = monix.execution.Scheduler.Implicits.global
+  implicit val ctx: MysqlMonixJdbcContext[SnakeCase] =
+    new MysqlMonixJdbcContext(SnakeCase, "ctx", Runner.using(exc))
+
+  private val accountRepository = AccountTableOps
+  private val appModule = new AppModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
+    override val accountModule: AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] =
+      new AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
+        override val accountService: AccountService[Task, MysqlMonixJdbcContext[SnakeCase]] =
+          new AccountService(accountRepository)
+      }
+  }
 
   private def startServer(
       interface: String,
@@ -32,7 +45,7 @@ object App {
       restDSL: RestDSL[Task]
   ): TaskResult[Http.ServerBinding] =
     Task.deferFuture {
-      Server.start(interface, port, restDSL).map(Right(_)).recover {
+      Server.start(interface, port, restDSL, appModule).map(Right(_)).recover {
         case NonFatal(ex) =>
           Left(InternalError(ex): AppError)
       }

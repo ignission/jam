@@ -6,16 +6,21 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Route, StandardRoute}
 import cats.Monad
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
+import io.getquill.{MysqlMonixJdbcContext, SnakeCase}
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.dsl.{AppError, OpenViduClientError, RestDSL}
+import jam.application.{AppError, AppModule, OpenViduClientError}
+import jam.dsl.RestDSL
 
 import tech.ignission.openvidu4s.core.datas.SessionId
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
+class ApiRoute(
+    restDSL: RestDSL[Task],
+    appModule: AppModule[Task, MysqlMonixJdbcContext[SnakeCase]]
+)(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
@@ -34,7 +39,7 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
             case ServerDown =>
               HttpResponse(StatusCodes.BadGateway)
           }
-        case Left(_: jam.dsl.InternalError) =>
+        case Left(_: jam.application.InternalError) =>
           HttpResponse(StatusCodes.InternalServerError)
       }.runToFuture
 
@@ -42,10 +47,12 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
     }
   }
 
+  private val authRoutes = new AuthRoutes(appModule.accountModule)
+
   def routes: Route =
     cors() {
       pathPrefix("rest" / "api" / "v1") {
-        sessionRoutes(restDSL) ~ tokenRoutes ~ authRoutes
+        sessionRoutes(restDSL) ~ tokenRoutes ~ authRoutes.routes
       } ~ defaultRoute
     }
 
@@ -69,21 +76,6 @@ class ApiRoute(restDSL: RestDSL[Task])(implicit s: Scheduler)
         restDSL.generateToken(SessionId(sessionId)).handleResponse
       }
     }
-
-  private def authRoutes: Route = {
-    def signUpRoute: Route =
-      path("signup") {
-        post {
-          entity(as[SignUpRequest]) { req =>
-            restDSL.signUp(req).handleResponse
-          }
-        }
-      }
-
-    pathPrefix("auth") {
-      signUpRoute
-    }
-  }
 
   private def defaultRoute: Route =
     pathPrefix(".+".r) { _ =>

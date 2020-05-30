@@ -2,7 +2,8 @@ package jam.rest.formatters
 
 import spray.json._
 
-import jam.rest.routes.{CreateSessionRequest, SignUpRequest}
+import jam.application.accounts.SignUpRequest
+import jam.rest.routes.CreateSessionRequest
 
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session}
 

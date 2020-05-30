@@ -6,7 +6,6 @@ import monix.eval.Task
 
 import jam.dsl.RestDSL
 import jam.dsl.RestDSL.Result
-import jam.rest.routes.SignUpRequest
 
 import tech.ignission.openvidu4s.core.datas
 import tech.ignission.openvidu4s.core.datas.{
@@ -51,5 +50,4 @@ class NopRestInterpreter extends RestDSL[Task] {
       )
     }
 
-  override def signUp(requst: SignUpRequest): RestDSL.Result[Task, Unit] = ???
 }

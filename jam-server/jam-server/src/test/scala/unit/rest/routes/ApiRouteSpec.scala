@@ -6,11 +6,16 @@ import akka.http.scaladsl.model.{StatusCodes, _}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import interpreters.NopRestInterpreter
+import io.getquill._
+import io.getquill.context.monix.Runner
 import monix.eval.Task
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import jam.application.AppModule
+import jam.application.accounts.{AccountModule, AccountService}
 import jam.dsl.RestDSL
+import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
 
 import tech.ignission.openvidu4s.core.datas.SessionId
@@ -19,8 +24,23 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
 
   import jam.rest.formatters.SprayJsonFormats._
 
+  implicit val exc = monix.execution.Scheduler.Implicits.global
+  implicit val ctx: MysqlMonixJdbcContext[SnakeCase] =
+    new MysqlMonixJdbcContext(SnakeCase, "ctx", Runner.using(exc))
+
+  private val accountRepository = AccountTableOps
+  private val appModule = new AppModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
+    override val accountModule: AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] =
+      new AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
+        override val accountService: AccountService[Task, MysqlMonixJdbcContext[SnakeCase]] =
+          new AccountService(accountRepository)
+      }
+  }
+
   val restDSL: RestDSL[Task] = new NopRestInterpreter()
-  val routes: Route          = new ApiRoute(restDSL)(monix.execution.Scheduler.Implicits.global).routes
+  val routes: Route = new ApiRoute(restDSL, appModule)(
+    monix.execution.Scheduler.Implicits.global
+  ).routes
 
   "ApiRoute" should {
     "return a session list for GET requests" in {
