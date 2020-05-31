@@ -1,4 +1,4 @@
-package jam
+package jam.server
 
 import com.typesafe.config._
 

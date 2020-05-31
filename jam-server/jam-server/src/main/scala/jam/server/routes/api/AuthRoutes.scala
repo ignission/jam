@@ -1,9 +1,8 @@
-package jam.rest.routes
+package jam.rest.routes.api
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import cats.Monad
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
@@ -17,7 +16,7 @@ import jam.domains.auth.Account
 class AuthRoutes[Ctx](accountModule: AccountModule[Task, Ctx])(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
-  import jam.rest.formatters.SprayJsonFormats._
+  import jam.server.formatters.SprayJsonFormats._
   import jam.rest.routes.ResponseHandler._
   import jam.application.dsl.syntax._
 

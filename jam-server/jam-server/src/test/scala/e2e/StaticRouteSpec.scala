@@ -1,4 +1,4 @@
-package unit.rest.routes
+package e2e
 
 import akka.http.scaladsl.model.{ContentTypes, MediaTypes, StatusCodes}
 import akka.http.scaladsl.testkit.ScalatestRouteTest

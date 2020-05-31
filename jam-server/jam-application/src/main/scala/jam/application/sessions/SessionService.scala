@@ -1,12 +1,8 @@
-package jam.interpreters
+package jam.application.sessions
 
 import cats.Monad
-import monix.eval.Task
 
 import jam.application.OpenViduClientError
-import jam.domains.Id
-import jam.dsl.RestDSL
-import jam.dsl.RestDSL.Result
 
 import tech.ignission.openvidu4s.core.apis.AllAPI
 import tech.ignission.openvidu4s.core.datas.{
@@ -18,17 +14,16 @@ import tech.ignission.openvidu4s.core.datas.{
   SessionId
 }
 
-class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
-
+class SessionService[F[_]: Monad](openviduAPI: AllAPI[F]) {
   import jam.application.dsl.syntax._
 
-  override def listSessions: Result[Task, Seq[Session]] =
+  def listSessions: F[Either[OpenViduClientError, Seq[Session]]] =
     openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError)
 
-  override def generateToken(sessionId: SessionId): Result[Task, GeneratedToken] =
+  def generateToken(sessionId: SessionId): F[Either[OpenViduClientError, GeneratedToken]] =
     openviduAPI.tokenAPI.generateToken(GenerateToken(sessionId)).mapError(OpenViduClientError)
 
-  override def createSession(sessionId: SessionId): Result[Task, InitializedSession] =
+  def createSession(sessionId: SessionId): F[Either[OpenViduClientError, InitializedSession]] =
     openviduAPI.sessionAPI
       .initializeSession(InitializeSession(sessionId))
       .mapError(OpenViduClientError)

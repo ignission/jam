@@ -1,29 +1,34 @@
-package unit.rest.routes
+package e2e
+
+import java.time.{Instant, ZoneId, ZonedDateTime}
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.{StatusCodes, _}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import interpreters.{NopAuthInterpreter, NopRestInterpreter}
+import interpreters.NopAuthInterpreter
 import io.getquill._
 import io.getquill.context.monix.Runner
 import monix.eval.Task
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import jam.application.AppModule
 import jam.application.accounts.{AccountModule, AccountService, SignUpRequest}
-import jam.dsl.RestDSL
+import jam.application.sessions.{SessionModule, SessionService}
+import jam.application.{AppModule, OpenViduClientError}
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
 import jam.shared.WithDatabase
 
-import tech.ignission.openvidu4s.core.datas.SessionId
+import tech.ignission.openvidu4s.akka.interpreters.OpenViduHttpDSLOnAkka
+import tech.ignission.openvidu4s.core.Basic
+import tech.ignission.openvidu4s.core.apis.AllAPI
+import tech.ignission.openvidu4s.core.datas._
 
 class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest with WithDatabase {
 
-  import jam.rest.formatters.SprayJsonFormats._
+  import jam.server.formatters.SprayJsonFormats._
 
   implicit val exc = monix.execution.Scheduler.Implicits.global
   implicit val ctx: MysqlMonixJdbcContext[SnakeCase] =
@@ -31,16 +36,59 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
 
   private val accountRepository = AccountTableOps
   private val authDSL           = new NopAuthInterpreter
+  private val akkaHttpDSL       = new OpenViduHttpDSLOnAkka()
+  private val credential        = Basic("", "")
+  private val openviduAPI       = new AllAPI("", credential)(akkaHttpDSL)
   private val appModule = new AppModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
     override val accountModule: AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] =
       new AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
         override val accountService: AccountService[Task, MysqlMonixJdbcContext[SnakeCase]] =
           new AccountService(accountRepository, authDSL)
       }
+    override val sessionModule: SessionModule[Task] = new SessionModule[Task] {
+      override val sessionService: SessionService[Task] = new SessionService[Task](openviduAPI) {
+        override def listSessions: Task[Either[OpenViduClientError, Seq[Session]]] =
+          Task {
+            Right(
+              Seq(
+                Session(
+                  id = SessionId("test-session1"),
+                  ZonedDateTime
+                    .ofInstant(Instant.ofEpochMilli(1589035535985L), ZoneId.systemDefault())
+                )
+              )
+            )
+          }
+
+        override def generateToken(
+            sessionId: SessionId
+        ): Task[Either[OpenViduClientError, GeneratedToken]] =
+          Task {
+            Right(
+              GeneratedToken(
+                sessionId = sessionId,
+                token = Token("abcdefg")
+              )
+            )
+          }
+
+        override def createSession(
+            sessionId: SessionId
+        ): Task[Either[OpenViduClientError, InitializedSession]] =
+          Task {
+            Right(
+              InitializedSession(
+                id = sessionId,
+                ZonedDateTime
+                  .ofInstant(Instant.ofEpochMilli(1589035535985L), ZoneId.systemDefault())
+              )
+            )
+          }
+      }
+    }
   }
 
-  val restDSL: RestDSL[Task] = new NopRestInterpreter()
-  val routes: Route = new ApiRoute(restDSL, appModule)(
+  val routes: Route = new ApiRoute(appModule)(
     monix.execution.Scheduler.Implicits.global
   ).routes
 
