@@ -2,10 +2,8 @@ package jam.shared
 
 import com.typesafe.config.ConfigFactory
 import org.flywaydb.core.Flyway
-import org.scalactic.source.Position
-import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll}
 
 case class DatabaseConfig() {
   private val config = ConfigFactory.load()

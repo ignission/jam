@@ -1,6 +1,5 @@
 package jam.infrastructure.persistence.interpreters.mysql.ops
 
-import cats.data._
 import io.getquill.{MysqlMonixJdbcContext, SnakeCase}
 import monix.eval.Task
 

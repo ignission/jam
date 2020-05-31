@@ -19,8 +19,7 @@ lazy val commonSettings = Seq(
     "-Yrangepos",
     "-Ywarn-unused",
     "-Xlint",
-    "-Xfatal-warnings",
-    "-Ymacro-annotations"
+    "-Xfatal-warnings"
   ),
   libraryDependencies ++= {
     val catsVersion  = "2.1.1"
