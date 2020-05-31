@@ -1,5 +1,9 @@
 package jam.dsl
 
+import cats.Monad
+
+import jam.application.AppError
+import jam.domains.Id
 import jam.dsl.RestDSL.Result
 
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId}

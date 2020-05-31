@@ -5,22 +5,44 @@ import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.{StatusCodes, _}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import interpreters.NopRestInterpreter
+import interpreters.{NopAuthInterpreter, NopRestInterpreter}
+import io.getquill._
+import io.getquill.context.monix.Runner
 import monix.eval.Task
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import jam.application.AppModule
+import jam.application.accounts.{AccountModule, AccountService, SignUpRequest}
 import jam.dsl.RestDSL
+import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
+import jam.shared.WithDatabase
 
 import tech.ignission.openvidu4s.core.datas.SessionId
 
-class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
+class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest with WithDatabase {
 
   import jam.rest.formatters.SprayJsonFormats._
 
+  implicit val exc = monix.execution.Scheduler.Implicits.global
+  implicit val ctx: MysqlMonixJdbcContext[SnakeCase] =
+    new MysqlMonixJdbcContext(SnakeCase, "ctx", Runner.using(exc))
+
+  private val accountRepository = AccountTableOps
+  private val authDSL           = new NopAuthInterpreter
+  private val appModule = new AppModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
+    override val accountModule: AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] =
+      new AccountModule[Task, MysqlMonixJdbcContext[SnakeCase]] {
+        override val accountService: AccountService[Task, MysqlMonixJdbcContext[SnakeCase]] =
+          new AccountService(accountRepository, authDSL)
+      }
+  }
+
   val restDSL: RestDSL[Task] = new NopRestInterpreter()
-  val routes: Route          = new ApiRoute(restDSL)(monix.execution.Scheduler.Implicits.global).routes
+  val routes: Route = new ApiRoute(restDSL, appModule)(
+    monix.execution.Scheduler.Implicits.global
+  ).routes
 
   "ApiRoute" should {
     "return a session list for GET requests" in {
@@ -67,6 +89,33 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       }
       Get("/rest/api/v1/token") ~> routes ~> check {
         status shouldEqual StatusCodes.NotFound
+      }
+    }
+  }
+
+  "Auth route" should {
+    val path = "/rest/api/v1/auth/signup"
+
+    "success when POST signup" in {
+      val entity =
+        Marshal(SignUpRequest("abc", Some("shoma"), "email@email.com", "password"))
+          .to[MessageEntity]
+
+      Post(path, entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.OK
+      }
+    }
+
+    "returns bad request when POST signup with same email" in {
+      val entity =
+        Marshal(SignUpRequest("abc", Some("shoma"), "email", "password")).to[MessageEntity]
+
+      Post(path, entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.OK
+      }
+
+      Post(path, entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.BadRequest
       }
     }
   }

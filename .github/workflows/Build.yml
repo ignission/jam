@@ -95,4 +95,4 @@ jobs:
       - name: Test
         run: |
           cd jam-server
-          sbt test -Dconfig.resource=test.conf
+          make test

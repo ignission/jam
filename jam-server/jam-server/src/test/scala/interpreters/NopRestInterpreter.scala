@@ -49,4 +49,5 @@ class NopRestInterpreter extends RestDSL[Task] {
         )
       )
     }
+
 }

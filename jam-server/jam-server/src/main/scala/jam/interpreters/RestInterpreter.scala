@@ -1,9 +1,12 @@
 package jam.interpreters
 
+import cats.Monad
 import monix.eval.Task
 
+import jam.application.OpenViduClientError
+import jam.domains.Id
+import jam.dsl.RestDSL
 import jam.dsl.RestDSL.Result
-import jam.dsl.{OpenViduClientError, RestDSL}
 
 import tech.ignission.openvidu4s.core.apis.AllAPI
 import tech.ignission.openvidu4s.core.datas.{
@@ -16,7 +19,8 @@ import tech.ignission.openvidu4s.core.datas.{
 }
 
 class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
-  import jam.dsl.syntax._
+
+  import jam.application.dsl.syntax._
 
   override def listSessions: Result[Task, Seq[Session]] =
     openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError)
@@ -28,5 +32,4 @@ class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
     openviduAPI.sessionAPI
       .initializeSession(InitializeSession(sessionId))
       .mapError(OpenViduClientError)
-
 }
