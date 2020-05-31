@@ -27,7 +27,9 @@ lazy val commonSettings = Seq(
     val monixVersion = "3.2.0"
     Seq(
       "org.typelevel" %% "cats-core" % catsVersion,
-      "io.monix"      %% "monix"     % monixVersion
+      "io.monix"      %% "monix"     % monixVersion,
+      // test
+      "org.scalatest" %% "scalatest" % "3.1.2" % "test"
     )
   },
   // scalafix
@@ -57,6 +59,7 @@ lazy val infra = (project in file("jam-infrastructure"))
       Seq(
         "mysql"                        % "mysql-connector-java" % "8.0.17",
         "io.getquill"                 %% "quill-jdbc-monix"     % quillVersion,
+        "org.flywaydb"                 % "flyway-core"          % "6.4.3",
         "org.springframework.security" % "spring-security-web"  % "5.3.2.RELEASE"
       )
     }
@@ -82,7 +85,6 @@ lazy val server = (project in file("jam-server"))
         "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
         "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
         // test
-        "org.scalatest"     %% "scalatest"           % "3.1.2"         % "test",
         "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",
         "com.typesafe.akka" %% "akka-http-testkit"   % akkaHttpVersion % "test"
       )
@@ -93,10 +95,7 @@ lazy val server = (project in file("jam-server"))
     flywayUrl := "jdbc:mysql://localhost:33055/jam",
     flywayUser := "jam",
     flywayPassword := "jam",
-    flywayLocations += "db/migration",
-    flywayUrl in Test := "jdbc:mysql://localhost:33056/jam",
-    flywayUser in Test := "jam",
-    flywayPassword in Test := "jam"
+    flywayLocations += "db/migration"
   )
   .enablePlugins(FlywayPlugin)
   .dependsOn(domain, infra, application, openvidu4s)

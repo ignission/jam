@@ -11,13 +11,13 @@ dev-only: ## For root call
 dev-test: ## Test with reloading
 	docker-compose up -d kms db-test
 	make NAME=jam-db-test wait-db	
-	sbt "test:flywayMigrate; ~test" -Dconfig.resource=test.conf || \
+	sbt "~test" -Dconfig.resource=test.conf || \
 	docker rm -f jam-db-test
 
 test: ## Test
 	docker-compose up -d db-test 
 	make NAME=jam-db-test wait-db
-	sbt "test:flywayMigrate; test" -Dconfig.resource=test.conf
+	sbt test -Dconfig.resource=test.conf
 	@docker rm -f jam-db-test
 
 fixmat: ## Format code and fix

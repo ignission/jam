@@ -17,10 +17,10 @@ import jam.application.accounts.{AccountModule, AccountService, SignUpRequest}
 import jam.dsl.RestDSL
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
-
+import jam.shared.WithDatabase
 import tech.ignission.openvidu4s.core.datas.SessionId
 
-class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
+class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest with WithDatabase {
 
   import jam.rest.formatters.SprayJsonFormats._
 
