@@ -3,17 +3,12 @@ package jam.rest.routes.api
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import cats.Monad
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.application.AccountServiceError
 import jam.application.Result.Result
-import jam.application.accounts.{AccountModule, SignUpRequest}
 import jam.application.sessions.SessionModule
-import jam.domains.Id
-import jam.domains.auth.Account
 import jam.rest.routes.CreateSessionRequest
 
 import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId}
@@ -23,7 +18,6 @@ class SessionRoutes(module: SessionModule[Task])(implicit s: Scheduler)
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
   import jam.rest.routes.ResponseHandler._
-  import jam.application.dsl.syntax._
 
   private val service = module.sessionService
 

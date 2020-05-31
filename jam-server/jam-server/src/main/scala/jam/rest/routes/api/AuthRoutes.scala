@@ -3,7 +3,6 @@ package jam.rest.routes.api
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import cats.Monad
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
