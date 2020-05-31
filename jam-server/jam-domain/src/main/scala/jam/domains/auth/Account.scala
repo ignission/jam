@@ -6,7 +6,7 @@ case class Account(
     id: Id[Account],
     name: String,
     displayName: Option[String],
-    email: String,
+    email: Email,
     password: Password
 ) extends Entity[Account]
 
@@ -21,7 +21,7 @@ object Account {
       id = Id[Account](0),
       name = name,
       displayName = displayName,
-      email = email,
+      email = Email(email),
       password = password
     )
 }

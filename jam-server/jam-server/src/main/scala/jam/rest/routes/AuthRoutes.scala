@@ -9,12 +9,17 @@ import monix.execution.Scheduler
 import spray.json._
 
 import jam.application.accounts.{AccountModule, SignUpRequest}
+import jam.application.AccountServiceError
+import jam.application.Result.Result
+import jam.domains.Id
+import jam.domains.auth.Account
 
 class AuthRoutes[Ctx](accountModule: AccountModule[Task, Ctx])(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
   import jam.rest.routes.ResponseHandler._
+  import jam.application.dsl.syntax._
 
   private val accountService = accountModule.accountService
 
@@ -27,7 +32,10 @@ class AuthRoutes[Ctx](accountModule: AccountModule[Task, Ctx])(implicit s: Sched
     path("signup") {
       post {
         entity(as[SignUpRequest]) { request =>
-          accountService.create(request).map(result => result.map(_ => ())).handleResponse.toRoute
+          val taskResult: Task[Result[Id[Account]]] =
+            accountService.create(request).mapError(e => AccountServiceError(e))
+
+          taskResult.map(result => result.map(_ => ())).handleResponse.toRoute
         }
       }
     }

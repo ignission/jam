@@ -15,6 +15,8 @@ import jam.application.{AppError, OpenViduClientError}
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
 import scala.concurrent.Future
+import jam.application.AccountServiceError
+import jam.domains.auth.AccountAlreadyExists
 
 object ResponseHandler {
   implicit class ResponseHandler[F[_]: Monad, A](result: F[Result[A]]) {
@@ -41,6 +43,11 @@ object ResponseHandler {
           }
         case Left(_: jam.application.InternalError) =>
           HttpResponse(StatusCodes.InternalServerError)
+        case Left(error: AccountServiceError) =>
+          error.inner match {
+            case AccountAlreadyExists(_) =>
+              HttpResponse(StatusCodes.BadRequest)
+          }
       }
     }
   }

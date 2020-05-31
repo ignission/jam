@@ -91,13 +91,31 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
         status shouldEqual StatusCodes.NotFound
       }
     }
+  }
 
-    "return an account id for POST sign up" in {
+  "Auth route" should {
+    val path = "/rest/api/v1/auth/signup"
+
+    "success when POST signup" in {
+      val entity =
+        Marshal(SignUpRequest("abc", Some("shoma"), "email@email.com", "password"))
+          .to[MessageEntity]
+
+      Post(path, entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.OK
+      }
+    }
+
+    "returns bad request when POST signup with same email" in {
       val entity =
         Marshal(SignUpRequest("abc", Some("shoma"), "email", "password")).to[MessageEntity]
 
-      Post("/rest/api/v1/auth/signup", entity) ~> routes ~> check {
+      Post(path, entity) ~> routes ~> check {
         status shouldEqual StatusCodes.OK
+      }
+
+      Post(path, entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.BadRequest
       }
     }
   }

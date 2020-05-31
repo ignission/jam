@@ -7,6 +7,7 @@ import monix.eval.Task
 import jam.application.accounts.AccountRepository
 import jam.domains.Id
 import jam.domains.auth.Account
+import jam.domains.auth.Email
 
 object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[SnakeCase]] {
   import jam.infrastructure.persistence.interpreters.mysql.MappingTypes._
@@ -35,4 +36,15 @@ object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[Sna
     ctx.run(q).map(_.headOption)
   }
 
+  override def existsByEmail(email: Email)(implicit
+      ctx: MysqlMonixJdbcContext[SnakeCase]
+  ): Task[Boolean] = {
+    import ctx._
+
+    val q = quote {
+      table.filter(_.email == lift(email))
+    }
+
+    run(q).map(_.length > 0)
+  }
 }
