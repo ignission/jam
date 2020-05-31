@@ -24,7 +24,13 @@ import jam.shared.WithDatabase
 import tech.ignission.openvidu4s.akka.interpreters.OpenViduHttpDSLOnAkka
 import tech.ignission.openvidu4s.core.Basic
 import tech.ignission.openvidu4s.core.apis.AllAPI
-import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId, Token}
+import tech.ignission.openvidu4s.core.datas.{
+  GeneratedToken,
+  InitializedSession,
+  Session,
+  SessionId,
+  Token
+}
 
 class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest with WithDatabase {
 
