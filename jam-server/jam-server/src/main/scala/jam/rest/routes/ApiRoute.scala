@@ -11,19 +11,20 @@ import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
+import jam.application.Result.Result
+import jam.application.sessions.SessionModule
 import jam.application.{AppError, AppModule, OpenViduClientError}
-import jam.dsl.RestDSL
 
-import tech.ignission.openvidu4s.core.datas.SessionId
+import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId}
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
-class ApiRoute(
-    restDSL: RestDSL[Task],
-    appModule: AppModule[Task, MysqlMonixJdbcContext[SnakeCase]]
+class ApiRoute[Ctx](
+    appModule: AppModule[Task, Ctx]
 )(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
   import jam.rest.formatters.SprayJsonFormats._
+  import jam.application.dsl.syntax._
   import jam.rest.routes.ResponseHandler._
 
   private val authRoutes = new AuthRoutes(appModule.accountModule)
@@ -31,30 +32,44 @@ class ApiRoute(
   def routes: Route =
     cors() {
       pathPrefix("rest" / "api" / "v1") {
-        sessionRoutes(restDSL) ~ tokenRoutes ~ authRoutes.routes
+        sessionRoutes(appModule.sessionModule) ~ tokenRoutes(
+          appModule.sessionModule
+        ) ~ authRoutes.routes
       } ~ defaultRoute
     }
 
-  private def sessionRoutes(restDSL: RestDSL[Task]): Route =
+  private def sessionRoutes(module: SessionModule[Task]): Route = {
+    val service = module.sessionService
+
     path("sessions") {
       concat(
         get {
-          restDSL.listSessions.handleResponse.toRoute
+          val taskResult: Task[Result[Seq[Session]]] = service.listSessions
+
+          taskResult.handleResponse.toRoute
         },
         post {
           entity(as[CreateSessionRequest]) { req =>
-            restDSL.createSession(req.sessionId).handleResponse.toRoute
+            val taskResult: Task[Result[InitializedSession]] = service.createSession(req.sessionId)
+
+            taskResult.handleResponse.toRoute
           }
         }
       )
     }
+  }
 
-  private def tokenRoutes: Route =
+  private def tokenRoutes(module: SessionModule[Task]): Route = {
+    val service = module.sessionService
+
     pathPrefix("tokens" / ".+".r) { sessionId =>
       post {
-        restDSL.generateToken(SessionId(sessionId)).handleResponse.toRoute
+        val taskResult: Task[Result[GeneratedToken]] = service.generateToken(SessionId(sessionId))
+
+        taskResult.handleResponse.toRoute
       }
     }
+  }
 
   private def defaultRoute: Route =
     pathPrefix(".+".r) { _ =>
