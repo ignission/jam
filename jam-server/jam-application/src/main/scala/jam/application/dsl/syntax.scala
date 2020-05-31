@@ -1,8 +1,8 @@
 package jam.application.dsl
 
-import cats.{Applicative, Monad}
 import cats.data.EitherT
 import cats.implicits._
+import cats.{Applicative, Monad}
 
 object syntax {
   implicit class ResultOps[F[_]: Monad, E, A](result: F[Either[E, A]]) {

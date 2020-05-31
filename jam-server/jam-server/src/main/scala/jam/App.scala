@@ -22,7 +22,7 @@ import tech.ignission.openvidu4s.core.apis.AllAPI
 import scala.util.control.NonFatal
 
 object App {
-  import dsl.syntax._
+  import jam.application.dsl.syntax._
 
   type TaskResult[A] = Task[Result[A]]
 

@@ -1,7 +1,8 @@
 package jam.application
 
-import tech.ignission.openvidu4s.core.dsl.HttpError
 import jam.domains.auth.AccountError
+
+import tech.ignission.openvidu4s.core.dsl.HttpError
 
 sealed trait AppError extends RuntimeException
 

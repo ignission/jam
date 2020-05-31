@@ -10,13 +10,12 @@ import monix.execution.Scheduler
 import spray.json._
 
 import jam.application.Result.Result
-import jam.application.{AppError, OpenViduClientError}
+import jam.application.{AccountServiceError, AppError, OpenViduClientError}
+import jam.domains.auth.AccountAlreadyExists
 
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
 import scala.concurrent.Future
-import jam.application.AccountServiceError
-import jam.domains.auth.AccountAlreadyExists
 
 object ResponseHandler {
   implicit class ResponseHandler[F[_]: Monad, A](result: F[Result[A]]) {

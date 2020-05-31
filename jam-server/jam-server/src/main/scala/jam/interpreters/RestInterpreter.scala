@@ -20,7 +20,7 @@ import tech.ignission.openvidu4s.core.datas.{
 
 class RestInterpreter(openviduAPI: AllAPI[Task]) extends RestDSL[Task] {
 
-  import jam.dsl.syntax._
+  import jam.application.dsl.syntax._
 
   override def listSessions: Result[Task, Seq[Session]] =
     openviduAPI.sessionAPI.getSessions.mapError(OpenViduClientError)

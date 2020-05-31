@@ -2,15 +2,13 @@ package jam.application.accounts
 
 import cats.Monad
 import cats.Monad.ops._
+import cats.data.EitherT
 
+import jam.application.AppError
 import jam.application.Result._
 import jam.application.dsl.AuthDSL
 import jam.domains.Id
-import jam.domains.auth.Account
-import jam.domains.auth.AccountAlreadyExists
-import jam.domains.auth.AccountError
-import jam.application.AppError
-import cats.data.EitherT
+import jam.domains.auth.{Account, AccountAlreadyExists, AccountError}
 
 class AccountService[F[_]: Monad, Ctx](
     accountRepository: AccountRepository[F, Ctx],

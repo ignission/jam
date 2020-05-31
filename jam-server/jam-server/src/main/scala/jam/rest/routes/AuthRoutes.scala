@@ -8,9 +8,9 @@ import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.application.accounts.{AccountModule, SignUpRequest}
 import jam.application.AccountServiceError
 import jam.application.Result.Result
+import jam.application.accounts.{AccountModule, SignUpRequest}
 import jam.domains.Id
 import jam.domains.auth.Account
 

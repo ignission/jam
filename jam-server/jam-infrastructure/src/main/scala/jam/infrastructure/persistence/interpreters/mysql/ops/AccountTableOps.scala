@@ -6,8 +6,7 @@ import monix.eval.Task
 
 import jam.application.accounts.AccountRepository
 import jam.domains.Id
-import jam.domains.auth.Account
-import jam.domains.auth.Email
+import jam.domains.auth.{Account, Email}
 
 object AccountTableOps extends AccountRepository[Task, MysqlMonixJdbcContext[SnakeCase]] {
   import jam.infrastructure.persistence.interpreters.mysql.MappingTypes._
