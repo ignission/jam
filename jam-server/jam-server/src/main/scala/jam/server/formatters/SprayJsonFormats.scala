@@ -1,4 +1,4 @@
-package jam.formatters
+package jam.server.formatters
 
 import spray.json._
 

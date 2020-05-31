@@ -34,7 +34,7 @@ import tech.ignission.openvidu4s.core.datas.{
 
 class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest with WithDatabase {
 
-  import jam.formatters.SprayJsonFormats._
+  import jam.server.formatters.SprayJsonFormats._
 
   implicit val exc = monix.execution.Scheduler.Implicits.global
   implicit val ctx: MysqlMonixJdbcContext[SnakeCase] =

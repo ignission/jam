@@ -16,7 +16,7 @@ import jam.domains.auth.Account
 class AuthRoutes[Ctx](accountModule: AccountModule[Task, Ctx])(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
-  import jam.formatters.SprayJsonFormats._
+  import jam.server.formatters.SprayJsonFormats._
   import jam.rest.routes.ResponseHandler._
   import jam.application.dsl.syntax._
 

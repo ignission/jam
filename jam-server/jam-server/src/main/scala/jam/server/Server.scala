@@ -1,4 +1,4 @@
-package jam
+package jam.server
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
