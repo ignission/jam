@@ -6,7 +6,7 @@ dev: ## For development
 	make dev-only
 
 dev-only: ## For root call
-	sbt "server/flywayMigrate; ~server/reStart --- -Dconfig.resource=local.conf"
+	sbt "api/flywayMigrate; ~api/reStart --- -Dconfig.resource=local.conf"
 
 dev-test: ## Test with reloading
 	docker-compose up -d kms db-test

@@ -11,7 +11,7 @@ RUN set -xe \
     openjdk-8-jre \
     && rm -rf /var/lib/apt/lists/*
 
-COPY dist/jam-server.jar /
+COPY dist/jam-api.jar /
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 

@@ -66,7 +66,7 @@ lazy val infra = (project in file("jam-infrastructure"))
   )
   .dependsOn(domain, application)
 
-lazy val server = (project in file("jam-server"))
+lazy val api = (project in file("jam-server"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= {
@@ -90,7 +90,7 @@ lazy val server = (project in file("jam-server"))
       )
     },
     // sbt assembly
-    assemblyJarName in assembly := "jam-server.jar",
+    assemblyJarName in assembly := "jam-api.jar",
     // database migration
     flywayUrl := "jdbc:mysql://localhost:33055/jam",
     flywayUser := "jam",

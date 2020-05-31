@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  server:
-    container_name: jam-server
-    image: ignission/jam-server:latest
+  api:
+    container_name: jam-api
+    image: ignission/jam-api:latest
     environment:
       JAVA_OPTIONS: -Dconfig.resource=local.conf
       OPENVIDU_SERVER_URL: https://kms:4443

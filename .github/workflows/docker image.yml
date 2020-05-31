@@ -95,10 +95,10 @@ jobs:
       - name: Assembly
         run: |
           cd jam-server
-          sbt server/assembly
+          sbt api/assembly
           cd ../
           mkdir -p docker/dist
-          mv jam-server/jam-server/target/scala-2.13/jam-server.jar docker/dist
+          mv jam-server/jam-server/target/scala-2.13/jam-api.jar docker/dist
 
       - name: Upload artifacts of the server
         uses: actions/upload-artifact@master
@@ -120,12 +120,12 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -t ignission/jam-server:latest docker/
+          docker build -t ignission/jam-api:latest docker/
 
       - name: Push docker image
         run: |
           VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker tag ignission/jam-server:latest ignission/jam-server:$VERSION
-          docker push ignission/jam-server:latest
-          docker push ignission/jam-server:$VERSION
+          docker tag ignission/jam-api:latest ignission/jam-api:$VERSION
+          docker push ignission/jam-api:latest
+          docker push ignission/jam-api:$VERSION
