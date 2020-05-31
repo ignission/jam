@@ -18,6 +18,7 @@ import jam.dsl.RestDSL
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
 import jam.rest.routes.{ApiRoute, CreateSessionRequest}
 import jam.shared.WithDatabase
+
 import tech.ignission.openvidu4s.core.datas.SessionId
 
 class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest with WithDatabase {
@@ -62,15 +63,6 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
       }
     }
 
-    "return an account id for POST sign up" in {
-      val entity =
-        Marshal(SignUpRequest("abc", Some("shoma"), "email", "password")).to[MessageEntity]
-
-      Post("/rest/api/v1/auth/signup", entity) ~> routes ~> check {
-        status shouldEqual StatusCodes.OK
-      }
-    }
-
     "return a valid result for POST requests to the tokens" in {
       Post("/rest/api/v1/tokens/session-a") ~> routes ~> check {
         status shouldEqual StatusCodes.OK
@@ -97,6 +89,15 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
       }
       Get("/rest/api/v1/token") ~> routes ~> check {
         status shouldEqual StatusCodes.NotFound
+      }
+    }
+
+    "return an account id for POST sign up" in {
+      val entity =
+        Marshal(SignUpRequest("abc", Some("shoma"), "email", "password")).to[MessageEntity]
+
+      Post("/rest/api/v1/auth/signup", entity) ~> routes ~> check {
+        status shouldEqual StatusCodes.OK
       }
     }
   }

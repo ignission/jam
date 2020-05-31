@@ -27,7 +27,7 @@ class AuthRoutes[Ctx](accountModule: AccountModule[Task, Ctx])(implicit s: Sched
     path("signup") {
       post {
         entity(as[SignUpRequest]) { request =>
-          accountService.create(request).handleResponse.toRoute
+          accountService.create(request).map(result => result.map(_ => ())).handleResponse.toRoute
         }
       }
     }

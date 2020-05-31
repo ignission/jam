@@ -21,7 +21,15 @@ object ResponseHandler {
     def handleResponse(implicit formatter: JsonWriter[A]): F[HttpResponse] = {
       result.map {
         case Right(value) =>
-          HttpResponse(StatusCodes.OK, entity = value.toJson.compactPrint)
+          value match {
+            case _: Unit =>
+              HttpResponse(
+                StatusCodes.OK,
+                entity = "{}" // hack: scalafix doesn't recognize JsonWriter with Unit
+              )
+            case v =>
+              HttpResponse(StatusCodes.OK, entity = v.toJson.compactPrint)
+          }
         case Left(error: OpenViduClientError) =>
           error.inner match {
             case AlreadyExists =>
