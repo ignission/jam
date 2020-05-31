@@ -16,7 +16,7 @@ import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession,
 class SessionRoutes(module: SessionModule[Task])(implicit s: Scheduler)
     extends SprayJsonSupport
     with DefaultJsonProtocol {
-  import jam.rest.formatters.SprayJsonFormats._
+  import jam.formatters.SprayJsonFormats._
   import jam.rest.routes.ResponseHandler._
 
   private val service = module.sessionService

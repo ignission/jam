@@ -13,7 +13,6 @@ import jam.application.sessions.{SessionModule, SessionService}
 import jam.application.{AppError, AppModule, InternalError}
 import jam.infrastructure.interpreters.AuthInterpreter
 import jam.infrastructure.persistence.interpreters.mysql.ops.AccountTableOps
-import jam.rest.Server
 
 import tech.ignission.openvidu4s.akka.interpreters.OpenViduHttpDSLOnAkka
 import tech.ignission.openvidu4s.core.Basic
