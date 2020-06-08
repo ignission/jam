@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import * as Button from '../atoms/Button';
+import Button, { variantType, ButtonColor } from '../atoms/Button';
 import Logo from '../atoms/Logo';
 
 const Toolbar = styled.div({
@@ -41,10 +41,11 @@ const LogoLink = styled.a({
 const ToggleIconButton = ({ text }) => {
   const [clickState, setClickState] = useState(false);
   return (
-    <Button.Contained
+    <Button
       iconName={text}
       onClick={() => setClickState(!clickState)}
       iconColor={clickState}
+      p="8px"
     />
   );
 };
@@ -66,7 +67,7 @@ export const View: React.FC = ({ children }) => {
         <ToggleIconButton text="power_settings_new" />
       </Center>
       <Right>
-        <Button.Contained iconName="chat" />
+        <Button iconName="chat" />
       </Right>
     </Toolbar>
   );
