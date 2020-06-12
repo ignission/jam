@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import * as Button from '../atoms/Button';
+import Button, { variantType } from '../atoms/Button';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 interface Props {
   roomName: string;
@@ -36,21 +38,63 @@ const FromSection = styled.div({
   margin: '16px 0',
 });
 
-const Footer = styled.div({});
+const Footer = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+});
 
 const ToggleIconButton = ({ text }) => {
   const [clickState, setClickState] = useState(false);
   return (
-    <Button.Contained
+    <Button
       iconName={text}
       onClick={() => setClickState(!clickState)}
       iconColor={clickState}
-      hasBorder
     />
   );
 };
 
 export const View: React.FC<Props> = ({ roomName, onClick }) => {
+  const MicList = [
+    {
+      value: 'MIC 1',
+      label: 'MIC 1',
+    },
+    {
+      value: 'MIC 2',
+      label: 'MIC 2',
+    },
+    {
+      value: 'MIC 3',
+      label: 'MIC 3',
+    },
+  ];
+  const VideoList = [
+    {
+      value: 'VIDEO 1',
+      label: 'VIDEO 1',
+    },
+    {
+      value: 'VIDEO 2',
+      label: 'VIDEO 2',
+    },
+    {
+      value: 'VIDEO 3',
+      label: 'VIDEO 3',
+    },
+  ];
+  const [stateMicList, setStateMicList] = React.useState(MicList[0].label);
+  const [stateVideoList, setStateVideoList] = React.useState(
+    VideoList[0].label
+  );
+
+  const MicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStateMicList(event.target.value);
+  };
+  const VideoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStateVideoList(event.target.value);
+  };
+
   return (
     <>
       <Header>Set up your room</Header>
@@ -58,26 +102,40 @@ export const View: React.FC<Props> = ({ roomName, onClick }) => {
         <Column>
           <RoomName>Session: {roomName}</RoomName>
           <Video />
-          <Button.Contained iconName="camera_alt" hasBorder>
+          <Button iconName="camera_alt" variant={variantType.outlined}>
             Capture Avatar
-          </Button.Contained>
+          </Button>
         </Column>
         <Column>
           <FromSection>
             <ToggleIconButton text="mic" />
-            <select name="">
-              <option value="a">a</option>
-              <option value="b">b</option>
-              <option value="c">c</option>
-            </select>
+            <TextField
+              select
+              value={stateMicList}
+              onChange={MicChange}
+              fullWidth
+            >
+              {MicList.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </FromSection>
           <FromSection>
             <ToggleIconButton text="videocam" />
-            <select name="">
-              <option value="a">a</option>
-              <option value="b">b</option>
-              <option value="c">c</option>
-            </select>
+            <TextField
+              select
+              value={stateVideoList}
+              onChange={VideoChange}
+              fullWidth
+            >
+              {VideoList.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </FromSection>
           <FromSection>
             <ToggleIconButton text="screen_share" />
@@ -90,9 +148,9 @@ export const View: React.FC<Props> = ({ roomName, onClick }) => {
         </Column>
       </Body>
       <Footer>
-        <Button.Contained hasBorder width="100%" onClick={onClick}>
+        <Button variant={variantType.contained} onClick={onClick}>
           JOIN
-        </Button.Contained>
+        </Button>
       </Footer>
     </>
   );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import * as Button from '../atoms/Button';
+import Button, { variantType, ButtonColor } from '../atoms/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +40,12 @@ const Head = styled.h1({
   color: '#fff',
 });
 
+const ButtonField = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: 16,
+});
+
 const View: React.FC = () => {
   const classes = useStyles();
   return (
@@ -56,7 +62,14 @@ const View: React.FC = () => {
               variant="filled"
               fullWidth
             />
-            <Button.Contained hasBorder>Sign in</Button.Contained>
+            <ButtonField>
+              <Button
+                variant={variantType.contained}
+                color={ButtonColor.primary}
+              >
+                Sign in
+              </Button>
+            </ButtonField>
           </form>
         </Contents>
       </Box>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import * as Button from '../atoms/Button';
+import Button from '../atoms/Button';
 
 interface Props {
   onClick: () => void;
@@ -47,7 +47,7 @@ export const View: React.FC<Props> = ({ onClick, children }) => {
       <Modal>
         <ModalContents>{children}</ModalContents>
         <Close>
-          <Button.Contained iconName="close" onClick={onClick} />
+          <Button iconName="close" onClick={onClick} />
         </Close>
       </Modal>
       <Skin />
