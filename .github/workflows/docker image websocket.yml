@@ -6,44 +6,8 @@ on:
       - "master"
 
 jobs:
-  build-client:
+  build-websocket:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - name: Cache node_modules
-        uses: actions/cache@v1
-        id: client_node_modules
-        with:
-          path: jam-client/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/jam-client/yarn.lock')}}
-
-      - name: yarn install
-        if: steps.client_node_modules.outputs.cache-hit != 'true'
-        uses: Borales/actions-yarn@master
-        with:
-          cmd: --cwd jam-client install
-
-      - name: yarn build
-        uses: Borales/actions-yarn@master
-        with:
-          cmd: --cwd jam-client build
-
-      - name: Upload artifacts of the client
-        uses: actions/upload-artifact@master
-        with:
-          name: client-artifacts
-          path: jam-server/jam-server/src/main/resources/static
-
-  build-server:
-    runs-on: ubuntu-latest
-    needs: build-client
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -52,11 +16,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: client-artifacts
-          path: jam-server/jam-server/src/main/resources/static
 
       - name: Cache ivy
         uses: actions/cache@v1
@@ -95,37 +54,37 @@ jobs:
       - name: Assembly
         run: |
           cd jam-server
-          sbt server/assembly
+          sbt websocket/assembly
           cd ../
           mkdir -p docker/dist
-          mv jam-server/jam-server/target/scala-2.13/jam-server.jar docker/dist
+          mv jam-server/jam-websocket/target/scala-2.13/jam-websocket.jar docker/dist
 
       - name: Upload artifacts of the server
         uses: actions/upload-artifact@master
         with:
-          name: server-artifacts
+          name: websocket-artifacts
           path: docker/dist
 
   build-image:
     runs-on: ubuntu-latest
-    needs: build-server
+    needs: build-websocket
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - uses: actions/download-artifact@v2
         with:
-          name: server-artifacts
+          name: websocket-artifacts
           path: docker/dist
 
       - name: Build docker image
         run: |
-          docker build -t ignission/jam-server:latest docker/server
+          docker build -t ignission/jam-websocket:latest docker/websocket
 
       - name: Push docker image
         run: |
           VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker tag ignission/jam-server:latest ignission/jam-server:$VERSION
-          docker push ignission/jam-server:latest
-          docker push ignission/jam-server:$VERSION
+          docker tag ignission/jam-websocket:latest ignission/jam-websocket:$VERSION
+          docker push ignission/jam-websocket:latest
+          docker push ignission/jam-websocket:$VERSION

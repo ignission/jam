@@ -25,8 +25,10 @@ lazy val commonSettings = Seq(
     val catsVersion  = "2.1.1"
     val monixVersion = "3.2.0"
     Seq(
-      "org.typelevel" %% "cats-core" % catsVersion,
-      "io.monix"      %% "monix"     % monixVersion,
+      "org.typelevel" %% "cats-core"   % catsVersion,
+      "org.typelevel" %% "cats-kernel" % catsVersion,
+      "io.monix"      %% "monix"       % monixVersion,
+      "io.monix"      %% "monix-eval"  % monixVersion,
       // test
       "org.scalatest" %% "scalatest" % "3.1.2" % "test"
     )
@@ -65,29 +67,28 @@ lazy val infra = (project in file("jam-infrastructure"))
   )
   .dependsOn(domain, application)
 
+val akkaHttpVersion = "10.1.12"
+val akkaVersion     = "2.6.4"
+val log4j2Version   = "2.13.2"
+
 lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
   .settings(
-    libraryDependencies ++= {
-      val akkaHttpVersion = "10.1.12"
-      val akkaVersion     = "2.6.4"
-      val log4j2Version   = "2.13.2"
-      Seq(
-        "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
-        "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
-        "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
-        "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
-        "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
-        "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
-        "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
-        "com.typesafe"                        % "config"               % "1.4.0",
-        "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
-        "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
-        // test
-        "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",
-        "com.typesafe.akka" %% "akka-http-testkit"   % akkaHttpVersion % "test"
-      )
-    },
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
+      "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
+      "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
+      "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
+      "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
+      "com.typesafe"                        % "config"               % "1.4.0",
+      "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
+      "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
+      // test
+      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",
+      "com.typesafe.akka" %% "akka-http-testkit"   % akkaHttpVersion % "test"
+    ),
     // sbt assembly
     assemblyJarName in assembly := "jam-server.jar",
     // database migration
@@ -98,3 +99,22 @@ lazy val server = (project in file("jam-server"))
   )
   .enablePlugins(FlywayPlugin)
   .dependsOn(domain, infra, application, openvidu4s)
+
+lazy val websocket = (project in file("jam-websocket"))
+  .settings(commonSettings)
+  .settings(
+    name := "jam-websocket",
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
+      "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
+      "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
+      "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
+      "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
+      "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
+      "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11"
+    ),
+    assemblyJarName in assembly := "jam-websocket.jar"
+  )
+  .dependsOn(domain)
