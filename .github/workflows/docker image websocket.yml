@@ -56,14 +56,14 @@ jobs:
           cd jam-server
           sbt websocket/assembly
           cd ../
-          mkdir -p docker/dist
-          mv jam-server/jam-websocket/target/scala-2.13/jam-websocket.jar docker/dist
+          mkdir -p docker/websocket/dist
+          mv jam-server/jam-websocket/target/scala-2.13/jam-websocket.jar docker/websocket/dist
 
       - name: Upload artifacts of the server
         uses: actions/upload-artifact@master
         with:
           name: websocket-artifacts
-          path: docker/dist
+          path: docker/websocket/dist
 
   build-image:
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: websocket-artifacts
-          path: docker/dist
+          path: docker/websocket/dist
 
       - name: Build docker image
         run: |
