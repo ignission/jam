@@ -24,7 +24,7 @@ object Server {
     val routes =
       StaticRoute.routes ~ new ApiRoute(appModule).routes ~ StaticRoute.defaultRoute
 
-    Http().bindAndHandle(routes, interface, port)
+    Http().newServerAt(interface, port).bind(routes)
   }
 
 }

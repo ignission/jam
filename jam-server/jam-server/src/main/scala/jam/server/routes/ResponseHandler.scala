@@ -4,7 +4,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.StandardRoute
 import cats.Monad
-import cats.Monad.ops._
+import cats.implicits._
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
