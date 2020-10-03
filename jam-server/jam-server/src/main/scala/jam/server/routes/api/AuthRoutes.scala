@@ -7,9 +7,9 @@ import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.application.AccountServiceError
-import jam.application.Result.Result
 import jam.application.accounts.{AccountModule, SignUpRequest}
+import jam.application.dsl.Result.Result
+import jam.application.{AccountServiceError, AppError}
 import jam.domains.Id
 import jam.domains.auth.Account
 
@@ -31,7 +31,7 @@ class AuthRoutes[Ctx](accountModule: AccountModule[Task, Ctx])(implicit s: Sched
     path("signup") {
       post {
         entity(as[SignUpRequest]) { request =>
-          val taskResult: Task[Result[Id[Account]]] =
+          val taskResult: Result[Task, AppError, Id[Account]] =
             accountService.create(request).mapError(e => AccountServiceError(e))
 
           taskResult.map(result => result.map(_ => ())).handleResponse.toRoute

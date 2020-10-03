@@ -3,21 +3,19 @@ package jam.rest.routes
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.StandardRoute
-import cats.Monad
-import cats.Monad.ops._
 import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.application.Result.Result
-import jam.application.{AccountServiceError, OpenViduClientError}
+import jam.application.dsl.Result.Result
+import jam.application.{AccountServiceError, AppError, OpenViduClientError}
 import jam.domains.auth.AccountAlreadyExists
 
 import tech.ignission.openvidu4s.core.dsl.{AlreadyExists, RequestError, ServerDown}
 
 object ResponseHandler {
-  implicit class ResponseHandler[F[_]: Monad, A](result: F[Result[A]]) {
-    def handleResponse(implicit formatter: JsonWriter[A]): F[HttpResponse] = {
+  implicit class ResponseHandler[A](result: Result[Task, AppError, A]) {
+    def handleResponse(implicit formatter: JsonWriter[A]): Task[HttpResponse] = {
       result.map {
         case Right(value) =>
           value match {
