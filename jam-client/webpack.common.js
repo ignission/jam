@@ -51,9 +51,9 @@ module.exports = {
       template: `${__dirname}/public/index.html`,
       minify: false,
     }),
-    new CopyFilePlugin(
-      [
-        {
+    new CopyFilePlugin({
+      patterns: [
+        { 
           context: 'public/images',
           from: '**/*',
           to: path.resolve(
@@ -62,8 +62,10 @@ module.exports = {
           ),
         },
       ],
-      { copyUnmodified: true }
-    ),
+      options: {
+        concurrency: 100,
+      },
+    }),
     new WriteFilePlugin(),
   ],
 };
