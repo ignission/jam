@@ -97,14 +97,14 @@ jobs:
           cd jam-server
           sbt server/assembly
           cd ../
-          mkdir -p docker/dist
-          mv jam-server/jam-server/target/scala-2.13/jam-server.jar docker/dist
+          mkdir -p docker/server/dist
+          mv jam-server/jam-server/target/scala-2.13/jam-server.jar docker/server/dist
 
       - name: Upload artifacts of the server
         uses: actions/upload-artifact@master
         with:
           name: server-artifacts
-          path: docker/dist
+          path: docker/server/dist
 
   build-image:
     runs-on: ubuntu-latest
@@ -116,7 +116,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: server-artifacts
-          path: docker/dist
+          path: docker/server/dist
 
       - name: Build docker image
         run: |
