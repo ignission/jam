@@ -22,11 +22,18 @@ lazy val commonSettings = Seq(
     "-Xfatal-warnings"
   ),
   libraryDependencies ++= {
-    val catsVersion  = "2.2.0"
-    val monixVersion = "3.2.2"
+    val catsVersion   = "2.2.0"
+    val monixVersion  = "3.2.2"
+    val log4j2Version = "2.13.2"
     Seq(
-      "org.typelevel" %% "cats-core" % catsVersion,
-      "io.monix"      %% "monix"     % monixVersion,
+      "org.typelevel" %% "cats-core"   % catsVersion,
+      "org.typelevel" %% "cats-kernel" % catsVersion,
+      "io.monix"      %% "monix"       % monixVersion,
+      "io.monix"      %% "monix-eval"  % monixVersion,
+      // logging
+      "org.apache.logging.log4j" % "log4j-core"       % log4j2Version,
+      "org.apache.logging.log4j" % "log4j-api"        % log4j2Version,
+      "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4j2Version,
       // test
       "org.scalatest" %% "scalatest" % "3.2.2" % "test"
     )
@@ -43,16 +50,30 @@ lazy val commonSettings = Seq(
   }
 )
 
-lazy val openvidu4s = (project in file("openvidu4s")).settings(commonSettings)
+lazy val openvidu4s = (project in file("openvidu4s"))
+  .settings(commonSettings)
+  .settings(
+    name := "openvidu4s"
+  )
 
-lazy val domain = (project in file("jam-domain")).settings(commonSettings)
+lazy val domain = (project in file("jam-domain"))
+  .settings(commonSettings)
+  .settings(
+    name := "jam-domain"
+  )
 
 lazy val application =
-  (project in file("jam-application")).settings(commonSettings).dependsOn(domain, openvidu4s)
+  (project in file("jam-application"))
+    .settings(commonSettings)
+    .dependsOn(domain, openvidu4s)
+    .settings(
+      name := "jam-application"
+    )
 
 lazy val infra = (project in file("jam-infrastructure"))
   .settings(commonSettings)
   .settings(
+    name := "jam-infrastructure",
     libraryDependencies ++= {
       val quillVersion = "3.5.1"
       Seq(
@@ -65,29 +86,25 @@ lazy val infra = (project in file("jam-infrastructure"))
   )
   .dependsOn(domain, application)
 
+val akkaHttpVersion = "10.2.1"
+val akkaVersion     = "2.6.9"
+
 lazy val server = (project in file("jam-server"))
   .settings(commonSettings)
   .settings(
-    libraryDependencies ++= {
-      val akkaHttpVersion = "10.2.1"
-      val akkaVersion     = "2.6.9"
-      val log4j2Version   = "2.13.3"
-      Seq(
-        "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
-        "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
-        "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
-        "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
-        "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
-        "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
-        "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
-        "com.typesafe"                        % "config"               % "1.4.0",
-        "ch.megard"                          %% "akka-http-cors"       % "1.1.0",
-        "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
-        // test
-        "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",
-        "com.typesafe.akka" %% "akka-http-testkit"   % akkaHttpVersion % "test"
-      )
-    },
+    name := "jam-http-server",
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
+      "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
+      "com.typesafe"                        % "config"               % "1.4.0",
+      "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
+      "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11",
+      // test
+      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion     % "test",
+      "com.typesafe.akka" %% "akka-http-testkit"   % akkaHttpVersion % "test"
+    ),
     // sbt assembly
     assemblyJarName in assembly := "jam-server.jar",
     // database migration
@@ -98,3 +115,19 @@ lazy val server = (project in file("jam-server"))
   )
   .enablePlugins(FlywayPlugin)
   .dependsOn(domain, infra, application, openvidu4s)
+
+lazy val websocket = (project in file("jam-websocket"))
+  .settings(commonSettings)
+  .settings(
+    name := "jam-websocket-server",
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka"                  %% "akka-stream"          % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-actor"           % akkaVersion,
+      "com.typesafe.akka"                  %% "akka-http"            % akkaHttpVersion,
+      "com.typesafe.akka"                  %% "akka-http-spray-json" % akkaHttpVersion,
+      "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
+      "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11"
+    ),
+    assemblyJarName in assembly := "jam-websocket.jar"
+  )
+  .dependsOn(domain)
