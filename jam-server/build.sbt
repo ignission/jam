@@ -112,6 +112,7 @@ lazy val websocket = (project in file("jam-websocket"))
       "org.apache.logging.log4j"            % "log4j-core"           % log4j2Version,
       "org.apache.logging.log4j"            % "log4j-api"            % log4j2Version,
       "org.apache.logging.log4j"            % "log4j-slf4j-impl"     % log4j2Version,
+      "ch.megard"                          %% "akka-http-cors"       % "0.4.3",
       "com.softwaremill.akka-http-session" %% "core"                 % "0.5.11"
     ),
     assemblyJarName in assembly := "jam-websocket.jar"
