@@ -28,6 +28,12 @@ class UserDSL[F[_]: Monad](userStore: UserStore[F], logDSL: LogDSL[F]) {
     result.value
   }
 
+  def getUser(id: Id[User]): Result[F, AppError, User] =
+    userStore.get(id)
+
+  def deleteUser(id: Id[User]): Result[F, AppError, Unit] =
+    userStore.delete(id)
+
   private def checkNameExists(name: String): Result[F, AppError, Boolean] = {
     val result = for {
       allUsers <- userStore.getAll.handleError
