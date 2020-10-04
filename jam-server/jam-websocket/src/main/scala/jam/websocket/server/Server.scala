@@ -18,6 +18,6 @@ object Server {
       }
     }
 
-    Http().bindAndHandle(routes, interface, port)
+    Http().newServerAt(interface, port).bind(routes)
   }
 }

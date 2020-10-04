@@ -12,7 +12,7 @@ object IdGenerator {
     val id = AtomicLong(0)
     () => {
       id.add(1)
-      Id[A](id.get)
+      Id[A](id.get())
     }
   }
 }

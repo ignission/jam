@@ -1,7 +1,7 @@
 package jam.application.accounts
 
 import cats.Monad
-import cats.Monad.ops._
+import cats.implicits._
 
 import jam.application.dsl.AuthDSL
 import jam.domains.Id
