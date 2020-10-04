@@ -4,9 +4,9 @@ import akka.NotUsed
 import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.stream.scaladsl.{Flow, SourceQueue}
 
-import jam.domains.{Id, User}
+import jam.domains.Id
 import jam.websocket.messages.UserMessage
-import jam.websocket.models.Client
+import jam.websocket.models.{Client, User}
 import jam.websocket.server.Reply
 
 import scala.collection.immutable.HashMap

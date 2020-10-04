@@ -2,8 +2,9 @@ package jam.websocket.messages
 
 import akka.stream.scaladsl.SourceQueue
 
-import jam.domains.{Id, User}
+import jam.domains.Id
 import jam.websocket.dsl.ErrorCodes
+import jam.websocket.models.User
 
 sealed trait UserMessage {
   val userId: Id[User]

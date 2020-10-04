@@ -4,8 +4,9 @@ import cats.Monad
 
 import jam.application.dsl.Result.Result
 import jam.application.dsl.{LogDSL, Result, StoreDSL}
-import jam.domains.{Id, User}
+import jam.domains.Id
 import jam.websocket.dsl.UserDSL.UserStore
+import jam.websocket.models.User
 import jam.websocket.{AppError, LoggingFailed, NickNameAlreadyTaken}
 
 object UserDSL {

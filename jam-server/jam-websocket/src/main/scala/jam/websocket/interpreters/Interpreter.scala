@@ -7,7 +7,7 @@ import monix.eval.Task
 import monix.execution.Scheduler
 
 import jam.application.dsl.Result.Result
-import jam.domains.{Id, User}
+import jam.domains.Id
 import jam.websocket.AppError
 import jam.websocket.actors.NewClient
 import jam.websocket.dsl.{InternalError, UserDSL}
@@ -19,6 +19,7 @@ import jam.websocket.messages.{
   UserInfo,
   UserMessage
 }
+import jam.websocket.models.User
 import jam.websocket.server.Reply
 
 import scala.concurrent.Future
@@ -48,9 +49,10 @@ class InterpreterAsync(implicit s: Scheduler) extends Interpreter[Task] with DSL
       case msg: UnknownMessage =>
         Future.successful(Reply(msg))
       case UserConnected(userId, name, queue) =>
-        execute(userId, userDSL.addUser(User(userId, name))) { user =>
+        execute(userId, userDSL.addUser(User.create(userId, name))) { user =>
           Reply(UserInfo(userId, user), Seq(NewClient(userId, queue)))
         }.runToFuture
+
       case _ =>
         Future.successful(Reply(NoReply))
     }
