@@ -14,7 +14,7 @@ case class UserConnected(userId: Id[User], name: String, queue: SourceQueue[User
 case object NoReply extends UserMessage {
   val userId: Id[User] = Id(0)
 }
-
+case class UserInfo(userId: Id[User], user: User)            extends UserMessage
 case class MoveUp(userId: Id[User])                          extends UserMessage
 case class MoveDown(userId: Id[User])                        extends UserMessage
 case class MoveLeft(userId: Id[User])                        extends UserMessage
