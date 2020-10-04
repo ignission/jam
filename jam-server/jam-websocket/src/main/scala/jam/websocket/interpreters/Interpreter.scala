@@ -10,7 +10,7 @@ import jam.application.dsl.Result.Result
 import jam.domains.Id
 import jam.websocket.AppError
 import jam.websocket.actors.{BroadcastIn, NewClient}
-import jam.websocket.dsl.{InternalError, UserDSL}
+import jam.websocket.dsl.{ErrorCodes, UserDSL}
 import jam.websocket.messages.{
   ErrorOccured,
   NoReply,
@@ -40,7 +40,7 @@ trait DSLExecution {
       case Left(error: AppError) =>
         Reply(ErrorOccured(userId, error.code))
       case Left(_) =>
-        Reply(ErrorOccured(userId, InternalError))
+        Reply(ErrorOccured(userId, ErrorCodes.InternalError))
     }
   }
 }

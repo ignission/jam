@@ -9,12 +9,12 @@ import scala.concurrent.Future
 
 object Server {
 
-  def start(interface: String, port: Int)(implicit
+  def start(interface: String, port: Int, handler: ConnectionHandler)(implicit
       system: ActorSystem
   ): Future[Http.ServerBinding] = {
-    val routes = path("connect" / Segment) { _ =>
+    val routes = path("connect" / Segment) { nickName =>
       cors() {
-        ???
+        handleWebSocketMessages(handler.create(nickName))
       }
     }
 
