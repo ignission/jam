@@ -7,8 +7,8 @@ import io.getquill.{MysqlMonixJdbcContext, SnakeCase}
 import monix.eval.Task
 import monix.execution.Scheduler
 
-import jam.application.Result.Result
 import jam.application.accounts.{AccountModule, AccountService}
+import jam.application.dsl.Result.Result
 import jam.application.sessions.{SessionModule, SessionService}
 import jam.application.{AppError, AppModule, InternalError}
 import jam.infrastructure.interpreters.AuthInterpreter
@@ -23,7 +23,7 @@ import scala.util.control.NonFatal
 object App {
   import jam.application.dsl.syntax._
 
-  type TaskResult[A] = Task[Result[A]]
+  type TaskResult[A] = Result[Task, AppError, A]
 
   implicit val system: ActorSystem = ActorSystem()
   implicit val exc: Scheduler      = monix.execution.Scheduler.Implicits.global
