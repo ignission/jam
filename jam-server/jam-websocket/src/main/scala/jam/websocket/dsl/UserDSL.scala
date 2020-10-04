@@ -6,7 +6,7 @@ import jam.application.dsl.Result.Result
 import jam.application.dsl.{LogDSL, Result, StoreDSL}
 import jam.domains.Id
 import jam.websocket.dsl.UserDSL.UserStore
-import jam.websocket.models.User
+import jam.websocket.models.{User, UserPosition}
 import jam.websocket.{AppError, LoggingFailed, NickNameAlreadyTaken}
 
 object UserDSL {
@@ -31,6 +31,16 @@ class UserDSL[F[_]: Monad](userStore: UserStore[F], logDSL: LogDSL[F]) {
 
   def getUser(id: Id[User]): Result[F, AppError, User] =
     userStore.get(id)
+
+  def updatePosition(userId: Id[User], position: UserPosition): Result[F, AppError, User] = {
+    val result = for {
+      user <- userStore.get(userId).handleError
+      updated = user.updatePosition(position)
+      _ <- userStore.put(userId, updated).handleError
+    } yield updated
+
+    result.value
+  }
 
   def deleteUser(id: Id[User]): Result[F, AppError, Unit] =
     userStore.delete(id)

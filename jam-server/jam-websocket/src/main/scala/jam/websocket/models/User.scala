@@ -6,7 +6,10 @@ case class User(
     id: Id[User],
     name: String,
     position: UserPosition
-)
+) {
+  def updatePosition(position: UserPosition): User =
+    copy(position = position)
+}
 
 object User {
   def create(id: Id[User], name: String): User =

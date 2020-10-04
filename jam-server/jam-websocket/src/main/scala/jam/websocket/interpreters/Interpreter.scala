@@ -9,15 +9,17 @@ import monix.execution.Scheduler
 import jam.application.dsl.Result.Result
 import jam.domains.Id
 import jam.websocket.AppError
-import jam.websocket.actors.NewClient
+import jam.websocket.actors.{BroadcastIn, NewClient}
 import jam.websocket.dsl.{InternalError, UserDSL}
 import jam.websocket.messages.{
   ErrorOccured,
   NoReply,
   UnknownMessage,
+  UpdateUser,
   UserConnected,
   UserInfo,
-  UserMessage
+  UserMessage,
+  UserMoved
 }
 import jam.websocket.models.User
 import jam.websocket.server.Reply
@@ -52,7 +54,13 @@ class InterpreterAsync(implicit s: Scheduler) extends Interpreter[Task] with DSL
         execute(userId, userDSL.addUser(User.create(userId, name))) { user =>
           Reply(UserInfo(userId, user), Seq(NewClient(userId, queue)))
         }.runToFuture
-
+      case UserMoved(userId, position) =>
+        execute(userId, userDSL.updatePosition(userId, position)) { user =>
+          Reply(
+            NoReply,
+            Seq(BroadcastIn(UpdateUser(userId, user)))
+          )
+        }.runToFuture
       case _ =>
         Future.successful(Reply(NoReply))
     }
