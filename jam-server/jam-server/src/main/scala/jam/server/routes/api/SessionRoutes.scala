@@ -7,7 +7,8 @@ import monix.eval.Task
 import monix.execution.Scheduler
 import spray.json._
 
-import jam.application.Result.Result
+import jam.application.AppError
+import jam.application.dsl.Result.Result
 import jam.application.sessions.SessionModule
 import jam.rest.routes.CreateSessionRequest
 
@@ -28,13 +29,14 @@ class SessionRoutes(module: SessionModule[Task])(implicit s: Scheduler)
     path("sessions") {
       concat(
         get {
-          val taskResult: Task[Result[Seq[Session]]] = service.listSessions
+          val taskResult: Result[Task, AppError, Seq[Session]] = service.listSessions
 
           taskResult.handleResponse.toRoute
         },
         post {
           entity(as[CreateSessionRequest]) { req =>
-            val taskResult: Task[Result[InitializedSession]] = service.createSession(req.sessionId)
+            val taskResult: Result[Task, AppError, InitializedSession] =
+              service.createSession(req.sessionId)
 
             taskResult.handleResponse.toRoute
           }
@@ -45,7 +47,8 @@ class SessionRoutes(module: SessionModule[Task])(implicit s: Scheduler)
   private def tokenRoutes: Route =
     pathPrefix("tokens" / ".+".r) { sessionId =>
       post {
-        val taskResult: Task[Result[GeneratedToken]] = service.generateToken(SessionId(sessionId))
+        val taskResult: Result[Task, AppError, GeneratedToken] =
+          service.generateToken(SessionId(sessionId))
 
         taskResult.handleResponse.toRoute
       }

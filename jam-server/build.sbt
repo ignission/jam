@@ -67,7 +67,10 @@ lazy val application =
     .settings(commonSettings)
     .dependsOn(domain, openvidu4s)
     .settings(
-      name := "jam-application"
+      name := "jam-application",
+      libraryDependencies ++= Seq(
+        "com.github.mpilquist" %% "simulacrum" % "0.19.0"
+      )
     )
 
 lazy val infra = (project in file("jam-infrastructure"))
@@ -130,4 +133,4 @@ lazy val websocket = (project in file("jam-websocket"))
     ),
     assemblyJarName in assembly := "jam-websocket.jar"
   )
-  .dependsOn(domain)
+  .dependsOn(domain, infra)
