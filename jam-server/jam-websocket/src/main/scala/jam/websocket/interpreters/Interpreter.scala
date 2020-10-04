@@ -11,7 +11,14 @@ import jam.domains.{Id, User}
 import jam.websocket.AppError
 import jam.websocket.actors.NewClient
 import jam.websocket.dsl.{InternalError, UserDSL}
-import jam.websocket.messages.{ErrorOccured, NoReply, UnknownMessage, UserConnected, UserInfo, UserMessage}
+import jam.websocket.messages.{
+  ErrorOccured,
+  NoReply,
+  UnknownMessage,
+  UserConnected,
+  UserInfo,
+  UserMessage
+}
 import jam.websocket.server.Reply
 
 import scala.concurrent.Future
