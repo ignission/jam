@@ -107,10 +107,11 @@ lazy val infra = (project in file("jam-infrastructure"))
 lazy val dockerCommonSettings = Seq(
   packageName in Docker := name.value,
   version in Docker := version.value,
-  dockerBaseImage := "openjdk"
+  dockerBaseImage := "openjdk",
+  dockerEntrypoint := Seq("/opt/docker/bin/docker-entrypoint.sh")
 )
 
-lazy val server = (project in file("jam-server"))
+lazy val http = (project in file("jam-server"))
   .enablePlugins(JavaAppPackaging, DockerPlugin, FlywayPlugin)
   .settings(commonSettings)
   .settings(dockerCommonSettings)
@@ -142,7 +143,6 @@ lazy val websocket = (project in file("jam-websocket"))
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
     ),
     // docker
-    dockerExposedPorts := Seq(8866),
-    dockerEntrypoint := Seq("/opt/docker/bin/docker-entrypoint.sh")
+    dockerExposedPorts := Seq(8866)
   )
   .dependsOn(domain, infra)
