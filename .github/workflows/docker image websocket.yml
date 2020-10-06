@@ -51,31 +51,10 @@ jobs:
           cd jam-server
           sbt fixCheck
 
-      - name: Assembly
+      - name: Dist websocket
         run: |
           cd jam-server
-          sbt websocket/assembly
-          cd ../
-          mkdir -p docker/websocket/dist
-          mv jam-server/jam-websocket/target/scala-2.13/jam-websocket.jar docker/websocket/dist
-
-      - name: Upload artifacts of the server
-        uses: actions/upload-artifact@master
-        with:
-          name: websocket-artifacts
-          path: docker/websocket/dist
-
-  build-image:
-    runs-on: ubuntu-latest
-    needs: build-websocket
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: websocket-artifacts
-          path: docker/websocket/dist
+          sbt websocket/docker:publishLocal
 
       - name: Build docker image
         run: |
@@ -85,6 +64,7 @@ jobs:
         run: |
           VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker tag ignission/jam-websocket:latest ignission/jam-websocket:$VERSION
+          docker tag jam-websocket-server:$VERSION ignission/jam-websocket:latest
+          docker tag jam-websocket-server:$VERSION ignission/jam-websocket:$VERSION
           docker push ignission/jam-websocket:latest
           docker push ignission/jam-websocket:$VERSION
