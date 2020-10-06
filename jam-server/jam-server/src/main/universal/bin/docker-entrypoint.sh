@@ -14,4 +14,4 @@ until curl ${OPENVIDU_SERVER_URL} --insecure > /dev/null 2>&1; do
     sleep 1
 done
 
-java ${JAVA_OPTIONS:-} -jar jam-server.jar
+/opt/docker/bin/jam-http-server

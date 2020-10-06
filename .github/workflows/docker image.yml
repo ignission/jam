@@ -92,40 +92,17 @@ jobs:
           cd jam-server
           sbt fixCheck
 
-      - name: Assembly
+      - name: Dist http
         run: |
           cd jam-server
-          sbt server/assembly
-          cd ../
-          mkdir -p docker/server/dist
-          mv jam-server/jam-server/target/scala-2.13/jam-server.jar docker/server/dist
-
-      - name: Upload artifacts of the server
-        uses: actions/upload-artifact@master
-        with:
-          name: server-artifacts
-          path: docker/server/dist
-
-  build-image:
-    runs-on: ubuntu-latest
-    needs: build-server
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: server-artifacts
-          path: docker/server/dist
-
-      - name: Build docker image
-        run: |
-          docker build -t ignission/jam-server:latest docker/server
+          sbt http/docker:publishLocal
 
       - name: Push docker image
         run: |
           VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
           docker login --username shomatan -p ${{ secrets.DOCKER_LOGIN_TOKEN }}
-          docker tag ignission/jam-server:latest ignission/jam-server:$VERSION
-          docker push ignission/jam-server:latest
-          docker push ignission/jam-server:$VERSION
+          docker tag jam-http-server:$VERSION ignission/jam-http:latest
+          docker tag jam-http-server:$VERSION ignission/jam-http:$VERSION
+          docker push ignission/jam-http:latest
+          docker push ignission/jam-http:$VERSION
+

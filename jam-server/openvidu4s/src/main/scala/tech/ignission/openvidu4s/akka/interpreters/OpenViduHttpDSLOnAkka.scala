@@ -37,7 +37,7 @@ class OpenViduHttpDSLOnAkka(debug: Boolean = false)(implicit
     headers.`User-Agent`("openvidu-client"),
     headers.`Accept-Charset`(HttpCharsets.`UTF-8`)
   )
-  private lazy val noCertificateCheckContext = ConnectionContext.https(trustfulSslContext)
+  private lazy val noCertificateCheckContext = ConnectionContext.httpsClient(trustfulSslContext)
 
   def terminate(): Task[Unit] =
     Task.deferFuture(http.shutdownAllConnectionPools())
