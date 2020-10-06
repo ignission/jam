@@ -56,10 +56,6 @@ jobs:
           cd jam-server
           sbt websocket/docker:publishLocal
 
-      - name: Build docker image
-        run: |
-          docker build -t ignission/jam-websocket:latest docker/websocket
-
       - name: Push docker image
         run: |
           VERSION=`cat jam-server/build.sbt | grep -E 'version := "(.+?)"' | awk -F' := ' '{print $2}' | sed 's/"//g' | sed 's/,//g'`
