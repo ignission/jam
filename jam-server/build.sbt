@@ -125,7 +125,9 @@ lazy val server = (project in file("jam-server"))
     flywayUrl := "jdbc:mysql://localhost:33055/jam",
     flywayUser := "jam",
     flywayPassword := "jam",
-    flywayLocations += "db/migration"
+    flywayLocations += "db/migration",
+    // docker
+    dockerExposedPorts := Seq(8855)
   )
   .dependsOn(domain, infra, application, openvidu4s)
 
@@ -138,6 +140,9 @@ lazy val websocket = (project in file("jam-websocket"))
     libraryDependencies ++= akkaDependencies ++ Seq(
       "ch.megard"                          %% "akka-http-cors" % "0.4.3",
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
-    )
+    ),
+    // docker
+    dockerExposedPorts := Seq(8866),
+    dockerEntrypoint := Seq("/opt/docker/bin/docker-entrypoint.sh")
   )
   .dependsOn(domain, infra)
