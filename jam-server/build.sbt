@@ -11,7 +11,6 @@ lazy val commonSettings = Seq(
   version := "0.2.0-SNAPSHOT",
   scalaVersion := "2.13.3",
   organization := "tech.ignission",
-  test in assembly := {},
   scalacOptions ++= List(
     "-deprecation",
     "-feature",
@@ -105,8 +104,16 @@ lazy val infra = (project in file("jam-infrastructure"))
   )
   .dependsOn(domain, application)
 
+lazy val dockerCommonSettings = Seq(
+  packageName in Docker := name.value,
+  version in Docker := version.value,
+  dockerBaseImage := "openjdk"
+)
+
 lazy val server = (project in file("jam-server"))
+  .enablePlugins(JavaAppPackaging, DockerPlugin, FlywayPlugin)
   .settings(commonSettings)
+  .settings(dockerCommonSettings)
   .settings(
     name := "jam-http-server",
     libraryDependencies ++= akkaDependencies ++ Seq(
@@ -114,25 +121,23 @@ lazy val server = (project in file("jam-server"))
       "ch.megard"                          %% "akka-http-cors" % "0.4.3",
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
     ),
-    // sbt assembly
-    assemblyJarName in assembly := "jam-server.jar",
     // database migration
     flywayUrl := "jdbc:mysql://localhost:33055/jam",
     flywayUser := "jam",
     flywayPassword := "jam",
     flywayLocations += "db/migration"
   )
-  .enablePlugins(FlywayPlugin)
   .dependsOn(domain, infra, application, openvidu4s)
 
 lazy val websocket = (project in file("jam-websocket"))
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
   .settings(commonSettings)
+  .settings(dockerCommonSettings)
   .settings(
     name := "jam-websocket-server",
     libraryDependencies ++= akkaDependencies ++ Seq(
       "ch.megard"                          %% "akka-http-cors" % "0.4.3",
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
-    ),
-    assemblyJarName in assembly := "jam-websocket.jar"
+    )
   )
   .dependsOn(domain, infra)
