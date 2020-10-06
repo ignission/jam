@@ -8,7 +8,8 @@ jam-server/jam-server/src/main/resources/static
 ## Scala
 target
 
-## Scala with VSCode
+## Scala with Metals
+.bsp
 .metals
 .bloop
 metals.sbt
