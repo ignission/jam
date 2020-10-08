@@ -8,7 +8,7 @@ init: ## Initialize and set up local development environment
 
 up: ## Start
 	docker-compose pull server
-	docker-compose up -d server kms db
+	docker-compose up -d http websocket kms db
 	docker-compose logs -f
 
 down: ## Stop and destroy
@@ -17,7 +17,8 @@ down: ## Stop and destroy
 dev: ## For development (server + client)
 	docker-compose up -d kms db && \
 	cd jam-client && yarn hot & \
-	cd jam-server && make dev-only || \
+	cd jam-server && make dev-only-http & \
+	cd jam-server && make dev-only-websocket || \
 	cd ../ ; jobs -p | xargs kill && \
 	docker-compose kill kms
 

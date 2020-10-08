@@ -5,8 +5,11 @@ dev: ## For development
 	make NAME=jam-db wait-db
 	make dev-only
 
-dev-only: ## For root call
-	sbt "server/flywayMigrate; ~server/reStart --- -Dconfig.resource=local.conf"
+dev-only-http: ## Called from root
+	sbt "http/flywayMigrate; ~http/reStart --- -Dconfig.resource=local.conf"
+
+dev-only-websocket: ## Called from root
+	sbt "~websocket/reStart"
 
 dev-test: ## Test with reloading
 	docker-compose up -d kms db-test
