@@ -1,38 +1,36 @@
 .DEFAULT_GOAL := help
 
-DOCKER_COMPOSE_COMMAND := docker-compose -f docker-compose.yml -f docker-compose.dev.yml
+DOCKER_COMPOSE_DEV_CMD := docker-compose -f docker-compose.yml -f docker-compose.dev.yml
 
 init: ## Initialize and set up local development environment
 	cd jam-client && \
 	yarn && \
 	yarn build && \
 	cd ../ && \
-	${DOCKER_COMPOSE_COMMAND} build
+	${DOCKER_COMPOSE_DEV_CMD} build
 
 up: ## Start
 	docker-compose pull server
 	docker-compose up -d http websocket kms db
 	docker-compose logs -f
 
-down: ## Stop and destroy
-	docker-compose down -v
+up-http: ## Start http server 
+	docker-compose up -d http
+
+up-websocket: ## Start websocket server
+	docker-compose up -d websocket
 
 dev-http: ## Start http server with hot-reload
-	$(DOCKER_COMPOSE_COMMAND) up -d http  
+	$(DOCKER_COMPOSE_DEV_CMD) up -d http  
 
 dev-websocket: ## Start websocket server with hot-reload
-	${DOCKER_COMPOSE_COMMAND} up -d websocket
+	${DOCKER_COMPOSE_DEV_CMD} up -d websocket
 
 kill: ## Kill all containers
 	docker-compose kill
 
-dev: ## For development (server + client)
-	docker-compose up -d kms db && \
-	cd jam-client && yarn hot & \
-	cd jam-server && make dev-only-http & \
-	cd jam-server && make dev-only-websocket || \
-	cd ../ ; jobs -p | xargs kill && \
-	docker-compose kill kms
+down: ## Stop and destroy
+	docker-compose down -v
 
 .PHONY: help
 help:
