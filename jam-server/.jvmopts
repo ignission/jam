@@ -1,3 +1,3 @@
   -Xss8m
-  -Xms256m
+  -Xms128m
   -Xmx8G

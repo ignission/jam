@@ -1,10 +1,13 @@
 .DEFAULT_GOAL := help
 
+DOCKER_COMPOSE_COMMAND := docker-compose -f docker-compose.yml -f docker-compose.dev.yml
+
 init: ## Initialize and set up local development environment
 	cd jam-client && \
 	yarn && \
 	yarn build && \
-	cd ../
+	cd ../ && \
+	${DOCKER_COMPOSE_COMMAND} build
 
 up: ## Start
 	docker-compose pull server
@@ -15,7 +18,10 @@ down: ## Stop and destroy
 	docker-compose down -v
 
 dev-http: ## Start http server with hot-reload
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d http  
+	$(DOCKER_COMPOSE_COMMAND) up -d http  
+
+dev-websocket: ## Start websocket server with hot-reload
+	${DOCKER_COMPOSE_COMMAND} up -d websocket
 
 kill: ## Kill all containers
 	docker-compose kill

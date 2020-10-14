@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   http:
-    image: jam-http-server
+    image: jam-scala
     build: ./docker/scala
     entrypoint: sbt "http/flywayMigrate; ~http/reStart"
     environment:
@@ -12,3 +12,10 @@ services:
       - ./jam-server:/work
       - ~/.cache:/root/.cache
 
+  websocket:
+    image: jam-scala
+    build: ./docker/scala
+    entrypoint: sbt "~websocket/reStart"
+    volumes:
+      - ./jam-server:/work
+      - ~/.cache:/root/.cache
