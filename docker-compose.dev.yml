@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  http:
+    image: jam-http-server
+    build: ./docker/scala
+    entrypoint: sbt "http/flywayMigrate; ~http/reStart"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306
+    volumes:
+      - ./jam-server:/work
+      - ~/.cache:/root/.cache
+

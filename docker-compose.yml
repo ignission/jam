@@ -5,7 +5,6 @@ services:
     container_name: jam-http-server
     image: jam-http-server:0.2.0-SNAPSHOT
     environment:
-      # JAVA_OPTS: -Dconfig.resource=local.conf
       DATABASE_HOST: db
       DATABASE_PORT: 3306
       DATABASE_NAME: jam

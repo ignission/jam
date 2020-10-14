@@ -14,6 +14,12 @@ up: ## Start
 down: ## Stop and destroy
 	docker-compose down -v
 
+dev-http: ## Start http server with hot-reload
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d http  
+
+kill: ## Kill all containers
+	docker-compose kill
+
 dev: ## For development (server + client)
 	docker-compose up -d kms db && \
 	cd jam-client && yarn hot & \
