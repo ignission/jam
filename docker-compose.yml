@@ -1,16 +1,29 @@
 version: "3.7"
 
 services:
-  server:
+  http:
     container_name: jam-http-server
-    image: ignission/jam-http:latest
+    image: jam-http-server:0.2.0-SNAPSHOT
     environment:
-      JAVA_OPTIONS: -Dconfig.resource=local.conf
-      OPENVIDU_SERVER_URL: https://kms:4443
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306
+      DATABASE_NAME: jam
+      DATABASE_USER: jam
+      DATABASE_PASS: jam
+      OPENVIDU_SERVER_URL: "https://kms:4443"
+      OPENVIDU_SERVER_USERNAME: "OPENVIDUAPP"
+      OPENVIDU_SERVER_PASSWORD: "MY_SECRET"
     ports:
       - 8855:8855
     depends_on:
+      - db
       - kms
+
+  websocket:
+    container_name: jam-websocket-server
+    image: jam-websocket-server:0.2.0-SNAPSHOT
+    ports:
+      - 8866:8866
 
   kms:
     container_name: jam-kms

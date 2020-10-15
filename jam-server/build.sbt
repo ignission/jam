@@ -123,7 +123,11 @@ lazy val http = (project in file("jam-server"))
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
     ),
     // database migration
-    flywayUrl := "jdbc:mysql://localhost:33055/jam",
+    flywayUrl := {
+      val host = sys.env.get("DATABASE_HOST").getOrElse("localhost")
+      val port = sys.env.get("DATABASE_PORT").getOrElse("33055")
+      s"jdbc:mysql://${host}:${port}/jam"
+    },
     flywayUser := "jam",
     flywayPassword := "jam",
     flywayLocations += "db/migration",
