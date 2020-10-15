@@ -1,14 +1,11 @@
 .DEFAULT_GOAL := help
 
-dev: ## For development
+http: ## Start development http
 	docker-compose up -d kms db
 	make NAME=jam-db wait-db
-	make dev-only
-
-dev-only-http: ## Called from root
 	sbt "http/flywayMigrate; ~http/reStart --- -Dconfig.resource=local.conf"
 
-dev-only-websocket: ## Called from root
+websocket: ## Start development websocket
 	sbt "~websocket/reStart"
 
 dev-test: ## Test with reloading

@@ -19,3 +19,13 @@ services:
     volumes:
       - ./jam-server:/work
       - ~/.cache:/root/.cache
+
+  client:
+    container_name: jam-client
+    image: jam-node
+    build: ./docker/node
+    ports:
+      - 3000:3000
+    volumes:
+      - ./jam-client:/work
+

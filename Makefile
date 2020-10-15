@@ -9,9 +9,9 @@ init: ## Initialize and set up local development environment
 	cd ../ && \
 	${DOCKER_COMPOSE_DEV_CMD} build
 
-up: ## Start
+up: ## Start all-in-one with docker
 	docker-compose pull server
-	docker-compose up -d http websocket kms db
+	docker-compose up -d client http websocket kms db
 	docker-compose logs -f
 
 up-http: ## Start http server 
@@ -20,6 +20,9 @@ up-http: ## Start http server
 up-websocket: ## Start websocket server
 	docker-compose up -d websocket
 
+dev-client: ## Start client with hot-reload
+	$(DOCKER_COMPOSE_DEV_CMD) up -d client
+	
 dev-http: ## Start http server with hot-reload
 	$(DOCKER_COMPOSE_DEV_CMD) up -d http  
 
