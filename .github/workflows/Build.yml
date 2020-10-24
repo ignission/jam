@@ -18,7 +18,7 @@ jobs:
           node-version: 12.x
 
       - name: cache node_modules
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: client_node_modules
         with:
           path: jam-client/node_modules
@@ -59,7 +59,7 @@ jobs:
           path: jam-server/jam-server/src/main/resources/static
 
       - name: Cache ivy
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-sbt-ivy-cache-${{ github.run_id }}
@@ -67,7 +67,7 @@ jobs:
             ${{ runner.os }}-sbt-ivy-cache-
 
       - name: Cache coursier
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.cache/coursier
           key: ${{ runner.os }}-sbt-coursier-cache-${{ github.run_id }}
@@ -75,7 +75,7 @@ jobs:
             ${{ runner.os }}-sbt-coursier-cache-
 
       - name: Cache sbt
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-cache-${{ github.run_id }}
