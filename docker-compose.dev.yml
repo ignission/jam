@@ -28,6 +28,8 @@ services:
       - 3000:3000
     volumes:
       - ./jam-client:/work
+      - node_modules:/work/node_modules
 
 volumes:
   cache:
+  node_modules:

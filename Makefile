@@ -10,8 +10,8 @@ init: ## Initialize and set up local development environment
 	${DOCKER_COMPOSE_DEV_CMD} build
 
 up: ## Start all-in-one with docker
-	docker-compose pull server
-	docker-compose up -d client http websocket kms db
+	docker-compose pull
+	docker-compose up -d http websocket kms db
 	docker-compose logs -f
 
 up-http: ## Start http server 

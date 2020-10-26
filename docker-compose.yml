@@ -3,7 +3,7 @@ version: "3.7"
 services:
   http:
     container_name: jam-http-server
-    image: jam-http-server:0.2.0-SNAPSHOT
+    image: ignission/jam-http:0.2.0-SNAPSHOT
     environment:
       DATABASE_HOST: db
       DATABASE_PORT: 3306
@@ -21,13 +21,13 @@ services:
 
   websocket:
     container_name: jam-websocket-server
-    image: jam-websocket-server:0.2.0-SNAPSHOT
+    image: ignission/jam-websocket:0.2.0-SNAPSHOT
     ports:
       - 8866:8866
 
   kms:
     container_name: jam-kms
-    image: openvidu/openvidu-server-kms:2.14.0
+    image: openvidu/openvidu-server-kms:2.15.0
     environment:
       openvidu.secret: MY_SECRET
     ports:
