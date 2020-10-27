@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 // import { WindowServiceImpl } from 'WindowService';
 // import { OpenViduClientImpl } from 'OpenViduClient';
+import Sockette from 'sockette';
 import { APIClientOnAxios } from 'network/APIClient';
 
 const Home = loadable(() => import('components/pages/Home'));
@@ -31,6 +32,19 @@ const App: React.FC = () => {
           <Home
             initialName={'User_' + Math.floor(Math.random() * Math.floor(9999))}
             onSubmit={(name: string) => {
+              const ws = new Sockette('ws:/localhost:8866/connect/' + name, {
+                timeout: 10,
+                maxAttempts: 10,
+                onopen: (e) => console.log('Connected!', e),
+                onmessage: (e) => console.log('Received', e),
+                onreconnect: (e) => console.log('Reconnecting...', e),
+                onmaximum: (e) => console.log('Stop Attempting!', e),
+                onclose: (e) => console.log('Closed!', e),
+                onerror: (e) => console.log('Error!', e),
+              });
+              // ws.send('Hello, world!');
+              // ws.json({ type: 'ping' });
+              // ws.close();
               props.history.push('/lobby');
             }}
           />
