@@ -29,6 +29,9 @@ dev-http: ## Start http server with hot-reload
 dev-websocket: ## Start websocket server with hot-reload
 	${DOCKER_COMPOSE_DEV_CMD} up -d websocket
 
+dev-logs: ## Show log 
+	$(DOCKER_COMPOSE_DEV_CMD) logs -f
+
 kill: ## Kill all containers
 	docker-compose kill
 

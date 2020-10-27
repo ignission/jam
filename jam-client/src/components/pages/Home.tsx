@@ -6,6 +6,7 @@ import Logo from '../atoms/Logo';
 const version = require('../../../package.json').version;
 
 interface Props {
+  initialName: string;
   onSubmit: (name: string) => void;
 }
 
@@ -89,7 +90,7 @@ const FooterLink = styled.a({
   color: '#fff',
 });
 
-const Home: React.FC<Props> = ({ onSubmit }) => {
+const Home: React.FC<Props> = ({ initialName, onSubmit }) => {
   return (
     <Section>
       <Header>
@@ -108,7 +109,7 @@ const Home: React.FC<Props> = ({ onSubmit }) => {
           <H4>Videoconference rooms in one click</H4>
         </div>
         <FormContainer>
-          <EnterRoomForm onSubmit={onSubmit} />
+          <EnterRoomForm initialName={initialName} onSubmit={onSubmit} />
         </FormContainer>
       </Container>
 
