@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
-import { WindowServiceImpl } from 'WindowService';
-import { OpenViduClientImpl } from 'OpenViduClient';
+// import { WindowServiceImpl } from 'WindowService';
+// import { OpenViduClientImpl } from 'OpenViduClient';
 import { APIClientOnAxios } from 'network/APIClient';
 
 const Home = loadable(() => import('components/pages/Home'));
@@ -28,7 +28,12 @@ const App: React.FC = () => {
         exact
         path="/"
         render={(props) => (
-          <Home onSubmit={(name) => props.history.push(`/rooms/${name}`)} />
+          <Home
+            initialName={'User_' + Math.floor(Math.random() * Math.floor(9999))}
+            onSubmit={(name: string) => {
+              props.history.push('/lobby');
+            }}
+          />
         )}
       />
       <Route path="/signin" component={Signin} />

@@ -70,7 +70,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     <Form>
       {touched.name && errors.name && <RoomError>{errors.name}</RoomError>}
       <JoinForm>
-        <InputForm type="text" name="name" placeholder="Enter a room name" />
+        <InputForm type="text" name="name" placeholder="Enter your name" />
         <Button type="submit" disabled={isSubmitting}>
           JOIN
         </Button>
@@ -80,21 +80,21 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 };
 
 interface FormProps {
-  initialName?: string;
+  initialName: string;
   onSubmit: (name: string) => void;
 }
 
 export const EnterRoomForm = withFormik<FormProps, FormValues>({
   mapPropsToValues: (props) => {
     return {
-      name: props.initialName || 'Session A',
+      name: props.initialName,
     };
   },
 
   validationSchema: Yup.object().shape({
     name: Yup.string()
-      .min(4, 'Room name is too short')
-      .required('Room Name is Required'),
+      .min(4, 'Your name is too short')
+      .required('Your name is Required'),
   }),
 
   handleSubmit: (values, { props }) => {
