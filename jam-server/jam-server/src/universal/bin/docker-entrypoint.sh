@@ -9,7 +9,7 @@ if [ -z "${OPENVIDU_SERVER_URL}" ]; then
     exit 1
 fi
 
-until curl ${OPENVIDU_SERVER_URL} --insecure > /dev/null >&2; do
+until curl ${OPENVIDU_SERVER_URL} -sS --insecure > /dev/null >&2; do
     echo "**** OpenVidu server - waiting"
     sleep 1
 done
