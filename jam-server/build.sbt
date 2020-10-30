@@ -107,7 +107,7 @@ lazy val infra = (project in file("jam-infrastructure"))
 lazy val dockerCommonSettings = Seq(
   packageName in Docker := name.value,
   version in Docker := version.value,
-  dockerBaseImage := "openjdk",
+  dockerBaseImage := "openjdk:8-jre-alpine",
   dockerEntrypoint := Seq("/opt/docker/bin/docker-entrypoint.sh")
 )
 
