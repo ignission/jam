@@ -138,7 +138,7 @@ lazy val http = (project in file("jam-server"))
     dockerCommands ++= Seq(
       Cmd("USER", "root"),
       ExecCmd("RUN", "apk", "update"),
-      ExecCmd("RUN", "apk", "add", "--no-cache", "mysql-client"),
+      ExecCmd("RUN", "apk", "add", "--no-cache", "bash", "mysql-client", "curl"),
       Cmd("USER", (daemonUser in Docker).value)
     )
   )

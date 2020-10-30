@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ ! -z "${JAVA_OPTIONS}" ]; then
     echo "Using java options: ${JAVA_OPTIONS}"
@@ -9,7 +9,7 @@ if [ -z "${OPENVIDU_SERVER_URL}" ]; then
     exit 1
 fi
 
-until curl ${OPENVIDU_SERVER_URL} --insecure > /dev/null 2>&1; do
+until curl ${OPENVIDU_SERVER_URL} -sS --insecure > /dev/null >&2; do
     echo "**** OpenVidu server - waiting"
     sleep 1
 done
