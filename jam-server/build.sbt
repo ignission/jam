@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.docker._
+
 name := "jam-server"
 
 addCommandAlias("fix", "all compile:scalafix; test:scalafix")
@@ -132,7 +134,13 @@ lazy val http = (project in file("jam-server"))
     flywayPassword := "jam",
     flywayLocations += "db/migration",
     // docker
-    dockerExposedPorts := Seq(8855)
+    dockerExposedPorts := Seq(8855),
+    dockerCommands ++= Seq(
+      Cmd("USER", "root"),
+      ExecCmd("RUN", "apk", "update"),
+      ExecCmd("RUN", "apk", "add", "--no-cache", "mysql-client"),
+      Cmd("USER", (daemonUser in Docker).value)
+    )
   )
   .dependsOn(domain, infra, application, openvidu4s)
 
