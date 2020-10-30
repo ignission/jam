@@ -1,7 +1,8 @@
 # JAM
 
-![](https://github.com/ignission/jam/workflows/build/badge.svg)
-![](https://github.com/ignission/jam/workflows/docker%20image/badge.svg)
+![Build](https://github.com/ignission/jam/workflows/Build/badge.svg)
+![Http Server](https://github.com/ignission/jam/workflows/Http%20Server/badge.svg)
+![Websocket Server](https://github.com/ignission/jam/workflows/Websocket%20Server/badge.svg)
 
 Simplicity and Freedom of Space Video Chat Party App with OpenVidu.
 

@@ -1,4 +1,4 @@
-name: docker image
+name: Http Server
 
 on:
   push:
