@@ -155,6 +155,12 @@ lazy val websocket = (project in file("jam-websocket"))
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
     ),
     // docker
-    dockerExposedPorts := Seq(8866)
+    dockerExposedPorts := Seq(8866),
+    dockerCommands ++= Seq(
+      Cmd("USER", "root"),
+      ExecCmd("RUN", "apk", "update"),
+      ExecCmd("RUN", "apk", "add", "--no-cache", "bash"),
+      Cmd("USER", (daemonUser in Docker).value)
+    )
   )
   .dependsOn(domain, infra)
