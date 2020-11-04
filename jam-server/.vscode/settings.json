@@ -18,5 +18,8 @@
             "server": "localhost",
             "username": "jam"
         }
-    ]
+    ],
+    "files.watcherExclude": {
+        "**/target": true
+    }
 }
