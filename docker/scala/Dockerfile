@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-ARG SBT_VERSION=1.4.0
+ARG SBT_VERSION=1.4.2
 
 RUN set -xe \
   && apk update \
