@@ -97,7 +97,7 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
       Get("/rest/api/v1/sessions") ~> routes ~> check {
         status shouldEqual StatusCodes.OK
         entityAs[String] shouldEqual
-          """{"sessions":[{"createdAt":1589035535985,"sessionId":"test-session1"}]}"""
+        """{"sessions":[{"createdAt":1589035535985,"sessionId":"test-session1"}]}"""
       }
     }
 
@@ -107,7 +107,7 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
       Post("/rest/api/v1/sessions", entity) ~> routes ~> check {
         status shouldEqual StatusCodes.OK
         entityAs[String] shouldEqual
-          """{"session":{"createdAt":1589035535985,"id":"test-session"}}"""
+        """{"session":{"createdAt":1589035535985,"id":"test-session"}}"""
       }
     }
 
@@ -115,7 +115,7 @@ class ApiRouteSpec extends AnyWordSpec with Matchers with ScalatestRouteTest wit
       Post("/rest/api/v1/tokens/session-a") ~> routes ~> check {
         status shouldEqual StatusCodes.OK
         entityAs[String] shouldEqual
-          """{"token":"abcdefg"}"""
+        """{"token":"abcdefg"}"""
       }
     }
 

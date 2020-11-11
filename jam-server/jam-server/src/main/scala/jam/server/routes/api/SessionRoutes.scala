@@ -12,7 +12,12 @@ import jam.application.dsl.Result.Result
 import jam.application.sessions.SessionModule
 import jam.rest.routes.CreateSessionRequest
 
-import tech.ignission.openvidu4s.core.datas.{GeneratedToken, InitializedSession, Session, SessionId}
+import tech.ignission.openvidu4s.core.datas.{
+  GeneratedToken,
+  InitializedSession,
+  Session,
+  SessionId
+}
 
 class SessionRoutes(module: SessionModule[Task])(implicit s: Scheduler)
     extends SprayJsonSupport

@@ -27,7 +27,8 @@ object App {
   val actor           = system.actorOf(Props(classOf[ServerActor]))
   val MAX_BUFFER_SIZE = 16134
 
-  private val messageActorSource = Source.queue[UserMessage](MAX_BUFFER_SIZE, OverflowStrategy.fail)
+  private val messageActorSource =
+    Source.queue[UserMessage](MAX_BUFFER_SIZE, OverflowStrategy.fail)
 
   type TaskResult[A] = Result[Task, AppError, A]
 
@@ -60,17 +61,20 @@ object App {
       binding <- startServer(interface, port, connectionHandler).handleError
     } yield binding
 
-    startupTask.value.map {
-      case Right(_) =>
-        println(s"Listning on port $interface:$port")
-      case Left(error) =>
-        println(error)
-        system.terminate()
-    }.onErrorRecover {
-      case NonFatal(ex) =>
-        ex.printStackTrace()
-        system.terminate()
-    }.runToFuture
+    startupTask.value
+      .map {
+        case Right(_) =>
+          println(s"Listning on port $interface:$port")
+        case Left(error) =>
+          println(error)
+          system.terminate()
+      }
+      .onErrorRecover {
+        case NonFatal(ex) =>
+          ex.printStackTrace()
+          system.terminate()
+      }
+      .runToFuture
   }
 
   private def startServer(

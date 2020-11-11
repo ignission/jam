@@ -54,9 +54,11 @@ class OpenViduHttpDSLOnAkka(debug: Boolean = false)(implicit
   ): Task[Response[A]] =
     for {
       serverResponse <- doRequest(createRequest(HttpMethods.POST, query, body, bodyFormat))
-      response = serverResponse.map { content =>
-        if (content.isEmpty) "{}" else content
-      }.map(_.parseJson.convertTo[A](format))
+      response = serverResponse
+        .map { content =>
+          if (content.isEmpty) "{}" else content
+        }
+        .map(_.parseJson.convertTo[A](format))
     } yield response
 
   override def delete(query: HttpQuery): Task[Response[Unit]] =
@@ -74,18 +76,21 @@ class OpenViduHttpDSLOnAkka(debug: Boolean = false)(implicit
       case Basic(username, password) =>
         val uri = Uri(query.baseUrl + query.path)
         logger.info(s"Create HTTP request method: ${method.value} and uri: $uri")
-        optBody.map { body =>
-          HttpRequest(
-            method = method,
-            uri = uri,
-            entity = HttpEntity(ContentTypes.`application/json`, body)
-          )
-        }.getOrElse {
-          HttpRequest(
-            method = method,
-            uri = uri
-          )
-        }.withHeaders(reqHeaders :+ createAuthHeader(username = username, password = password))
+        optBody
+          .map { body =>
+            HttpRequest(
+              method = method,
+              uri = uri,
+              entity = HttpEntity(ContentTypes.`application/json`, body)
+            )
+          }
+          .getOrElse {
+            HttpRequest(
+              method = method,
+              uri = uri
+            )
+          }
+          .withHeaders(reqHeaders :+ createAuthHeader(username = username, password = password))
     }
 
   private def createRequest[Body](

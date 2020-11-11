@@ -56,17 +56,20 @@ object App {
       bindings <- startServer(Config.interface, Config.port, appModule).handleError
     } yield bindings
 
-    startupTask.value.map {
-      case Left(error) =>
-        error.printStackTrace()
-        system.terminate()
-      case Right(_) =>
-        println(s"Listening on port ${Config.port}")
-    }.onErrorRecover {
-      case NonFatal(ex) =>
-        ex.printStackTrace()
-        system.terminate()
-    }.runAsyncAndForget
+    startupTask.value
+      .map {
+        case Left(error) =>
+          error.printStackTrace()
+          system.terminate()
+        case Right(_) =>
+          println(s"Listening on port ${Config.port}")
+      }
+      .onErrorRecover {
+        case NonFatal(ex) =>
+          ex.printStackTrace()
+          system.terminate()
+      }
+      .runAsyncAndForget
 
   }
 

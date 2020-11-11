@@ -46,4 +46,9 @@ class AccountService[F[_]: Monad, Ctx](
   }
 }
 
-case class SignUpRequest(name: String, displayName: Option[String], email: String, password: String)
+case class SignUpRequest(
+    name: String,
+    displayName: Option[String],
+    email: String,
+    password: String
+)

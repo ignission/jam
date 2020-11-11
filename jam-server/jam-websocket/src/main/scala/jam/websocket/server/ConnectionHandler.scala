@@ -31,9 +31,11 @@ class ConnectionHandler(
         import GraphDSL.Implicits._
 
         val userId = idGenerator()
-        val clientSourceMat = builder.materializedValue.map { sourceQueue =>
-          UserConnected(userId, nickName, sourceQueue)
-        }.via(messageInterpreter)
+        val clientSourceMat = builder.materializedValue
+          .map { sourceQueue =>
+            UserConnected(userId, nickName, sourceQueue)
+          }
+          .via(messageInterpreter)
 
         val merge = builder.add(Merge[Reply](2))
         val inputMessage = builder.add(
