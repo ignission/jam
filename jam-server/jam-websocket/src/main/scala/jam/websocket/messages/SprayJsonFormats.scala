@@ -28,10 +28,10 @@ object SprayJsonFormats {
 
   implicit val userMessageFormat = new JsonFormat[UserMessage] {
     private final val USER_INFO_ID       = 1
-    private final val USER_MOVED_ID      = 2;
-    private final val UPDATE_USER_ID     = 3;
-    private final val ERROR_OCCURED_ID   = 4;
-    private final val UNKNOWN_MESSAGE_ID = 5;
+    private final val USER_MOVED_ID      = 2
+    private final val UPDATE_USER_ID     = 3
+    private final val ERROR_OCCURED_ID   = 4
+    private final val UNKNOWN_MESSAGE_ID = 5
 
     override def read(json: JsValue): UserMessage =
       json.asJsObject.getFields("type") match {
@@ -43,6 +43,7 @@ object SprayJsonFormats {
             case ERROR_OCCURED_ID   => errorOccuredFormat.read(json)
             case UNKNOWN_MESSAGE_ID => unknownMessageFormat.read(json)
           }
+        case other => deserializationError(s"Unexpected user message json. Input: $other")
       }
 
     override def write(obj: UserMessage): JsValue = {
