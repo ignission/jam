@@ -120,7 +120,7 @@ lazy val http = (project in file("jam-server"))
   .settings(
     name := "jam-http-server",
     libraryDependencies ++= akkaDependencies ++ Seq(
-      "com.typesafe"                        % "config"         % "1.4.0",
+      "com.typesafe"                        % "config"         % "1.4.1",
       "ch.megard"                          %% "akka-http-cors" % "0.4.3",
       "com.softwaremill.akka-http-session" %% "core"           % "0.5.11"
     ),
