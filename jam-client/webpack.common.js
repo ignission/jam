@@ -53,7 +53,7 @@ module.exports = {
     }),
     new CopyFilePlugin({
       patterns: [
-        { 
+        {
           context: 'public/images',
           from: '**/*',
           to: path.resolve(

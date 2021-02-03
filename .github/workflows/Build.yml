@@ -100,9 +100,9 @@ jobs:
       - name: Dist http
         run: |
           cd jam-server
-          sbt http/docker:publishLocal 
+          sbt http/docker:publishLocal
 
       - name: Dist websocket
         run: |
           cd jam-server
-          sbt websocket/docker:publishLocal 
+          sbt websocket/docker:publishLocal
