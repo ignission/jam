@@ -6,9 +6,10 @@ interface UserProps {
   readonly width?: number;
   readonly height?: number;
   readonly fontSize?: number;
+  readonly userName: string;
 }
 
-const User: React.FC<UserProps> = ({ width = 50, height = 50, fontSize = 16 }) => {
+const User: React.FC<UserProps> = ({ width = 50, height = 50, fontSize = 16, userName }) => {
   const app = useApp();
   const [halfWidth, halfHeight] = [width/2, height/2]
   const [x, setX] = useState(halfWidth);
@@ -73,14 +74,18 @@ const User: React.FC<UserProps> = ({ width = 50, height = 50, fontSize = 16 }) =
   return (
     <>
       <Sprite image="images/favicon.ico" anchor={0.5} {...{x, y, width, height}} />
-      <Text text="user" x={x} y={y+25} anchor={[0.5, 0]} style={new TextStyle({ fontSize })} />
+      <Text text={userName} x={x} y={y+25} anchor={[0.5, 0]} style={new TextStyle({ fontSize })} />
     </>);
 };
 
-export const Lobby: React.FC = () => {
+interface LobbyProps {
+  userName: string;
+}
+
+export const Lobby: React.FC<LobbyProps> = ({userName}) => {
   return (
     <Stage options={{ backgroundColor: 0xeef1f5 }}>
-      <User />
+      <User userName={userName} />
     </Stage>
   );
 };

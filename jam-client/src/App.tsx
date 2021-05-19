@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 // import { WindowServiceImpl } from 'WindowService';
@@ -16,6 +16,9 @@ const Lobby = loadable(() =>
 );
 
 const App: React.FC = () => {
+
+  const [initialName, setInitialName] = useState('User_' + Math.floor(Math.random() * Math.floor(9999)));
+
   // services
   const client = APIClientOnAxios('');
 
@@ -30,28 +33,31 @@ const App: React.FC = () => {
         path="/"
         render={(props) => (
           <Home
-            initialName={'User_' + Math.floor(Math.random() * Math.floor(9999))}
+            initialName={initialName}
             onSubmit={(name: string) => {
-              const ws = new Sockette('ws:/localhost:8866/connect/' + name, {
-                timeout: 10,
-                maxAttempts: 10,
-                onopen: (e) => console.log('Connected!', e),
-                onmessage: (e) => console.log('Received', e),
-                onreconnect: (e) => console.log('Reconnecting...', e),
-                onmaximum: (e) => console.log('Stop Attempting!', e),
-                onclose: (e) => console.log('Closed!', e),
-                onerror: (e) => console.log('Error!', e),
-              });
+//               const ws = new Sockette('ws:/localhost:8866/connect/' + name, {
+//                 timeout: 10,
+//                 maxAttempts: 10,
+//                 onopen: (e) => console.log('Connected!', e),
+//                 onmessage: (e) => console.log('Received', e),
+//                 onreconnect: (e) => console.log('Reconnecting...', e),
+//                 onmaximum: (e) => console.log('Stop Attempting!', e),
+//                 onclose: (e) => console.log('Closed!', e),
+//                 onerror: (e) => console.log('Error!', e),
+//               });
               // ws.send('Hello, world!');
               // ws.json({ type: 'ping' });
               // ws.close();
+              setInitialName(name);
               props.history.push('/lobby');
             }}
           />
         )}
       />
       <Route path="/signin" component={Signin} />
-      <Route path="/lobby" component={Lobby} />
+      <Route path="/lobby" render={(props) => (
+        <Lobby userName={initialName} />
+      )}/>
       <Route path="/rooms/:id" component={Room} />
     </BrowserRouter>
   );
