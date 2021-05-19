@@ -22,10 +22,22 @@ lazy val commonSettings = Seq(
 
 lazy val messaging = (project in file("jam-messaging"))
   .settings(commonSettings)
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(PlayScala)
+  .settings(
+    PlayKeys.fileWatchService := {
+      lazy val isMac = System.getProperties.get("os.name") == "Mac OS X"
+      val logger     = play.sbt.run.toLoggerProxy(sLog.value)
+      if (System.getProperties.get("os.arch") == "aarch64") {
+        // For Apple M1
+        play.dev.filewatch.FileWatchService.jdk7(logger)
+      } else
+        play.dev.filewatch.FileWatchService.default(logger, isMac)
+    }
+  )
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
+  .aggregate(messaging)
 
 addCommandAlias("fixAll", "scalafixAll; scalafmtAll; scalafmtSbt")
 addCommandAlias("checkAll", "scalafixAll --check; scalafmtCheckAll; scalafmtSbtCheck")
