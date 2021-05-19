@@ -20,6 +20,10 @@ lazy val commonSettings = Seq(
   semanticdbVersion := scalafixSemanticdb.revision
 )
 
+lazy val messaging = (project in file("jam-messaging"))
+  .settings(commonSettings)
+  .enablePlugins(ScalaJSPlugin)
+
 lazy val root = (project in file("."))
   .settings(commonSettings)
 
