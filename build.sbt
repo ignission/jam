@@ -1,3 +1,5 @@
+import play.sbt.PlayImport.PlayKeys.devSettings
+
 name := "jam"
 
 lazy val commonSettings = Seq(
@@ -20,19 +22,32 @@ lazy val commonSettings = Seq(
   semanticdbVersion := scalafixSemanticdb.revision
 )
 
+lazy val playCommonSettings = Seq(
+  scalacOptions += s"-Wconf:src=${target.value}/.*:s",
+  PlayKeys.fileWatchService := {
+    lazy val isMac = System.getProperties.get("os.name") == "Mac OS X"
+    val logger     = play.sbt.run.toLoggerProxy(sLog.value)
+    if (System.getProperties.get("os.arch") == "aarch64") {
+      // For Apple M1
+      play.dev.filewatch.FileWatchService.jdk7(logger)
+    } else
+      play.dev.filewatch.FileWatchService.default(logger, isMac)
+  }
+)
+
 lazy val messaging = (project in file("jam-messaging"))
-  .settings(commonSettings)
   .enablePlugins(PlayScala)
+  .settings(commonSettings)
+  .settings(playCommonSettings)
   .settings(
-    PlayKeys.fileWatchService := {
-      lazy val isMac = System.getProperties.get("os.name") == "Mac OS X"
-      val logger     = play.sbt.run.toLoggerProxy(sLog.value)
-      if (System.getProperties.get("os.arch") == "aarch64") {
-        // For Apple M1
-        play.dev.filewatch.FileWatchService.jdk7(logger)
-      } else
-        play.dev.filewatch.FileWatchService.default(logger, isMac)
-    }
+    libraryDependencies ++= Seq(
+      guice,
+      jdbc,
+      "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
+    )
+  )
+  .settings(
+    devSettings := Map("play.server.http.port" -> "9001").toSeq
   )
 
 lazy val root = (project in file("."))
