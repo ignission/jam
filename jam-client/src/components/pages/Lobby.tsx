@@ -33,7 +33,6 @@ const User: React.FC<UserProps> = ({
     maxAttempts: 10,
     onopen: (e) => {
       console.log('Connected!', e);
-      ws.send(JSON.stringify({ message: 'Ping' }));
     },
     onmessage: (e) => console.log('Received', e),
     onreconnect: (e) => console.log('Reconnecting...', e),
@@ -85,6 +84,8 @@ const User: React.FC<UserProps> = ({
           const newX = x + moveTo.x;
           if (newX - halfWidth < 0 || newX + halfHeight > app.screen.width)
             return x;
+
+          ws.send(JSON.stringify({ message: '(' + newX + ', ' + y + ')' }));
           return newX;
         });
       if (moveTo.y)
@@ -95,6 +96,8 @@ const User: React.FC<UserProps> = ({
             newY + halfHeight + fontSize > app.screen.height
           )
             return y;
+
+          ws.send(JSON.stringify({ message: '(' + x + ', ' + newY + ')' }));
           return newY;
         });
     }
