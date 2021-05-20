@@ -3,4 +3,4 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET     /connect/:userName      controllers.WebSocketsController.connect(userName: String)
+GET     /ws/:userName       controllers.WebSocketsController.ws(userName: String)

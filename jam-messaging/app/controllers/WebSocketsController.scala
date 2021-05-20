@@ -15,7 +15,7 @@ class WebSocketsController @Inject() (val controllerComponents: ControllerCompon
 
 //  private val logger = play.api.Logger(getClass)
 
-  def connect(userName: String): WebSocket = WebSocket.accept[JsValue, JsValue] { _ =>
+  def ws(userName: String): WebSocket = WebSocket.accept[JsValue, JsValue] { _ =>
     ActorFlow.actorRef { actorRef =>
       WebSocketActor.props(actorRef, userName)
     }

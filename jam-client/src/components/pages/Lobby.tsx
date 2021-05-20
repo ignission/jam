@@ -15,6 +15,7 @@ interface UserProps {
   readonly height?: number;
   readonly fontSize?: number;
   readonly userName: string;
+  onPositionChange: (x: number, y: number) => void;
 }
 
 const User: React.FC<UserProps> = ({
@@ -22,24 +23,13 @@ const User: React.FC<UserProps> = ({
   height = 50,
   fontSize = 16,
   userName,
+  onPositionChange,
 }) => {
   const app = useApp();
   const [halfWidth, halfHeight] = [width / 2, height / 2];
   const [x, setX] = useState(halfWidth);
   const [y, setY] = useState(halfHeight);
 
-  const ws = new Sockette('ws:/localhost:9001/connect/' + userName, {
-    timeout: 10,
-    maxAttempts: 10,
-    onopen: (e) => {
-      console.log('Connected!', e);
-    },
-    onmessage: (e) => console.log('Received', e),
-    onreconnect: (e) => console.log('Reconnecting...', e),
-    onmaximum: (e) => console.log('Stop Attempting!', e),
-    onclose: (e) => console.log('Closed!', e),
-    onerror: (e) => console.log('Error!', e),
-  });
   // useTick(() => {
   //   const mousePosition = app.renderer.plugins.interaction.mouse.global;
   //   setX(mousePosition.x);
@@ -85,7 +75,7 @@ const User: React.FC<UserProps> = ({
           if (newX - halfWidth < 0 || newX + halfHeight > app.screen.width)
             return x;
 
-          ws.send(JSON.stringify({ message: '(' + newX + ', ' + y + ')' }));
+          onPositionChange(newX, y);
           return newX;
         });
       if (moveTo.y)
@@ -97,11 +87,12 @@ const User: React.FC<UserProps> = ({
           )
             return y;
 
-          ws.send(JSON.stringify({ message: '(' + x + ', ' + newY + ')' }));
+          onPositionChange(x, newY);
           return newY;
         });
     }
     document.addEventListener('keydown', moveUser);
+
     return () => {
       document.removeEventListener('keydown', moveUser);
     };
@@ -130,9 +121,26 @@ interface LobbyProps {
 }
 
 export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
+  const ws = new Sockette('ws:/localhost:9001/ws/' + userName, {
+    timeout: 10,
+    maxAttempts: 10,
+    onopen: (e) => {
+      console.log('Connected!', e);
+    },
+    onmessage: (e) => console.log('Received', e),
+    onreconnect: (e) => console.log('Reconnecting...', e),
+    onmaximum: (e) => console.log('Stop Attempting!', e),
+    onclose: (e) => console.log('Closed!', e),
+    onerror: (e) => console.log('Error!', e),
+  });
+
+  const onPositionChange = (x: number, y: number) => {
+    ws.send(JSON.stringify({ message: '(' + x + ', ' + y + ')' }));
+  };
+
   return (
     <Stage options={{ backgroundColor: 0xeef1f5 }}>
-      <User userName={userName} />
+      <User userName={userName} onPositionChange={onPositionChange} />
     </Stage>
   );
 };
