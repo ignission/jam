@@ -35,8 +35,10 @@ class WebSocketActor(clientActorRef: ActorRef, redis: RedisClient, userName: Str
             .map(Json.parse)
             .map(_.as[User])
             .getOrElse(throw new RuntimeException("user not found"))
-          redis.getAll.map(Json.parse).map(_.as[User]).filterNot(_ == user) :+ user
-            .copy(position = position)
+          val updated = user.copy(position = position)
+
+          redis.put(userName, Json.toJson(updated).toString())
+          redis.getAll.map(Json.parse).map(_.as[User]).filterNot(_ == user) :+ updated
         case others => throw new RuntimeException("unknown command: " + others)
       }
       val json: JsValue = Json.obj(

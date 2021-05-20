@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Stage, Sprite, Text, useApp } from '@inlet/react-pixi';
 import { TextStyle } from 'pixi.js';
 import Sockette from 'sockette';
@@ -130,35 +130,45 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
   const fontSize = 16;
 
   const [users, setUsers] = useState<User[]>([]);
-  const ws = new Sockette('ws:/localhost:9001/ws/' + userName, {
-    timeout: 10,
-    maxAttempts: 10,
-    onopen: (e) => {
-      console.log('Connected!', e);
-    },
-    onmessage: (e) => {
-      console.log('Received', e);
-      const data = JSON.parse(e.data);
-      if (data) setUsers(data.users);
-    },
-    onreconnect: (e) => {
-      console.log('Reconnecting...', e);
-    },
-    onmaximum: (e) => console.log('Stop Attempting!', e),
-    onclose: (e) => console.log('Closed!', e),
-    onerror: (e) => console.log('Error!', e),
-  });
+  const wsRef = useRef<Sockette>();
+
+  useEffect(() => {
+    console.log('Connectinng..');
+    wsRef.current = new Sockette('ws:/localhost:9001/ws/' + userName, {
+      timeout: 10,
+      maxAttempts: 10,
+      onopen: (e) => {
+        console.log('Connected!', e);
+      },
+      onmessage: (e) => {
+        console.log('Received', e);
+        const data = JSON.parse(e.data);
+        if (data) setUsers(data.users);
+      },
+      onreconnect: (e) => {
+        console.log('Reconnecting...', e);
+      },
+      onmaximum: (e) => console.log('Stop Attempting!', e),
+      onclose: (e) => console.log('Closed!', e),
+      onerror: (e) => console.log('Error!', e),
+    });
+    return () => {
+      console.log('Disconnecting..');
+      if (wsRef.current) wsRef.current.close();
+    };
+  }, []);
 
   const onPositionChange = (x: number, y: number) => {
-    ws.send(
-      JSON.stringify({
-        command: 'move',
-        value: {
-          x: x,
-          y: y,
-        },
-      })
-    );
+    if (wsRef.current)
+      wsRef.current.send(
+        JSON.stringify({
+          command: 'move',
+          value: {
+            x: x,
+            y: y,
+          },
+        })
+      );
   };
 
   return (
