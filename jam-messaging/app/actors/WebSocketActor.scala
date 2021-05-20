@@ -3,6 +3,12 @@ package actors
 import akka.actor._
 import play.api.libs.json.{JsValue, Json}
 
+case class Position(x: Int, y: Int)
+
+sealed trait Command
+case class UserMove(position: Position) extends Command
+case object Unknown                     extends Command
+
 class WebSocketActor(clientActorRef: ActorRef, userName: String) extends Actor {
   private val logger = play.api.Logger(getClass)
 
@@ -11,13 +17,22 @@ class WebSocketActor(clientActorRef: ActorRef, userName: String) extends Actor {
   def receive = {
     case jsValue: JsValue =>
       logger.info(s"Receive a message from $userName: ${jsValue.toString()}")
-      val clientMessage = getMessage(jsValue)
-      val json: JsValue = Json.parse(s"""{"body": "You said, ‘$clientMessage’"}""")
+      val command       = parseCommand(jsValue)
+      val json: JsValue = Json.parse(s"""{"body": "You said, ‘$command’"}""")
       clientActorRef ! json
   }
 
-  def getMessage(json: JsValue): String =
-    (json \ "message").as[String]
+  def parseCommand(json: JsValue): Command =
+    (json \ "command").as[String] match {
+      case "move" =>
+        UserMove(
+          Position(
+            x = (json \ "value" \ "x").as[Int],
+            y = (json \ "value" \ "y").as[Int]
+          )
+        )
+      case _ => Unknown
+    }
 }
 
 object WebSocketActor {

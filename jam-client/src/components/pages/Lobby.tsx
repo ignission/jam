@@ -135,7 +135,15 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
   });
 
   const onPositionChange = (x: number, y: number) => {
-    ws.send(JSON.stringify({ message: '(' + x + ', ' + y + ')' }));
+    ws.send(
+      JSON.stringify({
+        command: 'move',
+        value: {
+          x: x,
+          y: y,
+        },
+      })
+    );
   };
 
   return (
