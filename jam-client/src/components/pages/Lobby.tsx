@@ -28,6 +28,19 @@ const User: React.FC<UserProps> = ({
   const [x, setX] = useState(halfWidth);
   const [y, setY] = useState(halfHeight);
 
+  const ws = new Sockette('ws:/localhost:9001/connect/' + userName, {
+    timeout: 10,
+    maxAttempts: 10,
+    onopen: (e) => {
+      console.log('Connected!', e);
+      ws.send(JSON.stringify({ message: 'Ping' }));
+    },
+    onmessage: (e) => console.log('Received', e),
+    onreconnect: (e) => console.log('Reconnecting...', e),
+    onmaximum: (e) => console.log('Stop Attempting!', e),
+    onclose: (e) => console.log('Closed!', e),
+    onerror: (e) => console.log('Error!', e),
+  });
   // useTick(() => {
   //   const mousePosition = app.renderer.plugins.interaction.mouse.global;
   //   setX(mousePosition.x);
@@ -111,12 +124,9 @@ const User: React.FC<UserProps> = ({
 
 interface LobbyProps {
   userName: string;
-  websocket: Sockette;
 }
 
-export const Lobby: React.FC<LobbyProps> = ({ userName, websocket }) => {
-  websocket.send(JSON.stringify({ message: 'Ping' }));
-
+export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
   return (
     <Stage options={{ backgroundColor: 0xeef1f5 }}>
       <User userName={userName} />

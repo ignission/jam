@@ -37,19 +37,6 @@ const App: React.FC = () => {
           <Home
             initialName={initialName}
             onSubmit={(name: string) => {
-              const ws = new Sockette('ws:/localhost:9001/connect/' + name, {
-                timeout: 10,
-                maxAttempts: 10,
-                onopen: (e) => console.log('Connected!', e),
-                onmessage: (e) => console.log('Received', e),
-                onreconnect: (e) => console.log('Reconnecting...', e),
-                onmaximum: (e) => console.log('Stop Attempting!', e),
-                onclose: (e) => console.log('Closed!', e),
-                onerror: (e) => console.log('Error!', e),
-              });
-              setWebsocket(ws);
-              /* ws.send('Hello, world!'); */
-              /* ws.close(); */
               setInitialName(name);
               props.history.push('/lobby');
             }}
@@ -59,9 +46,7 @@ const App: React.FC = () => {
       <Route path="/signin" component={Signin} />
       <Route
         path="/lobby"
-        render={(props) => (
-          <Lobby userName={initialName} websocket={websocket} />
-        )}
+        render={(props) => <Lobby userName={initialName} />}
       />
       <Route path="/rooms/:id" component={Room} />
     </BrowserRouter>
