@@ -1,29 +1,12 @@
 version: "3.7"
 
 services:
-  http:
-    container_name: jam-http-server
-    image: ignission/jam-http:0.2.0-SNAPSHOT
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 3306
-      DATABASE_NAME: jam
-      DATABASE_USER: jam
-      DATABASE_PASS: jam
-      OPENVIDU_SERVER_URL: "https://kms:4443"
-      OPENVIDU_SERVER_USERNAME: "OPENVIDUAPP"
-      OPENVIDU_SERVER_PASSWORD: "MY_SECRET"
-    ports:
-      - 8855:8855
-    depends_on:
-      - db
-      - kms
 
-  websocket:
-    container_name: jam-websocket-server
-    image: ignission/jam-websocket:0.2.0-SNAPSHOT
+  redis:
+    container_name: jam-redis
+    image: redis:6.2
     ports:
-      - 8866:8866
+      - 16379:6379
 
   kms:
     container_name: jam-kms

@@ -1,15 +1,19 @@
 package controllers
 
+import javax.inject._
+
 import actors.WebSocketActor
 import akka.actor.ActorSystem
+import infrastructure.RedisClient
 import play.api.libs.json.JsValue
 import play.api.libs.streams.ActorFlow
-
-import javax.inject._
 import play.api.mvc._
 
 @Singleton
-class WebSocketsController @Inject() (val controllerComponents: ControllerComponents)(implicit
+class WebSocketsController @Inject() (
+    val controllerComponents: ControllerComponents,
+    redis: RedisClient
+)(implicit
     system: ActorSystem
 ) extends BaseController {
 
@@ -17,7 +21,7 @@ class WebSocketsController @Inject() (val controllerComponents: ControllerCompon
 
   def ws(userName: String): WebSocket = WebSocket.accept[JsValue, JsValue] { _ =>
     ActorFlow.actorRef { actorRef =>
-      WebSocketActor.props(actorRef, userName)
+      WebSocketActor.props(actorRef, redis, userName)
     }
   }
 }

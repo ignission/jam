@@ -24,6 +24,9 @@ lazy val commonSettings = Seq(
 
 lazy val playCommonSettings = Seq(
   scalacOptions += s"-Wconf:src=${target.value}/.*:s",
+  PlayKeys.playRunHooks ++= Seq(
+    DockerComposeRunHook(baseDirectory.value.getParentFile)
+  ),
   PlayKeys.fileWatchService := {
     lazy val isMac = System.getProperties.get("os.name") == "Mac OS X"
     val logger     = play.sbt.run.toLoggerProxy(sLog.value)
@@ -43,6 +46,7 @@ lazy val messaging = (project in file("jam-messaging"))
     libraryDependencies ++= Seq(
       guice,
       jdbc,
+      "net.debasishg"          %% "redisclient"        % "3.30",
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
     )
   )

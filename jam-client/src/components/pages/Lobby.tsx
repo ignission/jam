@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Stage,
-  Sprite,
-  Text,
-  useApp,
-  useTick,
-} from '@inlet/react-pixi';
+import { Stage, Sprite, Text, useApp } from '@inlet/react-pixi';
 import { TextStyle } from 'pixi.js';
 import Sockette from 'sockette';
+import { number } from 'yup/lib/locale';
 
 interface UserProps {
   readonly width?: number;
@@ -18,7 +12,7 @@ interface UserProps {
   onPositionChange: (x: number, y: number) => void;
 }
 
-const User: React.FC<UserProps> = ({
+const UserComponent: React.FC<UserProps> = ({
   width = 50,
   height = 50,
   fontSize = 16,
@@ -120,15 +114,36 @@ interface LobbyProps {
   userName: string;
 }
 
+interface Position {
+  x: number;
+  y: number;
+}
+
+interface User {
+  name: string;
+  position: Position;
+}
+
 export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
+  const width = 50;
+  const height = 50;
+  const fontSize = 16;
+
+  const [users, setUsers] = useState<User[]>([]);
   const ws = new Sockette('ws:/localhost:9001/ws/' + userName, {
     timeout: 10,
     maxAttempts: 10,
     onopen: (e) => {
       console.log('Connected!', e);
     },
-    onmessage: (e) => console.log('Received', e),
-    onreconnect: (e) => console.log('Reconnecting...', e),
+    onmessage: (e) => {
+      console.log('Received', e);
+      const data = JSON.parse(e.data);
+      if (data) setUsers(data.users);
+    },
+    onreconnect: (e) => {
+      console.log('Reconnecting...', e);
+    },
     onmaximum: (e) => console.log('Stop Attempting!', e),
     onclose: (e) => console.log('Closed!', e),
     onerror: (e) => console.log('Error!', e),
@@ -148,7 +163,29 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
 
   return (
     <Stage options={{ backgroundColor: 0xeef1f5 }}>
-      <User userName={userName} onPositionChange={onPositionChange} />
+      <UserComponent userName={userName} onPositionChange={onPositionChange} />
+      {users.map((user: User, index: number) => {
+        if (userName != user.name) {
+          const x = user.position.x;
+          const y = user.position.y;
+          return (
+            <>
+              <Sprite
+                image="images/favicon.ico"
+                anchor={0.5}
+                {...{ x, y, width, height }}
+              />
+              <Text
+                text={user.name}
+                x={user.position.x}
+                y={user.position.y + 25}
+                anchor={[0.5, 0]}
+                style={new TextStyle({ fontSize })}
+              />
+            </>
+          );
+        }
+      })}
     </Stage>
   );
 };
