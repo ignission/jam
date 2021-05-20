@@ -16,8 +16,10 @@ const Lobby = loadable(() =>
 );
 
 const App: React.FC = () => {
-
-  const [initialName, setInitialName] = useState('User_' + Math.floor(Math.random() * Math.floor(9999)));
+  const [websocket, setWebsocket] = useState<Sockette | null>(null);
+  const [initialName, setInitialName] = useState(
+    'User_' + Math.floor(Math.random() * Math.floor(9999))
+  );
 
   // services
   const client = APIClientOnAxios('');
@@ -35,19 +37,19 @@ const App: React.FC = () => {
           <Home
             initialName={initialName}
             onSubmit={(name: string) => {
-//               const ws = new Sockette('ws:/localhost:8866/connect/' + name, {
-//                 timeout: 10,
-//                 maxAttempts: 10,
-//                 onopen: (e) => console.log('Connected!', e),
-//                 onmessage: (e) => console.log('Received', e),
-//                 onreconnect: (e) => console.log('Reconnecting...', e),
-//                 onmaximum: (e) => console.log('Stop Attempting!', e),
-//                 onclose: (e) => console.log('Closed!', e),
-//                 onerror: (e) => console.log('Error!', e),
-//               });
-              // ws.send('Hello, world!');
-              // ws.json({ type: 'ping' });
-              // ws.close();
+              const ws = new Sockette('ws:/localhost:9001/connect/' + name, {
+                timeout: 10,
+                maxAttempts: 10,
+                onopen: (e) => console.log('Connected!', e),
+                onmessage: (e) => console.log('Received', e),
+                onreconnect: (e) => console.log('Reconnecting...', e),
+                onmaximum: (e) => console.log('Stop Attempting!', e),
+                onclose: (e) => console.log('Closed!', e),
+                onerror: (e) => console.log('Error!', e),
+              });
+              setWebsocket(ws);
+              /* ws.send('Hello, world!'); */
+              /* ws.close(); */
               setInitialName(name);
               props.history.push('/lobby');
             }}
@@ -55,9 +57,12 @@ const App: React.FC = () => {
         )}
       />
       <Route path="/signin" component={Signin} />
-      <Route path="/lobby" render={(props) => (
-        <Lobby userName={initialName} />
-      )}/>
+      <Route
+        path="/lobby"
+        render={(props) => (
+          <Lobby userName={initialName} websocket={websocket} />
+        )}
+      />
       <Route path="/rooms/:id" component={Room} />
     </BrowserRouter>
   );
