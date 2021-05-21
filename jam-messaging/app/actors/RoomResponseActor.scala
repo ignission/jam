@@ -1,6 +1,6 @@
 package actors
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor.{Actor, ActorRef, PoisonPill, Props}
 import domain.models.{User, UserName}
 import infrastructure.RedisClient
 import play.api.libs.json.Json
@@ -11,7 +11,7 @@ class RoomResponseActor(out: ActorRef, redisClient: RedisClient, myself: UserNam
 
   override def receive: Receive = {
     case v: Move =>
-      redisClient.put(myself.value, Json.toJson(User(v.userName, v.position)).toString())
+      redisClient.put(v.userName.value, Json.toJson(User(v.userName, v.position)).toString())
       out ! Json.toJson(v)
     case v: Join =>
       out ! Json.toJson(v)
@@ -19,8 +19,8 @@ class RoomResponseActor(out: ActorRef, redisClient: RedisClient, myself: UserNam
       redisClient.delete(v.userName.value)
       out ! Json.toJson(v)
       if (v.userName == myself) {
-//        out ! PoisonPill
-//        self ! PoisonPill
+        out ! PoisonPill
+        self ! PoisonPill
       }
   }
 
