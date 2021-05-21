@@ -17,10 +17,10 @@ class RoomRequestActor(out: ActorRef, redis: RedisClient, roomName: RoomName, us
   }
 
   override def preStart(): Unit = {
-    val otherUsers = redis.getAll.map(Json.parse).map(_.as[User]).toSet
-    val user       = User(userName, Position(0, 0))
+    val user = User(userName, Position(0, 0))
+    val allUsers = redis.getAll.map(Json.parse).map(_.as[User])
     redis.put(userName.value, Json.toJson(user).toString())
-    out ! Join(Room(roomName, otherUsers), user)
+    out ! Join(Room(roomName, (allUsers :+ user).toSet), user)
   }
 
   override def postStop(): Unit = {

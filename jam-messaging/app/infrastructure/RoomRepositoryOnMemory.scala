@@ -44,10 +44,6 @@ class RoomRepositoryOnMemory @Inject() (
       .fromSinkAndSource(channel.sink, channel.source)
       .joinMat(KillSwitches.singleBidi[UserCommand, UserCommand])(Keep.right)
       .backpressureTimeout(3.seconds)
-      .map { e =>
-        println(s"$e $channel")
-        e
-      }
 
     RoomInfo(Room(roomName, Set()), bus)
   }

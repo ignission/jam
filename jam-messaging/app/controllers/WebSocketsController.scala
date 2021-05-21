@@ -24,8 +24,6 @@ class WebSocketsController @Inject() (
   private val logger = play.api.Logger(getClass)
 
   def ws(roomName: String): WebSocket = WebSocket.accept[JsValue, JsValue] { implicit request =>
-    logger.info("Room request: " + roomName)
-
     val userName = request
       .queryString("user_name")
       .headOption
@@ -33,13 +31,17 @@ class WebSocketsController @Inject() (
       .getOrElse(UserName.anonymous)
     val rm = RoomName(roomName)
 
+    logger.info(s"User: ${userName.value} is trying to enter room: $roomName")
+
     val userInput: Flow[JsValue, UserCommand, _] =
       ActorFlow.actorRef[JsValue, UserCommand](out =>
         RoomRequestActor.props(out, redisClient, rm, userName)
       )
     val roomInfo = service.start(roomName = rm, userName = userName)
     val userOutPut: Flow[UserCommand, JsValue, _] =
-      ActorFlow.actorRef[UserCommand, JsValue](out => RoomResponseActor.props(out, userName))
+      ActorFlow.actorRef[UserCommand, JsValue](out =>
+        RoomResponseActor.props(out, redisClient, userName)
+      )
 
     userInput.viaMat(roomInfo.bus)(Keep.right).viaMat(userOutPut)(Keep.right)
   }

@@ -150,7 +150,6 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
           console.log('Received', e);
           const data = JSON.parse(e.data);
           if (data && data.command) {
-            console.log('users: %o', users);
             switch (data.command) {
               case 'join':
                 setUsers(data.users);
