@@ -1,11 +1,11 @@
 package actors
 
 import akka.actor.{Actor, ActorRef, Props}
+import domain.models.Position
 import infrastructure.RedisClient
 import play.api.libs.json._
 
 case class User(name: String, position: Position)
-case class Position(x: Int, y: Int)
 
 sealed trait Command
 case class UserMove(position: Position) extends Command

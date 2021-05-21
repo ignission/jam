@@ -123,6 +123,10 @@ interface User {
   name: string;
   position: Position;
 }
+const User = (name: string) => ({
+  name: name,
+  position: { x: 0, y: 0 },
+});
 
 export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
   const width = 50;
@@ -145,7 +149,20 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
         onmessage: (e) => {
           console.log('Received', e);
           const data = JSON.parse(e.data);
-          if (data) setUsers(data.users);
+          if (data && data.command) {
+            console.log('users: %o', users);
+            switch (data.command) {
+              case 'join':
+                setUsers((users) => {
+                  console.log(users);
+                  users.push(User(data.userName));
+                  return users;
+                });
+                break;
+            }
+          }
+
+          //setUsers(data.users);
         },
         onreconnect: (e) => {
           console.log('Reconnecting...', e);
@@ -165,8 +182,8 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
     if (wsRef.current)
       wsRef.current.send(
         JSON.stringify({
-          command: 'move',
-          value: {
+          userName: userName,
+          position: {
             x: x,
             y: y,
           },
@@ -178,6 +195,7 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
     <Stage options={{ backgroundColor: 0xeef1f5 }}>
       <UserComponent userName={userName} onPositionChange={onPositionChange} />
       {users.map((user: User, index: number) => {
+        console.log(user);
         if (userName != user.name) {
           const x = user.position.x;
           const y = user.position.y;
