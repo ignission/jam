@@ -153,10 +153,7 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
             console.log('users: %o', users);
             switch (data.command) {
               case 'join':
-                setUsers((users) => {
-                  users.push(User(data.userName));
-                  return users;
-                });
+                setUsers(data.users);
                 break;
               case 'move':
                 setUsers((users) => {
@@ -177,8 +174,6 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
                 break;
             }
           }
-
-          //setUsers(data.users);
         },
         onreconnect: (e) => {
           console.log('Reconnecting...', e);

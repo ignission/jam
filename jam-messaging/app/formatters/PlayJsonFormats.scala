@@ -1,6 +1,6 @@
 package formatters
 
-import domain.models.{Position, UserCommand, UserName}
+import domain.models.{Position, User, UserCommand, UserName}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -24,27 +24,39 @@ object PlayJsonFormats {
         "y" -> o.y
       )
 
+  implicit val userReads: Reads[User] = (
+    (JsPath \ "name").read[String].map(UserName(_)) and
+      (JsPath \ "position").read[Position]
+  )(User)
+
+  implicit val userNameWrites: Writes[UserName] =
+    (o: UserName) => JsString(o.value)
+
+  implicit val userWrites: Writes[User] =
+    (o: User) =>
+      Json.obj(
+        "name"     -> o.name,
+        "position" -> o.position
+      )
+
   implicit val moveCommandWrites: Writes[Move] =
     (o: Move) =>
       Json.obj(
         "command" -> "move",
-        "user" -> Json.obj(
-          "name"     -> o.userName.value,
-          "position" -> o.position
-        )
+        "user"    -> Json.toJson(User(o.userName, o.position))
       )
 
   implicit val joinCommandWrites: Writes[Join] =
     (o: Join) =>
       Json.obj(
-        "command"  -> "join",
-        "userName" -> o.userName.value
+        "command" -> "join",
+        "users"   -> Json.toJson(o.room.users)
       )
 
   implicit val leaveCommandWrites: Writes[Leave] =
     (o: Leave) =>
       Json.obj(
         "command"  -> "leave",
-        "userName" -> o.userName.value
+        "userName" -> o.userName
       )
 }
