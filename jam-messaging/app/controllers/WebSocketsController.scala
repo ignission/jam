@@ -19,9 +19,11 @@ class WebSocketsController @Inject() (
 
 //  private val logger = play.api.Logger(getClass)
 
-  def ws(userName: String): WebSocket = WebSocket.accept[JsValue, JsValue] { _ =>
+  def ws(room: String): WebSocket = WebSocket.accept[JsValue, JsValue] { implicit request =>
+    val userName = request.queryString("user_name").headOption.getOrElse("anon")
+
     ActorFlow.actorRef { actorRef =>
-      WebSocketActor.props(actorRef, redis, userName)
+      WebSocketActor.props(actorRef, redis, room, userName)
     }
   }
 }

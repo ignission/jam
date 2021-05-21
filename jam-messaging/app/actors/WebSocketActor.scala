@@ -11,7 +11,7 @@ sealed trait Command
 case class UserMove(position: Position) extends Command
 case object Unknown                     extends Command
 
-class WebSocketActor(clientActorRef: ActorRef, redis: RedisClient, userName: String)
+class WebSocketActor(clientActorRef: ActorRef, redis: RedisClient, room: String, userName: String)
     extends Actor {
   private val logger = play.api.Logger(getClass)
   private val user   = User(userName, Position(0, 0))
@@ -65,6 +65,6 @@ class WebSocketActor(clientActorRef: ActorRef, redis: RedisClient, userName: Str
 }
 
 object WebSocketActor {
-  def props(clientActorRef: ActorRef, redis: RedisClient, userName: String): Props =
-    Props(new WebSocketActor(clientActorRef, redis, userName))
+  def props(clientActorRef: ActorRef, redis: RedisClient, room: String, userName: String): Props =
+    Props(new WebSocketActor(clientActorRef, redis, room, userName))
 }
