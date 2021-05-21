@@ -16,6 +16,7 @@ class WebSocketActor(clientActorRef: ActorRef, redis: RedisClient, room: String,
   private val logger = play.api.Logger(getClass)
   private val user   = User(userName, Position(0, 0))
 
+  logger.info("Entering a room: " + room)
   logger.info("Connecting user name: " + userName)
 
   implicit val positionFormat: Format[Position] = Json.format[Position]
