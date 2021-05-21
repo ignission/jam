@@ -154,9 +154,25 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
             switch (data.command) {
               case 'join':
                 setUsers((users) => {
-                  console.log(users);
                   users.push(User(data.userName));
                   return users;
+                });
+                break;
+              case 'move':
+                setUsers((users) => {
+                  const filtered = users.filter(
+                    (user) => user.name != data.user.name
+                  );
+                  filtered.push(data.user);
+                  return filtered;
+                });
+                break;
+              case 'leave':
+                setUsers((users) => {
+                  const filtered = users.filter(
+                    (user) => user.name != data.user.name
+                  );
+                  return filtered;
                 });
                 break;
             }

@@ -27,9 +27,11 @@ object PlayJsonFormats {
   implicit val moveCommandWrites: Writes[Move] =
     (o: Move) =>
       Json.obj(
-        "command"  -> "move",
-        "userName" -> o.userName.value,
-        "position" -> o.position
+        "command" -> "move",
+        "user" -> Json.obj(
+          "name"     -> o.userName.value,
+          "position" -> o.position
+        )
       )
 
   implicit val joinCommandWrites: Writes[Join] =
