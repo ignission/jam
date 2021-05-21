@@ -3,7 +3,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 // import { WindowServiceImpl } from 'WindowService';
 // import { OpenViduClientImpl } from 'OpenViduClient';
-import Sockette from 'sockette';
 import { APIClientOnAxios } from 'network/APIClient';
 
 const Home = loadable(() => import('components/pages/Home'));
@@ -16,7 +15,6 @@ const Lobby = loadable(() =>
 );
 
 const App: React.FC = () => {
-  const [websocket, setWebsocket] = useState<Sockette | null>(null);
   const [initialName, setInitialName] = useState(
     'User_' + Math.floor(Math.random() * Math.floor(9999))
   );

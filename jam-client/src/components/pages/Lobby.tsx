@@ -134,24 +134,27 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
 
   useEffect(() => {
     console.log('Connectinng..');
-    wsRef.current = new Sockette('ws:/localhost:9001/ws/' + userName, {
-      timeout: 10,
-      maxAttempts: 10,
-      onopen: (e) => {
-        console.log('Connected!', e);
-      },
-      onmessage: (e) => {
-        console.log('Received', e);
-        const data = JSON.parse(e.data);
-        if (data) setUsers(data.users);
-      },
-      onreconnect: (e) => {
-        console.log('Reconnecting...', e);
-      },
-      onmaximum: (e) => console.log('Stop Attempting!', e),
-      onclose: (e) => console.log('Closed!', e),
-      onerror: (e) => console.log('Error!', e),
-    });
+    wsRef.current = new Sockette(
+      'ws:/localhost:9001/ws/lobby?user_name=' + userName,
+      {
+        timeout: 10,
+        maxAttempts: 10,
+        onopen: (e) => {
+          console.log('Connected!', e);
+        },
+        onmessage: (e) => {
+          console.log('Received', e);
+          const data = JSON.parse(e.data);
+          if (data) setUsers(data.users);
+        },
+        onreconnect: (e) => {
+          console.log('Reconnecting...', e);
+        },
+        onmaximum: (e) => console.log('Stop Attempting!', e),
+        onclose: (e) => console.log('Closed!', e),
+        onerror: (e) => console.log('Error!', e),
+      }
+    );
     return () => {
       console.log('Disconnecting..');
       if (wsRef.current) wsRef.current.close();
