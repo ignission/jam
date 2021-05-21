@@ -1,6 +1,6 @@
 package actors
 
-import akka.actor.{Actor, ActorRef, PoisonPill, Props}
+import akka.actor.{Actor, ActorRef, Props}
 import domain.models.UserName
 import play.api.libs.json.Json
 
@@ -16,8 +16,8 @@ class RoomResponseActor(out: ActorRef, myself: UserName) extends Actor {
     case v: Leave =>
       out ! Json.toJson(v)
       if (v.userName == myself) {
-        out ! PoisonPill
-        self ! PoisonPill
+//        out ! PoisonPill
+//        self ! PoisonPill
       }
   }
 

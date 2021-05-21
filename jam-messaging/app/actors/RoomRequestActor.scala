@@ -1,6 +1,6 @@
 package actors
 
-import akka.actor.{Actor, ActorRef, PoisonPill, Props}
+import akka.actor.{Actor, ActorRef, Props}
 import domain.models.{Position, Room, RoomName, User, UserCommand, UserName}
 import infrastructure.RedisClient
 import play.api.libs.json.{JsValue, Json}
@@ -25,8 +25,8 @@ class RoomRequestActor(out: ActorRef, redis: RedisClient, roomName: RoomName, us
 
   override def postStop(): Unit = {
     redis.delete(userName.value)
-    out ! Leave(userName)
-    out ! PoisonPill
+//    out ! Leave(userName)
+//    out ! PoisonPill
   }
 }
 
