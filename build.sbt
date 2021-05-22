@@ -25,7 +25,8 @@ lazy val commonSettings = Seq(
 lazy val playCommonSettings = Seq(
   scalacOptions += s"-Wconf:src=${target.value}/.*:s",
   PlayKeys.playRunHooks ++= Seq(
-    DockerComposeRunHook(baseDirectory.value.getParentFile)
+    DockerComposeRunHook(baseDirectory.value.getParentFile),
+    FrontendRunHook(baseDirectory.value.getParentFile / "jam-client")
   ),
   PlayKeys.fileWatchService := {
     lazy val isMac = System.getProperties.get("os.name") == "Mac OS X"
