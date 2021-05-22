@@ -6,6 +6,8 @@
 
 Simplicity and Freedom of Space Video Chat Party App with OpenVidu.
 
+<img width="1678" alt="top" src="https://user-images.githubusercontent.com/17427345/119211590-04c60080-baee-11eb-9d8b-3d3d93d03172.png">
+
 ## Getting started
 
     sbt "messaging/run"
