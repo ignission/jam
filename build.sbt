@@ -57,6 +57,9 @@ lazy val messaging = (project in file("jam-messaging"))
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
+  .settings(
+    Compile / run := (messaging / Compile / run).evaluated
+  )
   .aggregate(messaging)
 
 addCommandAlias("fixAll", "scalafixAll; scalafmtAll; scalafmtSbt")
