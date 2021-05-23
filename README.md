@@ -10,7 +10,7 @@ Simplicity and Freedom of Space Video Chat Party App with OpenVidu.
 
 ## Getting started
 
-    sbt "messaging/run"
+    sbt run
 
 Try to access `http://localhost:3000`
 
