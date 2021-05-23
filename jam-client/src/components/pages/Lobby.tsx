@@ -3,14 +3,10 @@ import { Stage, Sprite, Text } from '@inlet/react-pixi';
 import { TextStyle } from 'pixi.js';
 import Sockette from 'sockette';
 import * as UserComponent from '../molecules/User';
+import { Position } from 'models';
 
-interface LobbyProps {
+interface Props {
   userName: string;
-}
-
-interface Position {
-  x: number;
-  y: number;
 }
 
 interface User {
@@ -22,7 +18,7 @@ const User = (name: string) => ({
   position: { x: 0, y: 0 },
 });
 
-export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
+export const Lobby: React.FC<Props> = ({ userName }) => {
   const width = 50;
   const height = 50;
   const fontSize = 16;
@@ -101,7 +97,7 @@ export const Lobby: React.FC<LobbyProps> = ({ userName }) => {
         userName={userName}
         onPositionChange={onPositionChange}
       />
-      {users.map((user: User, index: number) => {
+      {users.map((user: User) => {
         if (userName != user.name) {
           const x = user.position.x;
           const y = user.position.y;
