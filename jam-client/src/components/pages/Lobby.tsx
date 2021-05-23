@@ -4,6 +4,7 @@ import { TextStyle } from 'pixi.js';
 import Sockette from 'sockette';
 import * as UserComponent from '../molecules/User';
 import { Position } from 'models';
+import { ChatBalloon } from '../molecules/User';
 
 interface Props {
   userName: string;
@@ -103,6 +104,15 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           const y = user.position.y;
           return (
             <>
+              <ChatBalloon
+                x={x - 25}
+                y={y - 80}
+                width={width + 100}
+                height={height}
+                color={0xfff}
+                text={'guest'}
+                fontSize={fontSize}
+              />
               <Sprite
                 image="images/favicon.ico"
                 anchor={0.5}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sprite, Text, useApp } from '@inlet/react-pixi';
-import { TextStyle } from 'pixi.js';
+import { Sprite, Text, useApp, PixiComponent } from '@inlet/react-pixi';
+import { TextStyle, Graphics } from 'pixi.js';
 
 interface Props {
   readonly width?: number;
@@ -9,6 +9,55 @@ interface Props {
   readonly userName: string;
   onPositionChange: (x: number, y: number) => void;
 }
+
+interface ChatBalloonProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: number;
+  fontSize: number;
+  text: string;
+}
+
+interface BalloonProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: number;
+}
+
+const Balloon = PixiComponent<BalloonProps, Graphics>('Balloon', {
+  create: () => new Graphics(),
+  applyProps: (ins, _, props) => {
+    ins.clear();
+    ins.lineStyle(2, 0xff00ff, 1);
+    ins.beginFill(0x650a5a, 0);
+    ins.drawRoundedRect(props.x, props.y, props.width, props.height, 16);
+    ins.endFill();
+  },
+});
+
+export const ChatBalloon: React.FC<ChatBalloonProps> = ({
+  x,
+  y,
+  width,
+  height,
+  text,
+  fontSize,
+}) => (
+  <>
+    <Balloon x={x} y={y} width={width} height={height} color={0xfff} />
+    <Text
+      text={text}
+      x={x + 40}
+      y={y + 20}
+      anchor={[0.5, 0]}
+      style={new TextStyle({ fontSize })}
+    />
+  </>
+);
 
 const User: React.FC<Props> = ({
   width = 50,
@@ -92,6 +141,15 @@ const User: React.FC<Props> = ({
 
   return (
     <>
+      <ChatBalloon
+        x={x - 25}
+        y={y - 80}
+        width={width + 100}
+        height={height}
+        color={0xfff}
+        text={'Me'}
+        fontSize={fontSize}
+      />
       <Sprite
         image="images/favicon.ico"
         anchor={0.5}
