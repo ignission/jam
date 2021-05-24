@@ -7,6 +7,11 @@ import play.api.libs.json._
 object PlayJsonFormats {
   import UserCommand._
 
+  implicit val chatCommandReads: Reads[Chat] = (
+    (JsPath \ "userName").read[String].map(UserName(_)) and
+      (JsPath \ "message").read[String]
+  )(Chat)
+
   implicit val positionReads: Reads[Position] = (
     (JsPath \ "x").read[Int] and
       (JsPath \ "y").read[Int]
@@ -44,6 +49,14 @@ object PlayJsonFormats {
       Json.obj(
         "command" -> "move",
         "user"    -> Json.toJson(User(o.userName, o.position))
+      )
+
+  implicit val chatCommandWrites: Writes[Chat] =
+    (o: Chat) =>
+      Json.obj(
+        "command"  -> "chat",
+        "userName" -> Json.toJson(o.userName),
+        "message"  -> Json.toJson(o.message)
       )
 
   implicit val joinCommandWrites: Writes[Join] =

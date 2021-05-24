@@ -30,7 +30,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   useEffect(() => {
     console.log('Connectinng..');
     wsRef.current = new Sockette(
-      'ws:/localhost:9001/ws/lobby?user_name=' + userName,
+      'ws:/localhost:9000/ws/lobby?user_name=' + userName,
       {
         timeout: 10,
         maxAttempts: 10,
@@ -83,6 +83,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
     if (wsRef.current)
       wsRef.current.send(
         JSON.stringify({
+          command: 'move',
           userName: userName,
           position: {
             x: x,
