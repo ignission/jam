@@ -8,8 +8,5 @@ module.exports = merge(common, {
     contentBase: `${__dirname}/public`,
     port: '3000',
     historyApiFallback: { disableDotRule: true },
-    watchOptions: {
-      poll: 1000,
-    },
   },
 });
