@@ -16,6 +16,9 @@ class RoomResponseActor(out: ActorRef, redisClient: RedisClient, myself: UserNam
       logger.debug("move: " + v.userName.value)
       redisClient.put(v.userName.value, Json.toJson(User(v.userName, v.position)).toString())
       out ! Json.toJson(v)
+    case v: Chat =>
+      logger.debug(s"chat: ${v.message} from ${v.userName.value}")
+      out ! Json.toJson(v)
     case v: Join =>
       out ! Json.toJson(v)
     case v: Leave =>

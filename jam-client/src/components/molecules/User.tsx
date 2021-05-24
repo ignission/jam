@@ -7,6 +7,7 @@ interface Props {
   readonly height?: number;
   readonly fontSize?: number;
   readonly userName: string;
+  readonly message: string;
   onPositionChange: (x: number, y: number) => void;
 }
 
@@ -64,12 +65,13 @@ const User: React.FC<Props> = ({
   height = 50,
   fontSize = 16,
   userName,
+  message,
   onPositionChange,
 }) => {
   const app = useApp();
   const [halfWidth, halfHeight] = [width / 2, height / 2];
-  const [x, setX] = useState(halfWidth);
-  const [y, setY] = useState(halfHeight);
+  const [x, setX] = useState(100);
+  const [y, setY] = useState(100);
 
   // useTick(() => {
   //   const mousePosition = app.renderer.plugins.interaction.mouse.global;
@@ -147,7 +149,7 @@ const User: React.FC<Props> = ({
         width={width + 100}
         height={height}
         color={0xfff}
-        text={'Me'}
+        text={message}
         fontSize={fontSize}
       />
       <Sprite

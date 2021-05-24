@@ -10,7 +10,7 @@ object DockerComposeRunHook {
         Process("docker compose up -d redis", base).!
       }
       override def afterStopped(): Unit = {
-        Process("docker-compose kill", base).!
+        Process("docker-compose down", base).!
       }
     }
     DockerCompose

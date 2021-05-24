@@ -13,10 +13,12 @@ interface Props {
 interface User {
   name: string;
   position: Position;
+  message: string;
 }
 const User = (name: string) => ({
   name: name,
   position: { x: 0, y: 0 },
+  message: '',
 });
 
 export const Lobby: React.FC<Props> = ({ userName }) => {
@@ -25,12 +27,13 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   const fontSize = 16;
 
   const [users, setUsers] = useState<User[]>([]);
+  const [message, setMessage] = useState<string>('');
   const wsRef = useRef<Sockette>();
 
   useEffect(() => {
-    console.log('Connectinng..');
+    console.log('Connecting..');
     wsRef.current = new Sockette(
-      'ws:/localhost:9001/ws/lobby?user_name=' + userName,
+      'ws:/localhost:9000/ws/lobby?user_name=' + userName,
       {
         timeout: 10,
         maxAttempts: 10,
@@ -38,7 +41,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           console.log('Connected!', e);
         },
         onmessage: (e) => {
-          console.log('Received', e);
+          console.log('Received', e.data);
           const data = JSON.parse(e.data);
           if (data && data.command) {
             switch (data.command) {
@@ -51,6 +54,26 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
                     (user) => user.name != data.user.name
                   );
                   filtered.push(data.user);
+                  return filtered;
+                });
+                break;
+              case 'chat':
+                setUsers((users) => {
+                  console.log(users);
+                  const filtered = users.filter(
+                    (user) => user.name != data.userName
+                  );
+                  const current = users.find(
+                    (user) => user.name == data.userName
+                  );
+                  if (current) {
+                    const updated = {
+                      name: current.name,
+                      position: current.position,
+                      message: data.message,
+                    };
+                    filtered.push(updated);
+                  }
                   return filtered;
                 });
                 break;
@@ -83,6 +106,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
     if (wsRef.current)
       wsRef.current.send(
         JSON.stringify({
+          command: 'move',
           userName: userName,
           position: {
             x: x,
@@ -92,43 +116,65 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
       );
   };
 
+  const handleChange = (e: any) => {
+    setMessage(e.target.value)
+    if (wsRef.current)
+      wsRef.current.send(
+        JSON.stringify({
+          command: 'chat',
+          userName: userName,
+          message: e.target.value,
+        })
+      );
+  };
+
   return (
-    <Stage options={{ backgroundColor: 0xeef1f5 }}>
-      <UserComponent.default
-        userName={userName}
-        onPositionChange={onPositionChange}
-      />
-      {users.map((user: User) => {
-        if (userName != user.name) {
-          const x = user.position.x;
-          const y = user.position.y;
-          return (
-            <>
-              <ChatBalloon
-                x={x - 25}
-                y={y - 80}
-                width={width + 100}
-                height={height}
-                color={0xfff}
-                text={'guest'}
-                fontSize={fontSize}
-              />
-              <Sprite
-                image="images/favicon.ico"
-                anchor={0.5}
-                {...{ x, y, width, height }}
-              />
-              <Text
-                text={user.name}
-                x={user.position.x}
-                y={user.position.y + 25}
-                anchor={[0.5, 0]}
-                style={new TextStyle({ fontSize })}
-              />
-            </>
-          );
-        }
-      })}
-    </Stage>
+    <>
+      <Stage options={{ backgroundColor: 0xeef1f5 }}>
+        <UserComponent.default
+          userName={userName}
+          message={message}
+          onPositionChange={onPositionChange}
+        />
+        {users.map((user: User) => {
+          if (userName != user.name) {
+            const x = user.position.x;
+            const y = user.position.y;
+            return (
+              <>
+                <ChatBalloon
+                  x={x - 25}
+                  y={y - 80}
+                  width={width + 100}
+                  height={height}
+                  color={0xfff}
+                  text={user.message}
+                  fontSize={fontSize}
+                />
+                <Sprite
+                  image="images/favicon.ico"
+                  anchor={0.5}
+                  {...{ x, y, width, height }}
+                />
+                <Text
+                  text={user.name}
+                  x={user.position.x}
+                  y={user.position.y + 25}
+                  anchor={[0.5, 0]}
+                  style={new TextStyle({ fontSize })}
+                />
+              </>
+            );
+          }
+        })}
+
+      </Stage>
+      <form>
+        <label>
+          Chat Message:
+          <input type="text" onChange={handleChange} />
+        </label>
+      </form>
+    </>
   );
 };

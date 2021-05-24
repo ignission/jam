@@ -12,12 +12,20 @@ class RoomRequestActor(out: ActorRef, redis: RedisClient, roomName: RoomName, us
 
   override def receive: Receive = {
     case msg: JsValue =>
-      val request = msg.as[Move]
-      out ! Move(request.userName, request.position)
+      (msg \ "command").as[String] match {
+        case "move" =>
+          val req = msg.as[Move]
+          out ! Move(req.userName, req.position)
+        case "chat" =>
+          val req = msg.as[Chat]
+          out ! Chat(req.userName, req.message)
+        case others =>
+          throw new IllegalArgumentException(s"Invalid command: $others")
+      }
   }
 
   override def preStart(): Unit = {
-    val user     = User(userName, Position(0, 0))
+    val user     = User(userName, Position(100, 100))
     val allUsers = redis.getAll.map(Json.parse).map(_.as[User])
     redis.put(userName.value, Json.toJson(user).toString())
     out ! Join(Room(roomName, (allUsers :+ user).toSet), user)
