@@ -70,8 +70,8 @@ const User: React.FC<Props> = ({
 }) => {
   const app = useApp();
   const [halfWidth, halfHeight] = [width / 2, height / 2];
-  const [x, setX] = useState(halfWidth);
-  const [y, setY] = useState(halfHeight);
+  const [x, setX] = useState(100);
+  const [y, setY] = useState(100);
 
   // useTick(() => {
   //   const mousePosition = app.renderer.plugins.interaction.mouse.global;
