@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: path.resolve(
       __dirname,
-      '../jam-messaging/public'
+      '../jam-server/public'
     ),
     filename: 'index.js',
     chunkFilename: '[name].bundle.js',

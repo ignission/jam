@@ -39,7 +39,7 @@ lazy val playCommonSettings = Seq(
   }
 )
 
-lazy val messaging = (project in file("jam-messaging"))
+lazy val server = (project in file("jam-server"))
   .enablePlugins(PlayScala)
   .settings(commonSettings)
   .settings(playCommonSettings)
@@ -52,15 +52,15 @@ lazy val messaging = (project in file("jam-messaging"))
     )
   )
   .settings(
-    devSettings := Map("play.server.http.port" -> "9001").toSeq
+    devSettings := Map("play.server.http.port" -> "9000").toSeq
   )
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
-    Compile / run := (messaging / Compile / run).evaluated
+    Compile / run := (server / Compile / run).evaluated
   )
-  .aggregate(messaging)
+  .aggregate(server)
 
 addCommandAlias("fixAll", "scalafixAll; scalafmtAll; scalafmtSbt")
 addCommandAlias("checkAll", "scalafixAll --check; scalafmtCheckAll; scalafmtSbtCheck")

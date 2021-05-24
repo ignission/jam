@@ -9,8 +9,11 @@ class RoomResponseActor(out: ActorRef, redisClient: RedisClient, myself: UserNam
   import formatters.PlayJsonFormats._
   import domain.models.UserCommand._
 
+  private val logger = play.api.Logger(getClass)
+
   override def receive: Receive = {
     case v: Move =>
+      logger.debug("move: " + v.userName.value)
       redisClient.put(v.userName.value, Json.toJson(User(v.userName, v.position)).toString())
       out ! Json.toJson(v)
     case v: Join =>

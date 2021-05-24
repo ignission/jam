@@ -3,7 +3,7 @@
 ## Node
 node_modules
 yarn-error.log
-jam-server/jam-http/src/main/resources/static
+jam-server/public
 
 ## Scala
 target
