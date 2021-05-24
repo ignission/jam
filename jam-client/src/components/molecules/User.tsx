@@ -7,6 +7,7 @@ interface Props {
   readonly height?: number;
   readonly fontSize?: number;
   readonly userName: string;
+  readonly message: string;
   onPositionChange: (x: number, y: number) => void;
 }
 
@@ -64,6 +65,7 @@ const User: React.FC<Props> = ({
   height = 50,
   fontSize = 16,
   userName,
+  message,
   onPositionChange,
 }) => {
   const app = useApp();
@@ -147,7 +149,7 @@ const User: React.FC<Props> = ({
         width={width + 100}
         height={height}
         color={0xfff}
-        text={'Me'}
+        text={message}
         fontSize={fontSize}
       />
       <Sprite
