@@ -76,7 +76,6 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
                   }
                   return filtered;
                 });
-                setMessage(data.message);
                 break;
               case 'leave':
                 setUsers((users) => {
@@ -118,7 +117,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   };
 
   const handleChange = (e: any) => {
-  console.log(e)
+    setMessage(e.target.value)
     if (wsRef.current)
       wsRef.current.send(
         JSON.stringify({
