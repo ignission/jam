@@ -3,4 +3,7 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET     /ws/:roomName       controllers.WebSocketsController.ws(roomName: String)
+GET     /ws/:roomName               controllers.WebSocketsController.ws(roomName: String)
+
+GET     /                           controllers.AssetController.index()
+GET     /*file                      controllers.AssetController.assetOrDefault(file)

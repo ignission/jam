@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require("webpack")
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyFilePlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
@@ -58,7 +59,7 @@ module.exports = {
           from: '**/*',
           to: path.resolve(
             __dirname,
-            '../jam-server/public'
+            '../jam-server/public/images'
           ),
         },
       ],
@@ -67,5 +68,8 @@ module.exports = {
       },
     }),
     new WriteFilePlugin(),
+    new webpack.DefinePlugin({
+      'WS_URL': JSON.stringify('ws://localhost:9000')
+    })
   ],
 };
