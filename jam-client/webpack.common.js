@@ -58,7 +58,7 @@ module.exports = {
           from: '**/*',
           to: path.resolve(
             __dirname,
-            '../jam-server/public'
+            '../jam-server/public/images'
           ),
         },
       ],
