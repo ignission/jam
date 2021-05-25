@@ -59,7 +59,6 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
                 break;
               case 'chat':
                 setUsers((users) => {
-                  console.log(users);
                   const filtered = users.filter(
                     (user) => user.name != data.userName
                   );
