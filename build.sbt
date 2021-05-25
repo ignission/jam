@@ -52,6 +52,15 @@ lazy val server = (project in file("jam-server"))
     )
   )
   .settings(
+    Docker / packageName := s"jam-${name.value}",
+    dockerBaseImage := "openjdk:8-slim",
+    dockerExposedPorts ++= Seq(9000),
+    Universal / javaOptions ++= Seq(
+      "-Dpidfile.path=/dev/null",
+      "-Dconfig.file=/opt/docker/conf/docker.conf"
+    )
+  )
+  .settings(
     devSettings := Map("play.server.http.port" -> "9000").toSeq
   )
 
