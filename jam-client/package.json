@@ -1,9 +1,9 @@
 {
-  "name": "pivot-talk-client",
+  "name": "jam-client",
   "version": "0.2.0-SNAPSHOT",
   "description": "",
   "scripts": {
-    "hot": "webpack serve --host 0.0.0.0 --config webpack.dev.js",
+    "hot": "webpack serve --host 0.0.0.0 --config webpack.local.js",
     "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {

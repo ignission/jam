@@ -33,7 +33,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   useEffect(() => {
     console.log('Connecting..');
     wsRef.current = new Sockette(
-      'ws:/localhost:9000/ws/lobby?user_name=' + userName,
+      WS_URL + '/ws/lobby?user_name=' + userName,
       {
         timeout: 10,
         maxAttempts: 10,
