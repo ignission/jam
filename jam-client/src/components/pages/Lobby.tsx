@@ -139,17 +139,20 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           if (userName != user.name) {
             const x = user.position.x;
             const y = user.position.y;
+            const isRenderingChatBalloon = (user.message != null && user.message != '') ? true : false;
             return (
               <>
-                <ChatBalloon
-                  x={x - 25}
-                  y={y - 80}
-                  width={width + 100}
-                  height={height}
-                  color={0xfff}
-                  text={user.message}
-                  fontSize={fontSize}
-                />
+                {isRenderingChatBalloon &&
+                  <ChatBalloon
+                    x={x - 25}
+                    y={y - 80}
+                    width={width + 100}
+                    height={height}
+                    color={0xfff}
+                    text={user.message}
+                    fontSize={fontSize}
+                  />
+                }
                 <Sprite
                   image="images/favicon.ico"
                   anchor={0.5}

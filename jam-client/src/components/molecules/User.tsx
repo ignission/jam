@@ -72,6 +72,7 @@ const User: React.FC<Props> = ({
   const [halfWidth, halfHeight] = [width / 2, height / 2];
   const [x, setX] = useState(100);
   const [y, setY] = useState(100);
+  const isRenderingChatBalloon = message != '';
 
   // useTick(() => {
   //   const mousePosition = app.renderer.plugins.interaction.mouse.global;
@@ -143,15 +144,17 @@ const User: React.FC<Props> = ({
 
   return (
     <>
-      <ChatBalloon
-        x={x - 25}
-        y={y - 80}
-        width={width + 100}
-        height={height}
-        color={0xfff}
-        text={message}
-        fontSize={fontSize}
-      />
+      {isRenderingChatBalloon &&
+        <ChatBalloon
+          x={x - 25}
+          y={y - 80}
+          width={width + 100}
+          height={height}
+          color={0xfff}
+          text={message}
+          fontSize={fontSize}
+        />
+      }
       <Sprite
         image="images/favicon.ico"
         anchor={0.5}
