@@ -139,10 +139,10 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           if (userName != user.name) {
             const x = user.position.x;
             const y = user.position.y;
-            const isRenderingChatBalloon = (user.message != null && user.message != '') ? true : false;
+
             return (
               <>
-                {isRenderingChatBalloon &&
+                {user.message && user.message != '' && (
                   <ChatBalloon
                     x={x - 25}
                     y={y - 80}
