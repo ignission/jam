@@ -32,70 +32,66 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
 
   useEffect(() => {
     console.log('Connecting..');
-    wsRef.current = new Sockette(
-      WS_URL + '/ws/lobby?user_name=' + userName,
-      {
-        timeout: 10,
-        maxAttempts: 10,
-        onopen: (e) => {
-          console.log('Connected!', e);
-        },
-        onmessage: (e) => {
-          console.log('Received', e.data);
-          const data = JSON.parse(e.data);
-          if (data && data.command) {
-            switch (data.command) {
-              case 'join':
-                setUsers(data.users);
-                break;
-              case 'move':
-                setUsers((users) => {
-                  const filtered = users.filter(
-                    (user) => user.name != data.user.name
-                  );
-                  filtered.push(data.user);
-                  return filtered;
-                });
-                break;
-              case 'chat':
-                setUsers((users) => {
-                  console.log(users);
-                  const filtered = users.filter(
-                    (user) => user.name != data.userName
-                  );
-                  const current = users.find(
-                    (user) => user.name == data.userName
-                  );
-                  if (current) {
-                    const updated = {
-                      name: current.name,
-                      position: current.position,
-                      message: data.message,
-                    };
-                    filtered.push(updated);
-                  }
-                  return filtered;
-                });
-                break;
-              case 'leave':
-                setUsers((users) => {
-                  const filtered = users.filter(
-                    (user) => user.name != data.user.name
-                  );
-                  return filtered;
-                });
-                break;
-            }
+    wsRef.current = new Sockette(WS_URL + '/ws/lobby?user_name=' + userName, {
+      timeout: 10,
+      maxAttempts: 10,
+      onopen: (e) => {
+        console.log('Connected!', e);
+      },
+      onmessage: (e) => {
+        console.log('Received', e.data);
+        const data = JSON.parse(e.data);
+        if (data && data.command) {
+          switch (data.command) {
+            case 'join':
+              setUsers(data.users);
+              break;
+            case 'move':
+              setUsers((users) => {
+                const filtered = users.filter(
+                  (user) => user.name != data.user.name
+                );
+                filtered.push(data.user);
+                return filtered;
+              });
+              break;
+            case 'chat':
+              setUsers((users) => {
+                const filtered = users.filter(
+                  (user) => user.name != data.userName
+                );
+                const current = users.find(
+                  (user) => user.name == data.userName
+                );
+                if (current) {
+                  const updated = {
+                    name: current.name,
+                    position: current.position,
+                    message: data.message,
+                  };
+                  filtered.push(updated);
+                }
+                return filtered;
+              });
+              break;
+            case 'leave':
+              setUsers((users) => {
+                const filtered = users.filter(
+                  (user) => user.name != data.user.name
+                );
+                return filtered;
+              });
+              break;
           }
-        },
-        onreconnect: (e) => {
-          console.log('Reconnecting...', e);
-        },
-        onmaximum: (e) => console.log('Stop Attempting!', e),
-        onclose: (e) => console.log('Closed!', e),
-        onerror: (e) => console.log('Error!', e),
-      }
-    );
+        }
+      },
+      onreconnect: (e) => {
+        console.log('Reconnecting...', e);
+      },
+      onmaximum: (e) => console.log('Stop Attempting!', e),
+      onclose: (e) => console.log('Closed!', e),
+      onerror: (e) => console.log('Error!', e),
+    });
     return () => {
       console.log('Disconnecting..');
       if (wsRef.current) wsRef.current.close();
@@ -117,7 +113,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   };
 
   const handleChange = (e: any) => {
-    setMessage(e.target.value)
+    setMessage(e.target.value);
     if (wsRef.current)
       wsRef.current.send(
         JSON.stringify({
@@ -140,17 +136,20 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           if (userName != user.name) {
             const x = user.position.x;
             const y = user.position.y;
+
             return (
               <>
-                <ChatBalloon
-                  x={x - 25}
-                  y={y - 80}
-                  width={width + 100}
-                  height={height}
-                  color={0xfff}
-                  text={user.message}
-                  fontSize={fontSize}
-                />
+                {user.message && user.message != '' && (
+                  <ChatBalloon
+                    x={x - 25}
+                    y={y - 80}
+                    width={width + 100}
+                    height={height}
+                    color={0xfff}
+                    text={user.message}
+                    fontSize={fontSize}
+                  />
+                )}
                 <Sprite
                   image="images/favicon.ico"
                   anchor={0.5}
@@ -167,7 +166,6 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
             );
           }
         })}
-
       </Stage>
       <form>
         <label>

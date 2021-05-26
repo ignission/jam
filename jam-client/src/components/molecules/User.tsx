@@ -143,15 +143,17 @@ const User: React.FC<Props> = ({
 
   return (
     <>
-      <ChatBalloon
-        x={x - 25}
-        y={y - 80}
-        width={width + 100}
-        height={height}
-        color={0xfff}
-        text={message}
-        fontSize={fontSize}
-      />
+      {message != '' && (
+        <ChatBalloon
+          x={x - 25}
+          y={y - 80}
+          width={width + 100}
+          height={height}
+          color={0xfff}
+          text={message}
+          fontSize={fontSize}
+        />
+      )}
       <Sprite
         image="images/favicon.ico"
         anchor={0.5}
