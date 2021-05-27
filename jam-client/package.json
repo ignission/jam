@@ -1,6 +1,6 @@
 {
   "name": "jam-client",
-  "version": "0.3.0",
+  "version": "0.4.0-SNAPSHOT",
   "description": "",
   "scripts": {
     "hot": "webpack serve --host 0.0.0.0 --config webpack.local.js",
