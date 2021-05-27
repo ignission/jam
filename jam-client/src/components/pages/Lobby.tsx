@@ -28,6 +28,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
 
   const [users, setUsers] = useState<User[]>([]);
   const [message, setMessage] = useState<string>('');
+  const [isTyping, setIsTyping] = useState<boolean>(false);
   const wsRef = useRef<Sockette>();
 
   useEffect(() => {
@@ -130,6 +131,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
         <UserComponent.default
           userName={userName}
           message={message}
+          isTyping={isTyping}
           onPositionChange={onPositionChange}
         />
         {users.map((user: User) => {
@@ -167,12 +169,17 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           }
         })}
       </Stage>
-      <form>
+      <div>
         <label>
           Chat Message:
-          <input type="text" onChange={handleChange} />
+          <input
+            type="text"
+            onChange={handleChange}
+            onFocus={() => setIsTyping(true)}
+            onBlur={() => setIsTyping(false)}
+          />
         </label>
-      </form>
+      </div>
     </>
   );
 };

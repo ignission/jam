@@ -8,6 +8,7 @@ interface Props {
   readonly fontSize?: number;
   readonly userName: string;
   readonly message: string;
+  isTyping: boolean;
   onPositionChange: (x: number, y: number) => void;
 }
 
@@ -66,6 +67,7 @@ const User: React.FC<Props> = ({
   fontSize = 16,
   userName,
   message,
+  isTyping,
   onPositionChange,
 }) => {
   const app = useApp();
@@ -112,7 +114,7 @@ const User: React.FC<Props> = ({
           break;
       }
       if (moveTo.x === 0 && moveTo.y === 0) return;
-      if (moveTo.x)
+      if (moveTo.x && !isTyping)
         setX((x) => {
           const newX = x + moveTo.x;
           if (newX - halfWidth < 0 || newX + halfHeight > app.screen.width)
@@ -121,7 +123,7 @@ const User: React.FC<Props> = ({
           onPositionChange(newX, y);
           return newX;
         });
-      if (moveTo.y)
+      if (moveTo.y && !isTyping)
         setY((y) => {
           const newY = y + moveTo.y;
           if (
