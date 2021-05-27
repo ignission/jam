@@ -30,6 +30,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   const [message, setMessage] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const wsRef = useRef<Sockette>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     console.log('Connecting..');
@@ -93,9 +94,29 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
       onclose: (e) => console.log('Closed!', e),
       onerror: (e) => console.log('Error!', e),
     });
+
+    function keyDown(e: KeyboardEvent) {
+      const key = e.key.toLowerCase();
+      switch (key) {
+        case 'enter':
+          if (inputRef.current) {
+            inputRef.current.value = '';
+            inputRef.current.focus();
+          }
+        case 'escape':
+          if (inputRef.current) inputRef.current.blur();
+        default:
+          break;
+      }
+    }
+
+    document.addEventListener('keydown', keyDown);
+
     return () => {
       console.log('Disconnecting..');
       if (wsRef.current) wsRef.current.close();
+
+      document.removeEventListener('keydown', keyDown);
     };
   }, []);
 
@@ -174,6 +195,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           Chat Message:
           <input
             type="text"
+            ref={inputRef}
             onChange={handleChange}
             onFocus={() => setIsTyping(true)}
             onBlur={() => setIsTyping(false)}
