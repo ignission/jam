@@ -13,11 +13,18 @@ interface User {
   position: Position;
   message: string;
 }
-const User = (name: string) => ({
+const User = (
+  name: string,
+  position: Position = Position(0, 0),
+  message: string = ''
+) => ({
   name: name,
-  position: { x: 0, y: 0 },
-  message: '',
+  position: position,
+  message: message,
 });
+
+const filterUserByName = (users: User[], name: string) =>
+  users.filter((user) => user.name != name);
 
 export const Lobby: React.FC<Props> = ({ userName }) => {
   const [users, setUsers] = useState<User[]>([]);
@@ -44,39 +51,30 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
               break;
             case 'move':
               setUsers((users) => {
-                const filtered = users.filter(
-                  (user) => user.name != data.user.name
-                );
+                const filtered = filterUserByName(users, data.user.name);
                 filtered.push(data.user);
                 return filtered;
               });
               break;
             case 'chat':
               setUsers((users) => {
-                const filtered = users.filter(
-                  (user) => user.name != data.userName
-                );
+                const filtered = filterUserByName(users, data.userName);
                 const current = users.find(
                   (user) => user.name == data.userName
                 );
                 if (current) {
-                  const updated = {
-                    name: current.name,
-                    position: current.position,
-                    message: data.message,
-                  };
+                  const updated = User(
+                    current.name,
+                    current.position,
+                    data.message
+                  );
                   filtered.push(updated);
                 }
                 return filtered;
               });
               break;
             case 'leave':
-              setUsers((users) => {
-                const filtered = users.filter(
-                  (user) => user.name != data.user.name
-                );
-                return filtered;
-              });
+              setUsers((users) => filterUserByName(users, data.user.name));
               break;
           }
         }
