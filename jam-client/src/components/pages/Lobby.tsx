@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Stage } from '@inlet/react-pixi';
 import Sockette from 'sockette';
-import { Myself, Participant } from 'components/molecules';
+import { Myself, Participant } from '../molecules';
 import { Position } from 'models';
 
 interface Props {
