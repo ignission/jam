@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Stage, Sprite, Text } from '@inlet/react-pixi';
 import { TextStyle } from 'pixi.js';
 import Sockette from 'sockette';
-import * as UserComponent from '../molecules/User';
+import { ChatBalloon, Myself } from 'components/molecules';
 import { Position } from 'models';
-import { ChatBalloon } from '../molecules/User';
 
 interface Props {
   userName: string;
@@ -149,7 +148,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   return (
     <>
       <Stage options={{ backgroundColor: 0xeef1f5 }}>
-        <UserComponent.default
+        <Myself
           userName={userName}
           message={message}
           isTyping={isTyping}
