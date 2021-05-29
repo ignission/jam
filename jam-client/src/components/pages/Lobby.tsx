@@ -151,6 +151,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
           if (userName != user.name) {
             return (
               <Participant
+                key={user.name}
                 width={50}
                 height={50}
                 fontSize={16}
