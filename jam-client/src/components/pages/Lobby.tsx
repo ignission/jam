@@ -3,6 +3,7 @@ import { Stage } from '@inlet/react-pixi';
 import Sockette from 'sockette';
 import { Myself, Participant } from '../molecules';
 import { Position } from 'models';
+import { OpenVidu, Session } from 'openvidu-browser';
 
 interface Props {
   userName: string;
@@ -30,6 +31,9 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [message, setMessage] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const ovRef = useRef<OpenVidu>();
+  const sessionRef = useRef<Session>();
   const wsRef = useRef<Sockette>();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -104,11 +108,15 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
 
     document.addEventListener('keydown', keyDown);
 
+    ovRef.current = new OpenVidu();
+    sessionRef.current = ovRef.current.initSession();
+
     return () => {
       console.log('Disconnecting..');
-      if (wsRef.current) wsRef.current.close();
-
       document.removeEventListener('keydown', keyDown);
+      if (sessionRef.current) sessionRef.current.disconnect();
+      if (ovRef.current) ovRef.current = undefined;
+      if (wsRef.current) wsRef.current.close();
     };
   }, []);
 
