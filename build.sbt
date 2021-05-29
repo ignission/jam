@@ -64,12 +64,22 @@ lazy val server = (project in file("jam-server"))
     devSettings := Map("play.server.http.port" -> "9000").toSeq
   )
 
+lazy val infrastructure = (project in file("jam-infrastructure"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.google.code.gson" % "gson"                 % "2.8.7",
+      "org.slf4j"            % "slf4j-api"            % "1.7.30",
+      "io.openvidu"          % "openvidu-java-client" % "2.17.0"
+    )
+  )
+
 lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
     Compile / run := (server / Compile / run).evaluated
   )
-  .aggregate(server)
+  .aggregate(server, infrastructure)
 
 addCommandAlias("fixAll", "scalafixAll; scalafmtAll; scalafmtSbt")
 addCommandAlias("checkAll", "scalafixAll --check; scalafmtCheckAll; scalafmtSbtCheck")
