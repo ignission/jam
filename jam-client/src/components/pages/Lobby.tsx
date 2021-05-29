@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Stage, Sprite, Text } from '@inlet/react-pixi';
-import { TextStyle } from 'pixi.js';
+import { Stage } from '@inlet/react-pixi';
 import Sockette from 'sockette';
-import * as UserComponent from '../molecules/User';
+import { Myself, Participant } from 'components/molecules';
 import { Position } from 'models';
-import { ChatBalloon } from '../molecules/User';
 
 interface Props {
   userName: string;
@@ -15,17 +13,20 @@ interface User {
   position: Position;
   message: string;
 }
-const User = (name: string) => ({
+const User = (
+  name: string,
+  position: Position = Position(0, 0),
+  message: string = ''
+) => ({
   name: name,
-  position: { x: 0, y: 0 },
-  message: '',
+  position: position,
+  message: message,
 });
 
-export const Lobby: React.FC<Props> = ({ userName }) => {
-  const width = 50;
-  const height = 50;
-  const fontSize = 16;
+const filterUserByName = (users: User[], name: string) =>
+  users.filter((user) => user.name != name);
 
+export const Lobby: React.FC<Props> = ({ userName }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [message, setMessage] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -50,39 +51,30 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
               break;
             case 'move':
               setUsers((users) => {
-                const filtered = users.filter(
-                  (user) => user.name != data.user.name
-                );
+                const filtered = filterUserByName(users, data.user.name);
                 filtered.push(data.user);
                 return filtered;
               });
               break;
             case 'chat':
               setUsers((users) => {
-                const filtered = users.filter(
-                  (user) => user.name != data.userName
-                );
+                const filtered = filterUserByName(users, data.userName);
                 const current = users.find(
                   (user) => user.name == data.userName
                 );
                 if (current) {
-                  const updated = {
-                    name: current.name,
-                    position: current.position,
-                    message: data.message,
-                  };
+                  const updated = User(
+                    current.name,
+                    current.position,
+                    data.message
+                  );
                   filtered.push(updated);
                 }
                 return filtered;
               });
               break;
             case 'leave':
-              setUsers((users) => {
-                const filtered = users.filter(
-                  (user) => user.name != data.user.name
-                );
-                return filtered;
-              });
+              setUsers((users) => filterUserByName(users, data.user.name));
               break;
           }
         }
@@ -149,7 +141,7 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
   return (
     <>
       <Stage options={{ backgroundColor: 0xeef1f5 }}>
-        <UserComponent.default
+        <Myself
           userName={userName}
           message={message}
           isTyping={isTyping}
@@ -157,35 +149,15 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
         />
         {users.map((user: User) => {
           if (userName != user.name) {
-            const x = user.position.x;
-            const y = user.position.y;
-
             return (
-              <>
-                {user.message && user.message != '' && (
-                  <ChatBalloon
-                    x={x - 25}
-                    y={y - 80}
-                    width={width + 100}
-                    height={height}
-                    color={0xfff}
-                    text={user.message}
-                    fontSize={fontSize}
-                  />
-                )}
-                <Sprite
-                  image="images/favicon.ico"
-                  anchor={0.5}
-                  {...{ x, y, width, height }}
-                />
-                <Text
-                  text={user.name}
-                  x={user.position.x}
-                  y={user.position.y + 25}
-                  anchor={[0.5, 0]}
-                  style={new TextStyle({ fontSize })}
-                />
-              </>
+              <Participant
+                width={50}
+                height={50}
+                fontSize={16}
+                name={user.name}
+                position={user.position}
+                message={user.message}
+              />
             );
           }
         })}
