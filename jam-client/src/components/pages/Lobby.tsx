@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Stage, Sprite, Text } from '@inlet/react-pixi';
-import { TextStyle } from 'pixi.js';
+import { Stage } from '@inlet/react-pixi';
 import Sockette from 'sockette';
-import { ChatBalloon, Myself } from 'components/molecules';
+import { Myself, Participant } from 'components/molecules';
 import { Position } from 'models';
 
 interface Props {
@@ -21,10 +20,6 @@ const User = (name: string) => ({
 });
 
 export const Lobby: React.FC<Props> = ({ userName }) => {
-  const width = 50;
-  const height = 50;
-  const fontSize = 16;
-
   const [users, setUsers] = useState<User[]>([]);
   const [message, setMessage] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -156,35 +151,15 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
         />
         {users.map((user: User) => {
           if (userName != user.name) {
-            const x = user.position.x;
-            const y = user.position.y;
-
             return (
-              <>
-                {user.message && user.message != '' && (
-                  <ChatBalloon
-                    x={x - 25}
-                    y={y - 80}
-                    width={width + 100}
-                    height={height}
-                    color={0xfff}
-                    text={user.message}
-                    fontSize={fontSize}
-                  />
-                )}
-                <Sprite
-                  image="images/favicon.ico"
-                  anchor={0.5}
-                  {...{ x, y, width, height }}
-                />
-                <Text
-                  text={user.name}
-                  x={user.position.x}
-                  y={user.position.y + 25}
-                  anchor={[0.5, 0]}
-                  style={new TextStyle({ fontSize })}
-                />
-              </>
+              <Participant
+                width={50}
+                height={50}
+                fontSize={16}
+                name={user.name}
+                position={user.position}
+                message={user.message}
+              />
             );
           }
         })}
