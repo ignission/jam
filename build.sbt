@@ -16,6 +16,9 @@ lazy val commonSettings = Seq(
     "-Xlint",
     "-Xfatal-warnings"
   ),
+  libraryDependencies ++= Seq(
+    "dev.zio" %% "zio" % "1.0.8"
+  ),
   // scalafix
   addCompilerPlugin(scalafixSemanticdb),
   semanticdbEnabled := true,
