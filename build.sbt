@@ -42,6 +42,13 @@ lazy val playCommonSettings = Seq(
   }
 )
 
+lazy val domain = (project in file("jam-domain"))
+  .settings(commonSettings)
+
+lazy val application = (project in file("jam-application"))
+  .settings(commonSettings)
+  .dependsOn(domain)
+
 lazy val server = (project in file("jam-server"))
   .enablePlugins(PlayScala)
   .settings(commonSettings)
@@ -66,6 +73,9 @@ lazy val server = (project in file("jam-server"))
   .settings(
     devSettings := Map("play.server.http.port" -> "9000").toSeq
   )
+  .dependsOn(domain)
+  .dependsOn(application)
+  .dependsOn(infrastructure)
 
 lazy val infrastructure = (project in file("jam-infrastructure"))
   .settings(commonSettings)
@@ -76,13 +86,18 @@ lazy val infrastructure = (project in file("jam-infrastructure"))
       "io.openvidu"          % "openvidu-java-client" % "2.17.0"
     )
   )
+  .dependsOn(domain)
+  .dependsOn(application)
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
     Compile / run := (server / Compile / run).evaluated
   )
-  .aggregate(server, infrastructure)
+  .aggregate(domain)
+  .aggregate(application)
+  .aggregate(infrastructure)
+  .aggregate(server)
 
 addCommandAlias("fixAll", "scalafixAll; scalafmtAll; scalafmtSbt")
 addCommandAlias("checkAll", "scalafixAll --check; scalafmtCheckAll; scalafmtSbtCheck")
