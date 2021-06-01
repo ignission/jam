@@ -2,6 +2,7 @@
 
 ![CI](https://github.com/ignission/jam/workflows/CI/badge.svg)
 ![Build](https://github.com/ignission/jam/workflows/Build/badge.svg)
+[![Twitter Follow](https://img.shields.io/twitter/follow/emoi_jam.svg?style=social)](https://twitter.com/emoi_jam)
 
 Simplicity and Freedom of Space Video Chat Party App with OpenVidu.
 
