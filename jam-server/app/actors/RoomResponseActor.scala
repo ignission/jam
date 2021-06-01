@@ -21,6 +21,8 @@ class RoomResponseActor(out: ActorRef, redisClient: RedisClient, myself: UserNam
       out ! Json.toJson(v)
     case v: Join =>
       out ! Json.toJson(v)
+    case Ping =>
+      out ! Json.obj("command" -> "pong")
     case v: Leave =>
       redisClient.delete(v.userName.value)
       out ! Json.toJson(v)
