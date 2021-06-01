@@ -73,6 +73,8 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
                 return filtered;
               });
               break;
+            case 'pong':
+              break;
             case 'leave':
               setUsers((users) => filterUserByName(users, data.user.name));
               break;
@@ -104,8 +106,20 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
 
     document.addEventListener('keydown', keyDown);
 
+    const interval = setInterval(() => {
+      if (wsRef.current)
+        wsRef.current.send(
+          JSON.stringify({
+            command: 'ping',
+          })
+        );
+    }, 30 * 1000);
+
     return () => {
       console.log('Disconnecting..');
+
+      clearInterval(interval);
+
       if (wsRef.current) wsRef.current.close();
 
       document.removeEventListener('keydown', keyDown);

@@ -19,6 +19,8 @@ class RoomRequestActor(out: ActorRef, redis: RedisClient, roomName: RoomName, us
         case "chat" =>
           val req = msg.as[Chat]
           out ! Chat(req.userName, req.message)
+        case "ping" =>
+          out ! Ping
         case others =>
           throw new IllegalArgumentException(s"Invalid command: $others")
       }
