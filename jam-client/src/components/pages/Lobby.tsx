@@ -77,6 +77,8 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
                 return filtered;
               });
               break;
+            case 'pong':
+              break;
             case 'leave':
               setUsers((users) => filterUserByName(users, data.user.name));
               break;
@@ -111,11 +113,22 @@ export const Lobby: React.FC<Props> = ({ userName }) => {
     ovRef.current = new OpenVidu();
     sessionRef.current = ovRef.current.initSession();
 
+    const interval = setInterval(() => {
+      if (wsRef.current)
+        wsRef.current.send(
+          JSON.stringify({
+            command: 'ping',
+          })
+        );
+    }, 30 * 1000);
+
     return () => {
       console.log('Disconnecting..');
+      clearInterval(interval);
       document.removeEventListener('keydown', keyDown);
       if (sessionRef.current) sessionRef.current.disconnect();
       if (ovRef.current) ovRef.current = undefined;
+      if (wsRef.current) wsRef.current.close();
       if (wsRef.current) wsRef.current.close();
     };
   }, []);

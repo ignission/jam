@@ -6,7 +6,7 @@ module.exports = merge(common, {
   mode: 'production',
   plugins: [
     new webpack.DefinePlugin({
-      'WS_URL': JSON.stringify('ws://jam.ignission.tech')
+      'WS_URL': JSON.stringify('wss://jam.ignission.tech')
     })
   ],
 });
