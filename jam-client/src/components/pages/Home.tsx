@@ -90,7 +90,7 @@ const FooterLink = styled.a({
   color: '#fff',
 });
 
-const Home: React.FC<Props> = ({ initialName, onSubmit }) => {
+export const Home: React.FC<Props> = ({ initialName, onSubmit }) => {
   return (
     <Section>
       <Header>
@@ -135,5 +135,3 @@ const Home: React.FC<Props> = ({ initialName, onSubmit }) => {
     </Section>
   );
 };
-
-export default Home;
