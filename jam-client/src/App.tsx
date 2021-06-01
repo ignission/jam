@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import loadable from '@loadable/component';
 // import { WindowServiceImpl } from 'WindowService';
 // import { OpenViduClientImpl } from 'OpenViduClient';
 import { APIClientOnAxios } from 'network/APIClient';
-
-const Home = loadable(() => import('components/pages/Home'));
-const Room = loadable(() =>
-  import('components/pages/Room').then(({ Room }) => Room)
-);
-const Signin = loadable(() => import('components/pages/Signin'));
-const Lobby = loadable(() =>
-  import('components/pages/Lobby').then(({ Lobby }) => Lobby)
-);
+import { Home, Room, Signin, Lobby } from 'components/pages';
 
 const App: React.FC = () => {
   const [initialName, setInitialName] = useState(

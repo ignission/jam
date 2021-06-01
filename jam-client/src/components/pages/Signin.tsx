@@ -46,7 +46,7 @@ const ButtonField = styled.div({
   marginTop: 16,
 });
 
-const View: React.FC = () => {
+export const Signin: React.FC = () => {
   const classes = useStyles();
   return (
     <Base>
@@ -76,5 +76,3 @@ const View: React.FC = () => {
     </Base>
   );
 };
-
-export default View;
