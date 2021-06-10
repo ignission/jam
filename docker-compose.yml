@@ -10,7 +10,7 @@ services:
 
   kms:
     container_name: jam-kms
-    image: openvidu/openvidu-server-kms:2.17.0
+    image: openvidu/openvidu-server-kms:2.18.0
     environment:
       openvidu.secret: MY_SECRET
     ports:
