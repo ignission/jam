@@ -3798,6 +3798,11 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
+jsnlog@2.30.0:
+  version "2.30.0"
+  resolved "https://registry.yarnpkg.com/jsnlog/-/jsnlog-2.30.0.tgz#6feb20bf44fee693b255e31f92f739b21b4188f9"
+  integrity sha512-o3ROQVkhek+dkc7/9TXlB4TNtxUpYsRLOBJHZYk3Vy0B5zRBmfv9tyr56PrjcgEXuy06ARgfLTANY0+ImhzzGA==
+
 json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -4608,15 +4613,16 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-openvidu-browser@2.17.0:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/openvidu-browser/-/openvidu-browser-2.17.0.tgz#935399f94e91e6f3c244163e74088a734d8f608a"
-  integrity sha512-wholLLrs2R1Rf05+QPOH4eIO9LaKO9UvoinGNHU9WoP32L9cU6WeqL0sH3gHhUdiYPqGwTNRPjC3qk/ltjUbDA==
+openvidu-browser@2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/openvidu-browser/-/openvidu-browser-2.18.0.tgz#594eae4471123c37bc384d5cb025de1d683ea639"
+  integrity sha512-a9HPAG8p2vG9XGThPUbZWPI5sO1OFmrxKQdCZM3RLmasXQa2Lwj7X1Aicsznb7RtDBg/lD8NdNwAQjm4ZDt2Nw==
   dependencies:
     freeice "2.2.2"
     hark "1.2.3"
+    jsnlog "2.30.0"
     platform "1.3.6"
-    uuid "8.3.1"
+    uuid "8.3.2"
     wolfy87-eventemitter "5.2.9"
 
 opn@^5.5.0:
@@ -6418,10 +6424,10 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@8.3.1:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.1.tgz#2ba2e6ca000da60fce5a196954ab241131e05a31"
-  integrity sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
+uuid@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
