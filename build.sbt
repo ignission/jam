@@ -17,8 +17,10 @@ lazy val commonSettings = Seq(
     "-Xfatal-warnings"
   ),
   libraryDependencies ++= Seq(
-    "dev.zio" %% "zio" % "1.0.8"
+    "org.atnos" %% "eff"           % "5.18.0",
+    "io.circe"  %% "circe-generic" % "0.14.1"
   ),
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full),
   // scalafix
   addCompilerPlugin(scalafixSemanticdb),
   semanticdbEnabled := true,
@@ -80,11 +82,14 @@ lazy val server = (project in file("jam-server"))
 lazy val infrastructure = (project in file("jam-infrastructure"))
   .settings(commonSettings)
   .settings(
-    libraryDependencies ++= Seq(
-      "com.google.code.gson" % "gson"                 % "2.8.7",
-      "org.slf4j"            % "slf4j-api"            % "1.7.30",
-      "io.openvidu"          % "openvidu-java-client" % "2.17.0"
-    )
+    libraryDependencies ++= {
+      val sttpVersion = "3.3.5"
+      Seq(
+        "com.softwaremill.sttp.client3" %% "core"                          % sttpVersion,
+        "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % sttpVersion,
+        "com.softwaremill.sttp.client3" %% "circe"                         % sttpVersion
+      )
+    }
   )
   .dependsOn(domain)
   .dependsOn(application)
