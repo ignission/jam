@@ -38,30 +38,30 @@ object HttpInterpreter {
     translate(effects)(new Translate[HttpDSL, U] {
       private val backend = HttpURLConnectionBackend()
 
-      override def apply[X](kv: HttpDSL[X]): Eff[U, X] =
-        kv match {
+      override def apply[X](kv: HttpDSL[X]): Eff[U, X] = {
+        val result = kv match {
           case Get(param, decoder) =>
-            val res = buildGetRequest(param)(decoder).send(backend)
-            fromEither(res.body)
+            get(param)(decoder).send(backend).body
           case Post(param, data, encoder, decoder) =>
-            val res = buildPostRequest(param, data)(encoder, decoder).send(backend)
-            fromEither(res.body)
+            post(param, data)(encoder, decoder).send(backend).body
         }
+        fromEither(result)
+      }
 
-      private def buildGetRequest[T](
+      private def get[T](
           param: HttpParam
       )(implicit
           decoder: Decoder[T]
       ): RequestT[Identity, Either[ResponseException[String, Error], T], Any] =
-        buildRequest(param).get(uri"${param.url}").response(asJson[T])
+        setCredential(param).get(uri"${param.url}").response(asJson[T])
 
-      private def buildPostRequest[T1, T2](param: HttpParam, data: T1)(implicit
+      private def post[T1, T2](param: HttpParam, data: T1)(implicit
           encoder: Encoder[T1],
           decoder: Decoder[T2]
       ): RequestT[Identity, Either[ResponseException[String, Error], T2], Any] =
-        buildRequest(param).post(uri"${param.url}").body(data).response(asJson[T2])
+        setCredential(param).post(uri"${param.url}").body(data).response(asJson[T2])
 
-      private def buildRequest(param: HttpParam): RequestT[Empty, Either[String, String], Any] =
+      private def setCredential(param: HttpParam): RequestT[Empty, Either[String, String], Any] =
         param.credential match {
           case BasicCredential(username, password) =>
             basicRequest.auth.basic(user = username, password = password)
