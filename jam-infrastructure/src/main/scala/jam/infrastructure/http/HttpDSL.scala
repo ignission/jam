@@ -14,7 +14,12 @@ case class BasicCredential(username: String, password: String) extends Credentia
 
 sealed trait HttpDSL[+A]
 case class Get[A](param: HttpParam, implicit val decoder: Decoder[A]) extends HttpDSL[A]
-case class Post(param: HttpParam)                                     extends HttpDSL[String]
+case class Post[A1, A2](
+    param: HttpParam,
+    data: A1,
+    implicit val encoder: Encoder[A1],
+    decoder: Decoder[A2]
+) extends HttpDSL[A2]
 
 object HttpDSL {
   type Stack    = Fx.fx2[HttpDSL, Either[String, *]]
@@ -38,7 +43,9 @@ object HttpInterpreter {
           case Get(param, decoder) =>
             val res = buildGetRequest(param)(decoder).send(backend)
             fromEither(res.body)
-          case Post(_) => ???
+          case Post(param, data, encoder, decoder) =>
+            val res = buildPostRequest(param, data)(encoder, decoder).send(backend)
+            fromEither(res.body)
         }
 
       private def buildGetRequest[T](
@@ -47,6 +54,12 @@ object HttpInterpreter {
           decoder: Decoder[T]
       ): RequestT[Identity, Either[ResponseException[String, Error], T], Any] =
         buildRequest(param).get(uri"${param.url}").response(asJson[T])
+
+      private def buildPostRequest[T1, T2](param: HttpParam, data: T1)(implicit
+          encoder: Encoder[T1],
+          decoder: Decoder[T2]
+      ): RequestT[Identity, Either[ResponseException[String, Error], T2], Any] =
+        buildRequest(param).post(uri"${param.url}").body(data).response(asJson[T2])
 
       private def buildRequest(param: HttpParam): RequestT[Empty, Either[String, String], Any] =
         param.credential match {
