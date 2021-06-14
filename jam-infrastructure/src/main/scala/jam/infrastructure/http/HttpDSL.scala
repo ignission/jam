@@ -13,11 +13,11 @@ sealed trait Credential
 case class BasicCredential(username: String, password: String) extends Credential
 
 sealed trait HttpDSL[+A]
-case class Get[A](param: HttpParam, implicit val decoder: Decoder[A]) extends HttpDSL[A]
+case class Get[A](param: HttpParam, decoder: Decoder[A]) extends HttpDSL[A]
 case class Post[A1, A2](
     param: HttpParam,
     data: A1,
-    implicit val encoder: Encoder[A1],
+    encoder: Encoder[A1],
     decoder: Decoder[A2]
 ) extends HttpDSL[A2]
 
