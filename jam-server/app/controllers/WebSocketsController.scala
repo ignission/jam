@@ -1,15 +1,17 @@
 package controllers
 
 import javax.inject._
+
 import actors.{RoomRequestActor, RoomResponseActor}
 import akka.actor.ActorSystem
 import akka.stream.scaladsl._
 import infrastructure.RedisClient
-import jam.domain.models.{RoomName, UserCommand, UserName}
 import play.api.libs.json.JsValue
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 import services.RoomService
+
+import jam.domain.models.{RoomName, UserCommand, UserName}
 
 @Singleton
 class WebSocketsController @Inject() (

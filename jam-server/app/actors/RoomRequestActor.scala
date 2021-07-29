@@ -2,8 +2,9 @@ package actors
 
 import akka.actor.{Actor, ActorRef, Props}
 import infrastructure.RedisClient
-import jam.domain.models.{Position, Room, RoomName, User, UserCommand, UserName}
 import play.api.libs.json.{JsValue, Json}
+
+import jam.domain.models.{Position, Room, RoomName, User, UserCommand, UserName}
 
 class RoomRequestActor(out: ActorRef, redis: RedisClient, roomName: RoomName, userName: UserName)
     extends Actor {
