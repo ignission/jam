@@ -73,7 +73,7 @@ lazy val infrastructure = (project in file("jam-infrastructure"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= {
-      val sttpVersion = "3.3.5"
+      val sttpVersion = "3.3.13"
       Seq(
         "com.softwaremill.sttp.client3" %% "core"                          % sttpVersion,
         "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % sttpVersion,
