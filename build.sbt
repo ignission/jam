@@ -17,7 +17,7 @@ lazy val commonSettings = Seq(
     "-Xfatal-warnings"
   ),
   libraryDependencies ++= Seq(
-    "org.atnos" %% "eff"           % "5.18.0",
+    "org.atnos" %% "eff"           % "5.19.0",
     "io.circe"  %% "circe-generic" % "0.14.1"
   ),
   addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full),
@@ -73,7 +73,7 @@ lazy val infrastructure = (project in file("jam-infrastructure"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= {
-      val sttpVersion = "3.3.5"
+      val sttpVersion = "3.3.13"
       Seq(
         "com.softwaremill.sttp.client3" %% "core"                          % sttpVersion,
         "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % sttpVersion,
