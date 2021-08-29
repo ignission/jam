@@ -20,7 +20,7 @@ lazy val commonSettings = Seq(
     "org.atnos" %% "eff"           % "5.19.0",
     "io.circe"  %% "circe-generic" % "0.14.1"
   ),
-  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full),
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.1" cross CrossVersion.full),
   // scalafix
   addCompilerPlugin(scalafixSemanticdb),
   semanticdbEnabled := true,
