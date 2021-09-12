@@ -52,7 +52,7 @@ lazy val server = (project in file("jam-server"))
     libraryDependencies ++= Seq(
       guice,
       jdbc,
-      "net.debasishg"          %% "redisclient"        % "3.30",
+      "net.debasishg"          %% "redisclient"        % "3.40",
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
     )
   )
