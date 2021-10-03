@@ -3,7 +3,7 @@ import play.sbt.PlayImport.PlayKeys.devSettings
 name := "jam"
 
 lazy val commonSettings = Seq(
-  version := "0.4.1",
+  version      := "0.4.1",
   scalaVersion := "2.13.6",
   scalacOptions ++= List(
     "-deprecation",
@@ -58,7 +58,7 @@ lazy val server = (project in file("jam-server"))
   )
   .settings(
     Docker / packageName := s"jam-${name.value}",
-    dockerBaseImage := "openjdk:8-slim",
+    dockerBaseImage      := "openjdk:8-slim",
     dockerExposedPorts ++= Seq(9000),
     Universal / javaOptions ++= Seq(
       "-Dpidfile.path=/dev/null",
