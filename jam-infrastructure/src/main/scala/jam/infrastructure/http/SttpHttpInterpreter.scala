@@ -7,16 +7,19 @@ import org.atnos.eff.all.fromEither
 import sttp.client3.circe._
 import sttp.client3.{ResponseException, _}
 
+import jam.application.effects.http._
+
 object SttpHttpInterpreter {
+
   type _either[R] = Either[ResponseException[String, Error], *] |= R
 
   def run[R, U, A](
       effects: Eff[R, A]
-  )(implicit m: Member.Aux[HttpDSL, R, U], either: _either[U]): Eff[U, A] =
-    translate(effects)(new Translate[HttpDSL, U] {
+  )(implicit m: Member.Aux[HttpEffect, R, U], either: _either[U]): Eff[U, A] =
+    translate(effects)(new Translate[HttpEffect, U] {
       private val backend = HttpURLConnectionBackend()
 
-      override def apply[X](kv: HttpDSL[X]): Eff[U, X] = {
+      override def apply[X](kv: HttpEffect[X]): Eff[U, X] = {
         val result = kv match {
           case Get(param, decoder) =>
             get(param)(decoder).send(backend).body
